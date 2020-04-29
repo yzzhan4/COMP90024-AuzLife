@@ -9,6 +9,7 @@
     availability_zone: '{{ availability_zone }}'
     security_groups: '{{ sg_names }}'
     volumes: '{{ item.volumes }}'
+    network: qh2-uom-internal
     auto_floating_ip: yes
     wait: yes
     timeout: 600
