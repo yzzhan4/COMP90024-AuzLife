@@ -49,11 +49,11 @@ class StdOutListener(tweepy.StreamListener):
         country = ""
         
         try:
-            user_id = tweet["user"]["id"]
+            user_id = tweet["user"]["screen_name"]
             user_name = tweet["user"]["name"]
             country_code = tweet["place"]["country_code"]
             country = tweet["place"]["country"]
-            #print(country + " " + user_name)
+            
         except:
             return True
         # if tweet["user"] != None:
@@ -65,9 +65,10 @@ class StdOutListener(tweepy.StreamListener):
         #     print(country + " " + user_name)
         
         if country == "Australia":
-             print(user_name + ":" + country_code)
+             print(user_id + ":" + country_code)
 
         #thread1 = myThread(user_id, self.api)
+        
         return True
 
     def on_error(self, status):
