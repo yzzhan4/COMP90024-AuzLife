@@ -1,5 +1,7 @@
 from __future__ import absolute_import, print_function
 
+from datetime import datetime, date, time, timedelta
+
 import tweepy
 import couchdb
 import json
@@ -17,18 +19,27 @@ consumer_secret="48bzy2KDHf2raZGh3841uuOWnz3smqpTY40TNMh6ivcYUOIzok"
 access_token="1252023612896247808-ZLCFvfCXyu7xFJkNmcpQi2dITUliwa"
 access_token_secret="49sL9SigkSIoIw36WYgfPpeIXvNRnYtsucJKtFiFPwV6W"
 
-# def find_related_tweets(user_id, api):
+def find_related_tweets(user_id, api):
+    for tweet in tweepy.Cursor(api.user_timeline, id = user_id).items():
+        create_date = tweet.created_at
+        age_days = (datetime.utcnow() - create_date).days
+        if age_days > 7 :
+            break
+        # hashtag = ""
+        # if hashtag not in tweet.text:
+        #     continue
+        print(f"{tweet.user.name}:{tweet.text}")
+        print(age_days)
 
-
-# class myThread (threading.Thread):
-#     def __init__(self, user_id, api):
-#         threading.Thread.__init__(self)
-#         self.user_id = user_id
-#         self.api = api
-#     def run(self):
-#         print ("start threading：" + self.name)
-#         find_related_tweets(user_id, self.api)
-#         print ("exit threading：" + self.name)
+class myThread (threading.Thread):
+    def __init__(self, user_id, api):
+        threading.Thread.__init__(self)
+        self.user_id = user_id
+        self.api = api
+    def run(self):
+        print ("start threading：" + self.name)
+        find_related_tweets(self.user_id, self.api)
+        print ("exit threading：" + self.name)
 
 class StdOutListener(tweepy.StreamListener):
     def __init__(self, api):
@@ -38,16 +49,19 @@ class StdOutListener(tweepy.StreamListener):
         tweet = json.loads(data)
         user_id = ""
         country_code = "" 
+        country = ""
         try:
             user_id = tweet["user"]["screen_name"]
             country_code = tweet["place"]["country_code"]
+            country = tweet["place"]["country"]
         except:
             return True
         print(user_id + ":" + country_code)
-        if country_code == "AU":
-             print(user_id + ":" + country_code)
-             db.save(json.loads(data))
-        #thread1 = myThread(user_id, self.api)
+        if country == "Australia":
+            print(user_id + ":" + country_code)
+            db.save(json.loads(data))
+            thread1 = myThread(user_id, self.api)
+            thread1.run()
         return True
     def on_error(self, status):
         print(status)
@@ -65,3 +79,4 @@ if __name__ == '__main__':
     l = StdOutListener(api)
     stream = tweepy.Stream(auth, l)
     stream.filter(track=['covid19','Covid19','COVID19','coronavirus','COVID-19','covid 19','COVID 19','Covid 19'])
+    #stream.filter(track=['ruqil'])
