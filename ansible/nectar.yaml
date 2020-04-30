@@ -17,16 +17,17 @@
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 
   tasks:
-    - name: Add proxy in /ect/environment
+    - name: Add proxy in /etc/environment
       become: yes
       blockinfile:
         path: /etc/environment
-        block:
+        block: |
+          HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/
+          HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/
           http_proxy=http://wwwproxy.unimelb.edu.au:8000/
           https_proxy=http://wwwproxy.unimelb.edu.au:8000/
           no_proxy = “localhost,127.0.0.1,localaddress,127.16.0.0/12,melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au”
-          HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/
-          HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/
+
 
     - name: Reboot machine
       become: yes
@@ -40,3 +41,9 @@
         state: latest
         install_recommends: no
         update_cache: yes
+
+
+    - name: update apt cache
+      become: true
+      apt:
+        update_cache : yes
