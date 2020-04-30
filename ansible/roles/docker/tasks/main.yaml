@@ -47,3 +47,32 @@
   pip:
     name: ['docker-compose']
     state: latest
+
+- name: Create directory got Docker service
+  become: yes
+  file:
+    path: "/etc/systemd/system/docker.service.d"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+- name: Template a file to /http-proxy.conf
+  become: yes
+  template:
+    src: http-proxy.conf.j2
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Flush Changes
+  become: yes
+  systemd:
+    daemon_reload: yes
+
+- name: Restart docker
+  become: yes
+  systemd:
+    name: docker
+    state: restarted
+

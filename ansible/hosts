@@ -6,3 +6,11 @@
 172.26.131.210 ansible_python_interpreter=/usr/bin/python3
 172.26.132.216 ansible_python_interpreter=/usr/bin/python3
 172.26.132.24 ansible_python_interpreter=/usr/bin/python3
+
+[web]
+172.26.129.240 ansible_python_interpreter=/usr/bin/python3
+
+[backend]
+172.26.131.210 ansible_python_interpreter=/usr/bin/python3
+172.26.132.216 ansible_python_interpreter=/usr/bin/python3
+172.26.132.24 ansible_python_interpreter=/usr/bin/python3
