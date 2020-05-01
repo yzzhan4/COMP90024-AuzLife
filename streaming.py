@@ -9,20 +9,12 @@ import json
 import threading
 import http
 
-# couch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
-# couch.resource.credentials = ("admin", "yosoro")
-# # Create db
-# if "test/testdb" not in couch:
-#     couch.create("test/testdb")
-# db = couch["test/testdb"]
-
-consumer_key="TyCYeW4qV0t6lWiiMfsI9GxXW"
-consumer_secret="btxhDS0QjJLBDxEm0hEHidvbRfzS38bvE5e8ZzWYjs9kZjzP18"
-access_token="1255382069368295427-QhPR4aJ6hgPhDx42wVC9TPk44oHZfM"
-access_token_secret="lbBXPr8lIPT3OEBwWwIUOFYPbDfU0r9cnjsiSvSLE1AjW"
-
-#def api_rotation(current_api):
-
+couch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
+couch.resource.credentials = ("admin", "yosoro")
+# Create db
+if "test/testdb" not in couch:
+    couch.create("test/testdb")
+db = couch["test/testdb"]
 
 def start_streaming(account_name):
     consumer_key = API_ACCOUNTS[account_name][0]
@@ -50,11 +42,14 @@ def find_related_tweets(user_id, api):
             age_days = (datetime.utcnow() - create_date).days
             if age_days > 7 :
                 break
+            if tweet.lang != "en":
+                continue
             # hashtag = ""
             # if hashtag not in tweet.text:
             #     continue
             print(f"{tweet.user.name}:{tweet.text}")
             print(age_days)
+            db.save(json.loads(json.dumps(tweet._json)))
     except http.client.IncompleteRead:
         print('=============================error')
         exit()
@@ -88,7 +83,6 @@ class StdOutListener(tweepy.StreamListener):
         print(user_id + ":" + country_code)
         # if country == "Australia":
         #     print(user_id + ":" + country_code)
-            #db.save(json.loads(data))
         thread1 = myThread(user_id, self.api)
         thread1.start()
         return True
@@ -114,4 +108,4 @@ if __name__ == '__main__':
     # #stream.filter(track=['covid19','Covid19','COVID19','coronavirus','COVID-19','covid 19','COVID 19','Covid 19'])
     # #stream.filter(track=["a"])
     # stream.filter(locations = [114,-43,152,-10])
-    start_streaming('2')
+    start_streaming('1')
