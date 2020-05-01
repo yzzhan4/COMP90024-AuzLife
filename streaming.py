@@ -1,35 +1,64 @@
 from __future__ import absolute_import, print_function
 
 from datetime import datetime, date, time, timedelta
+from api_accounts import API_ACCOUNTS
 
 import tweepy
 import couchdb
 import json
 import threading
+import http
 
-couch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
-couch.resource.credentials = ("admin", "yosoro")
-# Create db
-if "test/testdb" not in couch:
-    couch.create("test/testdb")
-db = couch["test/testdb"]
+# couch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
+# couch.resource.credentials = ("admin", "yosoro")
+# # Create db
+# if "test/testdb" not in couch:
+#     couch.create("test/testdb")
+# db = couch["test/testdb"]
 
-consumer_key="sHklTJfVUWus0MsJE6N8xhzvK"
-consumer_secret="48bzy2KDHf2raZGh3841uuOWnz3smqpTY40TNMh6ivcYUOIzok"
-access_token="1252023612896247808-ZLCFvfCXyu7xFJkNmcpQi2dITUliwa"
-access_token_secret="49sL9SigkSIoIw36WYgfPpeIXvNRnYtsucJKtFiFPwV6W"
+consumer_key="TyCYeW4qV0t6lWiiMfsI9GxXW"
+consumer_secret="btxhDS0QjJLBDxEm0hEHidvbRfzS38bvE5e8ZzWYjs9kZjzP18"
+access_token="1255382069368295427-QhPR4aJ6hgPhDx42wVC9TPk44oHZfM"
+access_token_secret="lbBXPr8lIPT3OEBwWwIUOFYPbDfU0r9cnjsiSvSLE1AjW"
+
+#def api_rotation(current_api):
+
+
+def start_streaming(account_name):
+    consumer_key = API_ACCOUNTS[account_name][0]
+    consumer_secret = API_ACCOUNTS[account_name][1]
+    access_token = API_ACCOUNTS[account_name][2]
+    access_token_secret = API_ACCOUNTS[account_name][3]
+    # Authentication
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    # Create API
+    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    #api = tweepy.API(auth)
+    # Streaming
+    l = StdOutListener(api)
+    stream = tweepy.Stream(auth, l)
+    #stream.filter(track=['covid19','Covid19','COVID19','coronavirus','COVID-19','covid 19','COVID 19','Covid 19'])
+    #stream.filter(languages = ['en'])
+    stream.filter(locations = [114,-43,152,-10])
+    #stream.filter(locations = [-180,-90,180,90])
 
 def find_related_tweets(user_id, api):
-    for tweet in tweepy.Cursor(api.user_timeline, id = user_id).items():
-        create_date = tweet.created_at
-        age_days = (datetime.utcnow() - create_date).days
-        if age_days > 7 :
-            break
-        # hashtag = ""
-        # if hashtag not in tweet.text:
-        #     continue
-        print(f"{tweet.user.name}:{tweet.text}")
-        print(age_days)
+    try:
+        for tweet in tweepy.Cursor(api.user_timeline, id = user_id).items():
+            create_date = tweet.created_at
+            age_days = (datetime.utcnow() - create_date).days
+            if age_days > 7 :
+                break
+            # hashtag = ""
+            # if hashtag not in tweet.text:
+            #     continue
+            print(f"{tweet.user.name}:{tweet.text}")
+            print(age_days)
+    except http.client.IncompleteRead:
+        print('=============================error')
+        exit()
+        
 
 class myThread (threading.Thread):
     def __init__(self, user_id, api):
@@ -57,26 +86,32 @@ class StdOutListener(tweepy.StreamListener):
         except:
             return True
         print(user_id + ":" + country_code)
-        if country == "Australia":
-            print(user_id + ":" + country_code)
-            db.save(json.loads(data))
-            thread1 = myThread(user_id, self.api)
-            thread1.run()
+        # if country == "Australia":
+        #     print(user_id + ":" + country_code)
+            #db.save(json.loads(data))
+        thread1 = myThread(user_id, self.api)
+        thread1.start()
         return True
     def on_error(self, status):
         print(status)
 
+    def on_limit(self,track):
+        print("======================================limit")
+
+
 #TODO: retweets
 
 if __name__ == '__main__':
-    # Authentication
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
+    # # Authentication
+    # auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    # auth.set_access_token(access_token, access_token_secret)
 
-    # Create API
-    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    # # Create API
+    # api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     
-    l = StdOutListener(api)
-    stream = tweepy.Stream(auth, l)
-    stream.filter(track=['covid19','Covid19','COVID19','coronavirus','COVID-19','covid 19','COVID 19','Covid 19'])
-    #stream.filter(track=['ruqil'])
+    # l = StdOutListener(api)
+    # stream = tweepy.Stream(auth, l)
+    # #stream.filter(track=['covid19','Covid19','COVID19','coronavirus','COVID-19','covid 19','COVID 19','Covid 19'])
+    # #stream.filter(track=["a"])
+    # stream.filter(locations = [114,-43,152,-10])
+    start_streaming('2')
