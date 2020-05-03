@@ -6,17 +6,21 @@ import threading
 import json
 import time
 
+from keywords import KEYWORDS
+
 # Couchdb
 # couch = couchdb.Server("http://admin:90024@172.26.132.216:5984")
 # couch.resource.credentials = ("admin", "90024")
 # if "assignment2/tweets" not in couch:
 #     couch.create("assignment2/tweets")
 # db = couch["assignment2/tweets"]
-couch = couchdb.Server("http://admin:90024@127.0.0.1:5984")
-couch.resource.credentials = ("admin", "90024")
-if "test/testdb" not in couch:
-    couch.create("test/testdb")
-db = couch["test/testdb"]
+
+localcouch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
+localcouch.resource.credentials = ("admin", "yosoro")
+if "assignment2/tweets" not in localcouch:
+    localcouch.create("assignment2/tweets")
+db = localcouch["assignment2/tweets"]
+
 
 class ThreadPoolManager():
     def __init__(self, apis):
@@ -29,7 +33,7 @@ class ThreadPoolManager():
             myThread.start()
             self.threads.append(myThread)
     def add_job(self, user_id):
-        print("TM add  " + user_id)
+        print("ThreadManager added [" + user_id + "]")
         self.users.append(user_id)
     def next_user(self):
         with self.lock:
@@ -56,23 +60,19 @@ class MyThread(threading.Thread):
                     break
                 if tweet.lang != "en":
                     continue
-                # hashtag = ""
-                # if hashtag not in tweet.text:
-                #     continue
-                # print(f"{tweet.user.name}:{tweet.text}")
-                # print(age_days)
-                # tweetjson = tweet._json
-                db.save(tweet._json)
-
-                count += 1
-            print(self.name + " " + user_id + " " + str(count))
+                for keyword in KEYWORDS:
+                    if keyword in tweet.text:
+                        db.save(tweet._json)
+                        count += 1
+                        break
+            print(self.name + " saved [" + str(count) + "] tweets for [" + user_id + "]")
         except http.client.IncompleteRead:
-            print('=============================error')
+            print('===ERROR=== IncompleteRead in find_related_tweets')
             exit()
     def run(self):
-        print ("start threading：" + self.name)
+        print(self.name + " started threading")
         while(True):
             next_user = self.tm.next_user()
             if next_user != None:
                 self.find_related_tweets(next_user)
-        print ("exit threading：" + self.name)
+        print(self.name + " exited threading")
