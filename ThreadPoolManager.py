@@ -17,10 +17,12 @@ from keywords import KEYWORDS
 
 localcouch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
 localcouch.resource.credentials = ("admin", "yosoro")
-if "assignment2/tweets" not in localcouch:
-    localcouch.create("assignment2/tweets")
-db = localcouch["assignment2/tweets"]
-
+if "assignment2/tweets2" not in localcouch:
+    localcouch.create("assignment2/tweets2")
+db = localcouch["assignment2/tweets2"]
+# if "test/testdb" not in localcouch:
+#     localcouch.create("test/testdb")
+# db = localcouch["test/testdb"]
 
 class ThreadPoolManager():
     def __init__(self, apis):
@@ -56,12 +58,12 @@ class MyThread(threading.Thread):
             for tweet in tweepy.Cursor(self.api.user_timeline, id=user_id).items():
                 create_date = tweet.created_at
                 age_days = (datetime.utcnow() - create_date).days
-                if age_days > 60 :
+                if age_days > 100 :
                     break
                 if tweet.lang != "en":
                     continue
                 for keyword in KEYWORDS:
-                    if keyword in tweet.text:
+                    if keyword in tweet.text.lower():
                         db.save(tweet._json)
                         count += 1
                         break

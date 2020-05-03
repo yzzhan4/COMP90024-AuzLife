@@ -1,1 +1,1 @@
-KEYWORDS = ['covid19','Covid19','COVID19','coronavirus','COVID-19','covid 19','COVID 19','Covid 19']
+KEYWORDS = ['covid19','coronavirus','covid-19','covid 19','covid']

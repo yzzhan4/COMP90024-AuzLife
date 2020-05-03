@@ -29,13 +29,14 @@ def authenticate():
 def start_streaming(my_stream):
     try:
         #my_stream.filter(locations = [-180,-90,180,90])
-        my_stream.filter(locations=[114,-43,152,-10])
+        my_stream.filter(locations=[114,-43,154,-12])
         # my_stream.filter(track=KEYWORDS)
         # my_stream.filter(languages=['en'])
     except:
         print("===ERROR=== An error has occured in start_streaming")
         my_stream.disconnect()
-        start_streaming()
+        #exit()
+        start_streaming(my_stream)
 
 class StdOutListener(tweepy.StreamListener):
     def __init__(self, api, thread_manager):
@@ -53,8 +54,9 @@ class StdOutListener(tweepy.StreamListener):
             user_id = tweet["user"]["screen_name"]
             text = tweet["text"]
             for keyword in KEYWORDS:
-                if keyword in text:
+                if keyword in text.lower():
                     self.tm.add_job(user_id)
+                    break
             #country_code = tweet["place"]["country_code"]
             #country = tweet["place"]["country"]
             #coordinates = tweet["coordinates"]["coordinates"]
@@ -65,10 +67,11 @@ class StdOutListener(tweepy.StreamListener):
             return False
     def on_error(self, status):
         print(status)
-        if status_code == 420:
+        if status == 420:
             return False
     def on_limit(self,track):
         print("===ERROR=== streaming: reached limit")
+        return False
 
 if __name__ == '__main__':
     (auths, apis) = authenticate()
