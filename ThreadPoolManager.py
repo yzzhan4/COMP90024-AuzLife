@@ -56,7 +56,7 @@ class MyThread(threading.Thread):
             for tweet in tweepy.Cursor(self.api.user_timeline, id=user_id).items():
                 create_date = tweet.created_at
                 age_days = (datetime.utcnow() - create_date).days
-                if age_days > 7 :
+                if age_days > 60 :
                     break
                 if tweet.lang != "en":
                     continue
@@ -65,7 +65,7 @@ class MyThread(threading.Thread):
                         db.save(tweet._json)
                         count += 1
                         break
-            print(self.name + " saved [" + str(count) + "] tweets for [" + user_id + "]")
+            print(self.name + " saved [" + str(count) + "] tweets from [" + user_id + "]")
         except http.client.IncompleteRead:
             print('===ERROR=== IncompleteRead in find_related_tweets')
             exit()
