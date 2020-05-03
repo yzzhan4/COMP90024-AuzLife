@@ -7,8 +7,13 @@ import json
 import time
 
 # Couchdb
-couch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
-couch.resource.credentials = ("admin", "yosoro")
+# couch = couchdb.Server("http://admin:90024@172.26.132.216:5984")
+# couch.resource.credentials = ("admin", "90024")
+# if "assignment2/tweets" not in couch:
+#     couch.create("assignment2/tweets")
+# db = couch["assignment2/tweets"]
+couch = couchdb.Server("http://admin:90024@127.0.0.1:5984")
+couch.resource.credentials = ("admin", "90024")
 if "test/testdb" not in couch:
     couch.create("test/testdb")
 db = couch["test/testdb"]
@@ -56,7 +61,9 @@ class MyThread(threading.Thread):
                 #     continue
                 # print(f"{tweet.user.name}:{tweet.text}")
                 # print(age_days)
-                # db.save(json.loads(json.dumps(tweet._json)))
+                # tweetjson = tweet._json
+                db.save(tweet._json)
+
                 count += 1
             print(self.name + " " + user_id + " " + str(count))
         except http.client.IncompleteRead:
