@@ -49,16 +49,18 @@ class StdOutListener(tweepy.StreamListener):
     def on_data(self, data):
         tweet = json.loads(data)
         user_id = ""
+        tweet_id = ""
         text = ""
         #country_code = "" 
         #country = ""
         #coordinates = []
         try:
             user_id = tweet["user"]["screen_name"]
+            tweet_id = tweet["id"]
             text = tweet["text"]
             for keyword in KEYWORDS:
                 if keyword in text.lower():
-                    self.tm.add_job(user_id)
+                    self.tm.add_job(self.api, user_id, tweet_id)
                     break
             #country_code = tweet["place"]["country_code"]
             #country = tweet["place"]["country"]

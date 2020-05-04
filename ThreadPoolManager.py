@@ -29,19 +29,48 @@ class ThreadPoolManager():
         self.lock = threading.Lock()
         self.apis = apis
         self.users = []
+        self.jobs = []
         self.threads = []
         for api in apis:
             myThread = MyThread(self, api)
             myThread.start()
             self.threads.append(myThread)
-    def add_job(self, user_id):
-        print("ThreadManager added [" + user_id + "]")
-        self.users.append(user_id)
+        try:
+            dbusers = db["users"].get("users")
+            if dbusers is None:
+                db["users"] = {"users":[]}
+            else:
+                self.users = dbusers
+        except couchdb.http.ResourceNotFound:
+            db["users"] = {"users":[]}
+    def add_job(self, api, user_id, tweet_id):
+        try:
+            if user_id not in self.users:
+                # append to job list
+                self.jobs.append(user_id)
+                self.users.append(user_id)
+                # add to db
+                current_doc = db["users"]
+                if current_doc["users"] is not None:
+                    current_users = current_doc["users"]
+                    current_doc["users"] = current_users + [user_id]
+                    db["users"] = current_doc
+                    print("ThreadManager added [" + user_id + "]")
+                else:
+                    current_doc["users"] = [user_id]
+                    db["users"] = current_doc
+            else:
+                tweet = api.get_status(tweet_id)
+                db.save(tweet._json)
+                print("Saved the latest tweet from [" + user_id + "]")
+                print("ThreadManager did not add [" + user_id + "] (already existed)")
+        except Exception as err:
+            print(err)
     def next_user(self):
         with self.lock:
-            if len(self.users) != 0:
-                user = self.users[0]
-                self.users.remove(user)
+            if len(self.jobs) != 0:
+                user = self.jobs[0]
+                self.jobs.remove(user)
                 return user
             else:
                 return None
@@ -56,6 +85,7 @@ class MyThread(threading.Thread):
             print(self.name + " looking for related tweets for " + user_id)
             count = 0
             for tweet in tweepy.Cursor(self.api.user_timeline, id=user_id).items():
+                print(tweet.text+ " " + tweet.lang)
                 create_date = tweet.created_at
                 age_days = (datetime.utcnow() - create_date).days
                 if age_days > 100 :
