@@ -32,6 +32,9 @@ def start_streaming(my_stream):
         my_stream.filter(locations=[114,-43,154,-12])
         # my_stream.filter(track=KEYWORDS)
         # my_stream.filter(languages=['en'])
+    except KeyboardInterrupt:
+        my_stream.disconnect()
+        exit()
     except:
         print("===ERROR=== An error has occured in start_streaming")
         my_stream.disconnect()

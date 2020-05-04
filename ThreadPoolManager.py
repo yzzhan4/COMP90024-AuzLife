@@ -17,9 +17,9 @@ from keywords import KEYWORDS
 
 localcouch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
 localcouch.resource.credentials = ("admin", "yosoro")
-if "assignment2/tweets2" not in localcouch:
-    localcouch.create("assignment2/tweets2")
-db = localcouch["assignment2/tweets2"]
+if "assignment2/tweets3" not in localcouch:
+    localcouch.create("assignment2/tweets3")
+db = localcouch["assignment2/tweets3"]
 # if "test/testdb" not in localcouch:
 #     localcouch.create("test/testdb")
 # db = localcouch["test/testdb"]
