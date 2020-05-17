@@ -85,7 +85,7 @@ class MyThread(threading.Thread):
             print(self.name + " looking for related tweets for " + user_id)
             count = 0
             for tweet in tweepy.Cursor(self.api.user_timeline, id=user_id).items():
-                print(tweet.text+ " " + tweet.lang)
+                #print(tweet.text+ " " + tweet.lang)
                 create_date = tweet.created_at
                 age_days = (datetime.utcnow() - create_date).days
                 if age_days > 100 :
