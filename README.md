@@ -2,8 +2,7 @@
 
 To run the server for the first time:
 ```
-npm install express
-npm init
+npm install
 npm start
 ```
 

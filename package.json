@@ -1,0 +1,23 @@
+{
+  "name": "comp90024-auzlife",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yzzhan4/COMP90024-AuzLife.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yzzhan4/COMP90024-AuzLife/issues"
+  },
+  "homepage": "https://github.com/yzzhan4/COMP90024-AuzLife#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
+}
