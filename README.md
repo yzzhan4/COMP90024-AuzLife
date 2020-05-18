@@ -7,10 +7,10 @@
 [master]
 172.26.131.147
 
-[slave2]
+[slave1]
 172.26.134.71
 
-[slave1]
+[slave2]
 172.26.130.67
 
 ## Access instance
