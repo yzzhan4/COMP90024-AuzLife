@@ -39,6 +39,7 @@ def start_streaming(my_stream):
         print("===ERROR=== An error has occured in start_streaming")
         my_stream.disconnect()
         #exit()
+        print("Researted streaming")
         start_streaming(my_stream)
 
 class StdOutListener(tweepy.StreamListener):
