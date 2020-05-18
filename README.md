@@ -2,16 +2,16 @@
 
 ## Instance
 [web]
-172.26.129.240
+172.26.132.39
 
 [master]
-172.26.132.24
+172.26.131.147
 
 [slave2]
-172.26.132.216
+172.26.134.71
 
 [slave1]
-172.26.131.210
+172.26.130.67
 
 ## Access instance
 ssh -i ~/.ssh/winkey.pem ubuntu@172.26.131.210 (enter the ip address of the instance)
