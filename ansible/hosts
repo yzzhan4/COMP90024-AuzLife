@@ -2,15 +2,24 @@
 
 
 [all]
-172.26.129.240 ansible_python_interpreter=/usr/bin/python3
-172.26.131.210 ansible_python_interpreter=/usr/bin/python3
-172.26.132.216 ansible_python_interpreter=/usr/bin/python3
-172.26.132.24 ansible_python_interpreter=/usr/bin/python3
+172.26.130.67 ansible_python_interpreter=/usr/bin/python3
+172.26.134.71 ansible_python_interpreter=/usr/bin/python3
+172.26.131.147 ansible_python_interpreter=/usr/bin/python3
+172.26.132.39 ansible_python_interpreter=/usr/bin/python3
 
 [web]
-172.26.129.240 ansible_python_interpreter=/usr/bin/python3
+172.26.132.39 ansible_python_interpreter=/usr/bin/python3
 
 [backend]
-172.26.131.210 ansible_python_interpreter=/usr/bin/python3
-172.26.132.216 ansible_python_interpreter=/usr/bin/python3
-172.26.132.24 ansible_python_interpreter=/usr/bin/python3
+172.26.130.67 ansible_python_interpreter=/usr/bin/python3
+172.26.134.71 ansible_python_interpreter=/usr/bin/python3
+172.26.131.147 ansible_python_interpreter=/usr/bin/python3
+
+[slave2]
+172.26.130.67 ansible_python_interpreter=/usr/bin/python3
+
+[slave1]
+172.26.134.71 ansible_python_interpreter=/usr/bin/python3
+
+[master]
+172.26.131.147 ansible_python_interpreter=/usr/bin/python3

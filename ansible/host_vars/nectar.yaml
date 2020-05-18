@@ -3,16 +3,14 @@ availability_zone: melbourne-qh2-uom
 
 # Volume
 volumes:
-  - vol_name: Vol-1-80
-    vol_size: 80
-  - vol_name: Vol-2-80
-    vol_size: 80
-  - vol_name: Vol-3-60
-    vol_size: 60
-  - vol_name: Vol-1-10
-    vol_size: 10
-  - vol_name: Vol-4-10
-    vol_size: 10
+  - vol_name: Vol-1-75
+    vol_size: 75
+  - vol_name: Vol-2-75
+    vol_size: 75
+  - vol_name: Vol-3-75
+    vol_size: 75
+  - vol_name: Vol-4-25
+    vol_size: 25
 
 
 # Security group
@@ -33,13 +31,13 @@ security_groups:
 # Instance
 instances:
   - name: instance1
-    volumes: ['Vol-1-80']
+    volumes: ['Vol-1-75']
   - name: instance2
-    volumes: ['Vol-2-80']
+    volumes: ['Vol-2-75']
   - name: instance3
-    volumes: ['Vol-1-10']
+    volumes: ['Vol-3-75']
   - name: instance4
-    volumes: ['Vol-4-10']
+    volumes: ['Vol-4-25']
 
 
 instance_image: 45225edb-66d8-4fd0-bf41-132a31a18166

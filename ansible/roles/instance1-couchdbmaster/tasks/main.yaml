@@ -1,0 +1,39 @@
+---
+- name: adding docker users (for use without sudo)
+  user:
+    name: "ubuntu"
+    append: yes
+    groups: docker
+  become: true
+  with_items: "['ubuntu']"
+
+- name: Create CouchDb directory
+  tags: 'couch_master'
+  become: yes
+  file:
+    path: "couch_master"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+- name: Configure compose
+  tags: 'couch_master'
+  become: yes
+  template:
+    src: master-docker-compose.yaml.j2
+    dest: "couch_master/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Run docker compose
+  tags: 'couch_master'
+  become: yes
+  docker_compose:
+    project_src: "couch_master"
+    pull: yes
+    state: present
+    remove_orphans: yes
+    recreate: always
+
+

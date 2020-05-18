@@ -19,9 +19,9 @@
     dest: "{{ nginx_dir }}/docker-compose.yaml"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-#
+
 - name: Run docker compose
-  tags: 'wordpress'
+  tags: 'Nginx'
   become: yes
   docker_compose:
     project_src: "{{ nginx_dir }}"
@@ -29,3 +29,5 @@
     state: present
     remove_orphans: yes
     recreate: always
+
+

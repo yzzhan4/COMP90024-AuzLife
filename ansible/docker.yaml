@@ -8,3 +8,22 @@
     - role: volumes
     - role: docker
 
+
+- hosts: all
+
+  tasks:
+    - name: Install NPM and Nodejs
+      become: yes
+      apt:
+        name: nodejs
+        state: present
+
+  tasks:
+  - name: adding docker users (for use without sudo)
+    user:
+      name: "ubuntu"
+      append: yes
+      groups: docker
+    become: true
+    with_items: "['ubuntu']"
+

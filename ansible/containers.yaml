@@ -1,3 +1,28 @@
+
+
+
+
+
+- hosts: slave1
+  gather_facts: True
+
+  roles:
+  - role: instance2-couchdbslave1
+
+
+- hosts: slave2
+  gather_facts: True
+
+  roles:
+  - role: instance3-couchdbslave2
+
+- hosts: master
+  gather_facts: True
+
+  roles:
+  - role: instance1-couchdbmaster
+
+
 - hosts: web
   gather_facts: true
 
