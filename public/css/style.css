@@ -1,9 +1,9 @@
-body {
-    background-color: black;
+#map {
+    height: 100%;
 }
 
-p {
-    color: white;
-    font: 20px bold Arial;
-
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
