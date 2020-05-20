@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   couch_master:
-    image: "couchdb"
+    image: "couchdb:2.3.1"
     restart: always
     ports:
       - "5984:5984"
@@ -12,11 +12,6 @@ services:
       - "9100-9200:9100-9200"
     volumes:
       - ./data/master/data:/opt/couchdb/data
-    environment:
-      - COUCHDB_USER=admin
-      - COUCHDB_PASSWORD=90024
-      - NODENAME=172.26.131.147
-      - ERL_FLAGS="-setcookie \"comp90024auzlife\" -name \"couchdb@172.26.131.147\""
     container_name: couch_master
 
 

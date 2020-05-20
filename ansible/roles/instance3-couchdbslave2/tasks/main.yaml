@@ -26,6 +26,16 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
+- name: Create CouchDb directory
+  tags: 'etc'
+  become: yes
+  file:
+    path: "./couch_slave2/etc"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
 - name: Run docker compose
   tags: 'couch_slave2'
   become: yes
@@ -35,6 +45,17 @@
     state: present
     remove_orphans: yes
     recreate: always
+
+- name: upload the subnode script
+  become: yes
+  copy:
+    src: ./setupcouch.sh
+    dest: /home/ubuntu/
+    mode: 0777
+
+- name: execute the subnode script
+  become: yes
+  shell: /home/ubuntu/setupcouch.sh
 
 
 

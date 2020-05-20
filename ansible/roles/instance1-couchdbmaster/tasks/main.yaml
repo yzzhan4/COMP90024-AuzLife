@@ -7,6 +7,7 @@
   become: true
   with_items: "['ubuntu']"
 
+
 - name: Create CouchDb directory
   tags: 'couch_master'
   become: yes
@@ -16,6 +17,8 @@
     group: "{{ ansible_user }}"
     recurse: yes
     state: directory
+
+
 
 - name: Configure compose
   tags: 'couch_master'
@@ -35,5 +38,17 @@
     state: present
     remove_orphans: yes
     recreate: always
+
+- name: upload the subnode script
+  become: yes
+  copy:
+    src: ./setupcouchmaster.sh
+    dest: /home/ubuntu/
+    mode: 0777
+
+- name: execute the subnode script
+  become: yes
+  shell: /home/ubuntu/setupcouchmaster.sh
+
 
 

@@ -4,17 +4,14 @@ services:
 
 
   couch_slave1:
-    image: "couchdb"
+    image: "couchdb:2.3.1"
     restart: always
     ports:
       - "5984:5984"
+      - "4369:4369"
+      - "9100:9100"
     volumes:
       - ./data/slave1/data:/opt/couchdb/data
-    environment:
-      - COUCHDB_USER=admin
-      - COUCHDB_PASSWORD=90024
-      - NODENAME=172.26.134.71
-      - ERL_FLAGS="-setcookie \"comp90024auzlife\" -name \"couchdb@172.26.134.71\""
     container_name: couch_slave1
 
 
