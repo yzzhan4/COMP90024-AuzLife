@@ -1,4 +1,4 @@
-angular.module("TweetMapApp", ['ngRoute', 'ngResource'])
+angular.module("TweetMapApp", ['ngRoute', 'ngResource','mapservice'])
     .config(function($routeProvider) {
         $routeProvider
             .when('/', {
@@ -13,9 +13,10 @@ angular.module("TweetMapApp", ['ngRoute', 'ngResource'])
         };
     }])
 
-    .controller('AppController', ['$scope', 'dataFactory', function($scope, dataFactory) {
+    .controller('AppController', ['$scope', 'dataFactory', 'mapservice', function($scope, dataFactory,mapservice) {
         $scope.testHeader = "A big Map";
         $scope.getTestLoc =  dataFactory.getTestLocData().get();
+        mapservice.refresh();
         // $scope.initMap = function() {
         //     var map;
         //     function initMap() {

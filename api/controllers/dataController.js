@@ -11,6 +11,6 @@ module.exports = {
 
     // test sending coordinate for initializing map
     getTestLoc: function(req, res) {
-        res.send({'long':100, 'lat':-32});
+        res.send({lat:-32,lng:100});
     }
 }

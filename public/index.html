@@ -4,7 +4,8 @@
 <head>
     <title>COMP90024 Assignment2</title>
     <link rel="stylesheet" href="css/style.css">
-    
+
+
 </head>
 
 <body ng-controller="AppController">
@@ -12,13 +13,18 @@
     <h3>{{getTestLoc}}</h3>
 
 <!--    <div id="map" ng-init="initMap()"></div>-->
-<!--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
 <!--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0&callback=initMap" async defer></script>-->
-
+    <div class="col-md-7">
+        <div id="map" style="width:100%; height:800px"></div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-resource.js"></script>
+    <script src="./scripts/mapservice.js"></script>
     <script src="./scripts/app.js"></script>
+
+
 </body>
 
 </html>
