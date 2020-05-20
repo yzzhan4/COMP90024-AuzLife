@@ -49,6 +49,7 @@ class StdOutListener(tweepy.StreamListener):
         self.tm = thread_manager
     def on_data(self, data):
         tweet = json.loads(data)
+        user_sn = ""
         user_id = ""
         tweet_id = ""
         text = ""
@@ -56,17 +57,18 @@ class StdOutListener(tweepy.StreamListener):
         #country = ""
         #coordinates = []
         try:
-            user_id = tweet["user"]["screen_name"]
+            # user = tweet["user"]
+            user_sn = tweet["user"]["screen_name"]
+            user_id = tweet["user"]["id_str"]
             tweet_id = tweet["id"]
             text = tweet["text"]
             for keyword in KEYWORDS:
                 if keyword in text.lower():
-                    self.tm.add_job(self.api, user_id, tweet_id)
+                    self.tm.add_job(self.api, user_sn, user_id, tweet_id)
                     break
             #country_code = tweet["place"]["country_code"]
             #country = tweet["place"]["country"]
             #coordinates = tweet["coordinates"]["coordinates"]
-            #print(user_id + ":" + country_code)
             #print(user_id + ":" + country_code + "@" + str(coordinates[0]) + "," + str(coordinates[1]))
         except:
             print("===ERROR=== streaming: Attributes not found")

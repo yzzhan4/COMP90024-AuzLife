@@ -1,1 +1,0 @@
-KEYWORDS = ['covid19','coronavirus','covid-19','covid 19','covid']

@@ -8,21 +8,24 @@ import time
 
 from keywords import KEYWORDS
 
+USER_ID_DB = "streaming/userids"
+SAVE_TO_DB = "streaming/tweets"
+
 # Couchdb
 # couch = couchdb.Server("http://admin:90024@172.26.132.216:5984")
 # couch.resource.credentials = ("admin", "90024")
 # if "assignment2/tweets" not in couch:
 #     couch.create("assignment2/tweets")
 # db = couch["assignment2/tweets"]
-
 localcouch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
 localcouch.resource.credentials = ("admin", "yosoro")
-if "ass2/combined" not in localcouch:
-    localcouch.create("ass2/combined")
-db = localcouch["ass2/combined"]
-# if "test/testdb" not in localcouch:
-#     localcouch.create("test/testdb")
-# db = localcouch["test/testdb"]
+
+if SAVE_TO_DB not in localcouch:
+    localcouch.create(SAVE_TO_DB)
+db = localcouch[SAVE_TO_DB]
+if USER_ID_DB not in localcouch:
+    localcouch.create(USER_ID_DB)
+iddb = localcouch[USER_ID_DB]
 
 class ThreadPoolManager():
     def __init__(self, apis):
@@ -36,34 +39,39 @@ class ThreadPoolManager():
             myThread.start()
             self.threads.append(myThread)
         try:
-            dbusers = db["users"].get("users")
+            dbusers = iddb["users"].get("users")
             if dbusers is None:
-                db["users"] = {"users":[]}
+                iddb["users"] = {"users":[]}
             else:
                 self.users = dbusers
         except couchdb.http.ResourceNotFound:
-            db["users"] = {"users":[]}
-    def add_job(self, api, user_id, tweet_id):
+            # Create db for user ids if not exists
+            iddb["users"] = {"users":[]}
+    def save_user_id_to_db(self, user_id):
+        # iddb["users"] should exist at this stage
+        current_doc = iddb["users"]
+        if current_doc["users"] is not None:
+            # update users
+            current_users = current_doc["users"]
+            current_doc["users"] = current_users + [user_id]
+            iddb["users"] = current_doc
+        else:
+            current_doc["users"] = [user_id]
+            iddb["users"] = current_doc
+    def add_job(self, api, user_sn, user_id, tweet_id):
         try:
-            if user_id not in self.users:
+            if user_id not in self.users: # new user
                 # append to job list
-                self.jobs.append(user_id)
+                self.jobs.append((user_sn,user_id))
                 self.users.append(user_id)
                 # add to db
-                current_doc = db["users"]
-                if current_doc["users"] is not None:
-                    current_users = current_doc["users"]
-                    current_doc["users"] = current_users + [user_id]
-                    db["users"] = current_doc
-                    print("ThreadManager added [" + user_id + "]")
-                else:
-                    current_doc["users"] = [user_id]
-                    db["users"] = current_doc
-            else:
+                self.save_user_id_to_db(user_id)
+                print("ThreadManager added [" + user_sn + " (" + user_id + ")]")
+            else: # already processed user
                 tweet = api.get_status(tweet_id)
-                db.save(tweet._json)
-                print("Saved the latest tweet from [" + user_id + "]")
-                print("ThreadManager did not add [" + user_id + "] (already existed)")
+                db.save(tweet._json) # save the latest tweet
+                print("Saved the latest tweet from [" + user_sn + " (" + user_id + ")]")
+                print("ThreadManager did not add [" + user_sn + " (" + user_id + ")] (already existed)")
         except Exception as err:
             print(err)
     def next_user(self):
@@ -71,7 +79,7 @@ class ThreadPoolManager():
             if len(self.jobs) != 0:
                 user = self.jobs[0]
                 self.jobs.remove(user)
-                return user
+                return user[0]
             else:
                 return None
 
