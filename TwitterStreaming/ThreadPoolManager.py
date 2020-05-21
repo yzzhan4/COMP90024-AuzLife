@@ -8,24 +8,24 @@ import time
 
 from keywords import KEYWORDS
 
-USER_ID_DB = "streaming/userids"
-SAVE_TO_DB = "streaming/tweets"
+USER_ID_DB = "streaming-userids"
+SAVE_TO_DB = "streaming-tweets"
 
 # Couchdb
-# couch = couchdb.Server("http://admin:90024@172.26.132.216:5984")
-# couch.resource.credentials = ("admin", "90024")
+couch = couchdb.Server("http://admin:90024@172.26.131.147:5984")
+couch.resource.credentials = ("admin", "90024")
 # if "assignment2/tweets" not in couch:
 #     couch.create("assignment2/tweets")
 # db = couch["assignment2/tweets"]
-localcouch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
-localcouch.resource.credentials = ("admin", "yosoro")
+# couch = couchdb.Server("http://admin:yosoro@127.0.0.1:5984")
+# couch.resource.credentials = ("admin", "yosoro")
 
-if SAVE_TO_DB not in localcouch:
-    localcouch.create(SAVE_TO_DB)
-db = localcouch[SAVE_TO_DB]
-if USER_ID_DB not in localcouch:
-    localcouch.create(USER_ID_DB)
-iddb = localcouch[USER_ID_DB]
+if SAVE_TO_DB not in couch:
+    couch.create(SAVE_TO_DB)
+db = couch[SAVE_TO_DB]
+if USER_ID_DB not in couch:
+    couch.create(USER_ID_DB)
+iddb = couch[USER_ID_DB]
 
 class ThreadPoolManager():
     def __init__(self, apis):
@@ -71,7 +71,7 @@ class ThreadPoolManager():
                 tweet = api.get_status(tweet_id)
                 db.save(tweet._json) # save the latest tweet
                 print("Saved the latest tweet from [" + user_sn + " (" + user_id + ")]")
-                print("ThreadManager did not add [" + user_sn + " (" + user_id + ")] (already existed)")
+                print("ThreadManager did not add [" + user_sn + " (" + user_id + ")] (already exists)")
         except Exception as err:
             print(err)
     def next_user(self):
