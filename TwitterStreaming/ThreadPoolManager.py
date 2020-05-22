@@ -5,6 +5,7 @@ import http
 import threading
 import json
 import time
+import sys
 
 from keywords import KEYWORDS
 
@@ -66,14 +67,14 @@ class ThreadPoolManager():
                 self.users.append(user_id)
                 # add to db
                 self.save_user_id_to_db(user_id)
-                print("ThreadManager added [" + user_sn + " (" + user_id + ")]")
+                sys.stdout.write("ThreadManager added [" + user_sn + " (" + user_id + ")]\n")
             else: # already processed user
                 tweet = api.get_status(tweet_id)
                 db.save(tweet._json) # save the latest tweet
-                print("Saved the latest tweet from [" + user_sn + " (" + user_id + ")]")
-                print("ThreadManager did not add [" + user_sn + " (" + user_id + ")] (already exists)")
+                sys.stdout.write("Saved the latest tweet from [" + user_sn + " (" + user_id + ")]\n")
+                sys.stdout.write("ThreadManager did not add [" + user_sn + " (" + user_id + ")] (already exists)\n")
         except Exception as err:
-            print(err)
+            sys.stdout.write(err)
     def next_user(self):
         with self.lock:
             if len(self.jobs) != 0:
@@ -90,10 +91,10 @@ class MyThread(threading.Thread):
         self.api = api
     def find_related_tweets(self, user_id):
         try:
-            print(self.name + " looking for related tweets for " + user_id)
+            sys.stdout.write(self.name + " looking for related tweets for " + user_id + "\n")
             count = 0
             for tweet in tweepy.Cursor(self.api.user_timeline, id=user_id).items():
-                #print(tweet.text+ " " + tweet.lang)
+                #sys.stdout.write(tweet.text+ " " + tweet.lang)
                 create_date = tweet.created_at
                 age_days = (datetime.utcnow() - create_date).days
                 if age_days > 100 :
@@ -105,14 +106,14 @@ class MyThread(threading.Thread):
                         db.save(tweet._json)
                         count += 1
                         break
-            print(self.name + " saved [" + str(count) + "] tweets from [" + user_id + "]")
+            sys.stdout.write(self.name + " saved [" + str(count) + "] tweets from [" + user_id + "]\n")
         except http.client.IncompleteRead:
-            print('===ERROR=== IncompleteRead in find_related_tweets')
+            sys.stdout.write('===ERROR=== IncompleteRead in find_related_tweets\n')
             exit()
     def run(self):
-        print(self.name + " started threading")
+        sys.stdout.write(self.name + " started threading\n")
         while(True):
             next_user = self.tm.next_user()
             if next_user != None:
                 self.find_related_tweets(next_user)
-        print(self.name + " exited threading")
+        sys.stdout.write(self.name + " exited threading\n")
