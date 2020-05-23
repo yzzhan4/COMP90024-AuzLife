@@ -38,6 +38,10 @@ angular.module("mapservice", [])
                 'featureType': 'water',
                 'elementType': 'geometry',
                 'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
+            },{//Add by Haoyue at 2020-05-23: change the geojson file
+                'featureType': 'administrative ',
+                'elementType': 'geometry',
+                'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
             }];
             // Create a new map and place in the index.html page
             map = new google.maps.Map(document.getElementById('map'), {
@@ -52,17 +56,13 @@ angular.module("mapservice", [])
             clearCensusData();
             var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
             //var polygon_list = [["count","SA4_CODE"], [0, "212"],[0, "215"],[1, "506"],[0, "405"],[0, "201"],[0, "109"],[0, "111"],[0, "311"],[0, "317"],[0, "404"],[0, "303"],[0, "213"],[0, "115"],[0, "318"],[0, "108"],[1, "116"],[0, "301"],[0, "319"],[24, "208"],[0, "501"],[0, "701"],[0, "509"],[0, "314"],[0, "401"],[0, "125"],[0, "406"],[0, "210"],[0, "901"],[0, "304"],[0, "601"],[0, "505"],[0, "602"],[0, "118"],[0, "603"],[1, "801"],[0, "120"],[0, "316"],[0, "110"],[0, "121"],[0, "128"],[0, "123"],[1, "103"],[3, "403"],[0, "105"],[0, "203"],[0, "112"],[0, "507"],[0, "503"],[0, "402"],[0, "504"],[3, "206"],[0, "702"],[0, "126"],[0, "101"],[0, "124"],[0, "106"],[0, "209"],[0, "307"],[1, "202"],[0, "211"],[0, "604"],[0, "313"],[0, "308"],[0, "122"],[0, "205"],[0, "102"],[0, "117"],[0, "502"],[4, "302"],[1, "204"],[0, "114"],[1, "113"],[0, "306"],[0, "305"],[0, "107"],[0, "104"],[0, "216"],[0, "315"],[0, "511"],[0, "207"],[0, "119"],[15, "127"],[0, "407"],[0, "217"],[0, "312"],[0, "309"],[0, "510"],[0, "214"],[0, "310"]];
-            var polygon_list = [["count","REGION_CODE"],      //Added by Haoyue at 2020-05-23: change the geojson file
-                                [0,"01"],[1,"02"],[2,"03"],
-                                [2,"04"],[4,"05"],[4,"06"],
-                                [4,"07"],[3,"08"],[4,"09"],
-                                [3,"10"],[5,"11"],[6,"12"],
-                                [4,"13"],[3,"14"],[6,"15"]];
-
+           //Added by Haoyue at 2020-05-23: change the geojson file
+            var polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
             var geo = $.ajax({
                 type: 'GET',
                 //url:"../assets/SA4_2016_AUST.json", //Deleted by Haoyue at 2020-05-23: change the geojson file
                 url:"../assets/City_geojson.json", //Added by Haoyue at 2020-05-23: change the geojson file
+                
                 dataType: "json",
                 success: console.log("County data successfully loaded."),
                 error: function (xhr) {
@@ -165,6 +165,7 @@ angular.module("mapservice", [])
             function mouseInToRegion(e) {
                 // set the hover state so the setStyle function can change the border
                 e.feature.setProperty('state', 'hover');
+               
 
                 var percent = (e.feature.getProperty('census_variable') - censusMin) /
                     (censusMax - censusMin) * 100;
@@ -188,6 +189,8 @@ angular.module("mapservice", [])
             function mouseOutOfRegion(e) {
                 // reset the hover state, returning the border to normal
                 e.feature.setProperty('state', 'normal'); 
+                
+                
             }
         };
 
