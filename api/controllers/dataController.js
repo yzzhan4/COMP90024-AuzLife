@@ -12,5 +12,8 @@ module.exports = {
     // test sending coordinate for initializing map
     getTestLoc: function(req, res) {
         res.send({lat:-32,lng:100});
-    }
+    },
+    getBarChart: function(req, res) {
+        res.send({SA4code:101});
+    },
 }
