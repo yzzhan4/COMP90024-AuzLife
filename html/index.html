@@ -11,7 +11,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-resource.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
+    <script src="lib/echarts.min.js"></script>
     <script src="./scripts/mapservice.js"></script>
+    <script src="./scripts/chartservice.js"></script>
     <script src="./scripts/app.js"></script>
 </head>
 
@@ -55,9 +57,19 @@
         </div>
     </div>
 
-    <div class="row diagrams">
-        <h3>Analysis</h3>
+    <div class="charts">
+        <h3 clas="lineheading">Analysis</h3><br>
+        <div class="row">
+            <div class="col col-sm-6 chart" id="piechart"></div>
+            <div class="col col-sm-6 chart" id="barchart"></div>
+        </div>
+        <div class="row">
+            <div class="col col-sm-6 chart" id="linechart"></div>
+        </div>
+
     </div>
+
+
 
 <!------------------------------------------------ Footer ---------------------------------------------------->
     <div class="footer container-fluid">

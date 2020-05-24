@@ -2,7 +2,6 @@ angular.module("chartservice", [])
     .factory("chartservice",function($http){
         var chart = {};
         chart.refresh = function(){
-
             $http({
                 method:'get',
                 url: '/api/testbarchart'
@@ -12,7 +11,7 @@ angular.module("chartservice", [])
                 //     console.log(data[i]);
                 //     pie_data += {value:data[i].key, name:data[i].value};
                 // }
-                console.log(response.data[0])
+                //console.log(response.data[0])
                 bar_initialize(response.data[1],response.data[0],response.data[0]);
 
             }, function(error) {
@@ -28,7 +27,7 @@ angular.module("chartservice", [])
                 //     console.log(data[i]);
                 //     pie_data += {value:data[i].key, name:data[i].value};
                 // }
-                console.log(response.data[0])
+                //console.log(response.data[0])
                 bar_initialize(response.data[1],response.data[0],response.data[0]);
 
             }, function(error) {

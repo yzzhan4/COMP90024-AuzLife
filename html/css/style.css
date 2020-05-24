@@ -118,8 +118,17 @@ h2 {
     content: ':'
 }
 
-.diagrams {
+.charts {
     padding: 30px;
+}
+
+.charts .chart {
+    width:600px;
+    height:400px;
+}
+
+.lineheading {
+    width:100vw;
 }
 
 .footer {
