@@ -1,5 +1,5 @@
-const nano = require('nano')('http://admin:90024@localhost:5984');
-//const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
+//const nano = require('nano')('http://admin:90024@localhost:5984');
+const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
 
 //use an existing database:
 
@@ -43,7 +43,7 @@ alice.view('DesignDoc', 'getdata', {
   });
 */
 
-//=================================== get views of Income
+//=================================== get views of Income========================================
 function Income_getData(){
   dbIncome.view('DesignDoc', 'getData', {
     'include_docs': true,
@@ -54,6 +54,7 @@ function Income_getData(){
   });
 }
 
+//------------------------function for City reduce views---------------------------
 function Income_viewsumByCity(){
   dbIncome.view('DesignDoc', 'sumByCity', {
     //'keys':['Melbourne','Brisbane'],
@@ -67,6 +68,29 @@ function Income_viewsumByCity(){
 
 function Income_viewnumOfCity(){
   dbIncome.view('DesignDoc', 'numOfCity', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+//------------------------function for State reduce views---------------------------
+function Income_viewsumByState(){
+  dbIncome.view('DesignDoc', 'sumByState', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true',
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Income_viewnumOfState(){
+  dbIncome.view('DesignDoc', 'numOfState', {
     //'keys':['Melbourne','Brisbane'],
     'group':'true'
   }).then((body) => {
@@ -530,6 +554,9 @@ const dbEdu = nano.use('aurin_edu')
 //------------------------------------------aurin_income-------------------------------
 //Income_viewnumOfCity()
 //Income_viewsumByCity()
+
+//Income_viewsumByState()
+//Income_viewnumOfState()
 //Income_getData()
 
 
@@ -572,10 +599,10 @@ const dbEdu = nano.use('aurin_edu')
 //Edu_viewsumByCity_tot_p()
 //Edu_viewsumByCity_uni_other_tert_instit()
 
-//Edu_viewnumOfStatae()
+Edu_viewnumOfStatae()
 //Edu_viewsumByState_infants_primary()
 //Edu_viewsumByState_other_type_educ_instit_tot_p()
 //Edu_viewsumByState_secondary()
 //Edu_viewsumByState_tec_furt_educ_inst()
 //Edu_viewsumByState_tot_p()
-Edu_viewsumByState_uni_other_tert_instit()
+//Edu_viewsumByState_uni_other_tert_instit()

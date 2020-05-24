@@ -1,89 +1,89 @@
-sa4_code16,median_age_persons,sa4_name16,median_tot_prsnl_inc_weekly,state,city
-101,44,Capital Region,676,NSW,Other
-102,42,Central Coast,599,NSW,Other
-103,41,Central West,596,NSW,Other
-104,46,Coffs Harbour - Grafton,520,NSW,Other
-105,41,Far West and Orana,594,NSW,Other
-106,39,Hunter Valley exc Newcastle,600,NSW,Other
-107,39,Illawarra,587,NSW,Other
-108,50,Mid North Coast,492,NSW,Other
-109,43,Murray,607,NSW,Other
-110,41,New England and North West,581,NSW,Other
-111,40,Newcastle and Lake Macquarie,624,NSW,Other
-112,46,Richmond - Tweed,547,NSW,Other
-113,38,Riverina,646,NSW,Other
-114,47,Southern Highlands and Shoalhaven,552,NSW,Other
-115,39,Sydney - Baulkham Hills and Hawkesbury,797,NSW,Sydney
-116,33,Sydney - Blacktown,670,NSW,Sydney
-117,33,Sydney - City and Inner South,915,NSW,Sydney
-118,35,Sydney - Eastern Suburbs,1011,NSW,Sydney
-119,35,Sydney - Inner South West,565,NSW,Sydney
-120,36,Sydney - Inner West,820,NSW,Sydney
-121,38,Sydney - North Sydney and Hornsby,1022,NSW,Sydney
-122,40,Sydney - Northern Beaches,910,NSW,Sydney
-123,34,Sydney - Outer South West,684,NSW,Sydney
-124,36,Sydney - Outer West and Blue Mountains,713,NSW,Sydney
-125,33,Sydney - Parramatta,586,NSW,Sydney
-126,37,Sydney - Ryde,758,NSW,Sydney
-127,35,Sydney - South West,500,NSW,Sydney
-128,40,Sydney - Sutherland,831,NSW,Sydney
-201,41,Ballarat,558,VIC,Other
-202,41,Bendigo,591,VIC,Other
-203,40,Geelong,615,VIC,Other
-204,43,Hume,618,VIC,Other
-205,44,Latrobe - Gippsland,543,VIC,Other
-206,33,Melbourne - Inner,882,VIC,Melbourne
-207,39,Melbourne - Inner East,701,VIC,Melbourne
-208,39,Melbourne - Inner South,796,VIC,Melbourne
-209,36,Melbourne - North East,642,VIC,Melbourne
-210,35,Melbourne - North West,578,VIC,Melbourne
-211,39,Melbourne - Outer East,673,VIC,Melbourne
-212,35,Melbourne - South East,585,VIC,Melbourne
-213,34,Melbourne - West,624,VIC,Melbourne
-214,42,Mornington Peninsula,643,VIC,Other
-215,43,North West,553,VIC,Other
-216,42,Shepparton,568,VIC,Other
-217,43,Warrnambool and South West,586,VIC,Other
-301,40,Brisbane - East,712,QLD,Brisbane
-302,37,Brisbane - North,764,QLD,Brisbane
-303,34,Brisbane - South,694,QLD,Brisbane
-304,36,Brisbane - West,766,QLD,Brisbane
-305,33,Brisbane Inner City,924,QLD,Brisbane
-306,41,Cairns,642,QLD,Other
-307,41,Darling Downs - Maranoa,598,QLD,Other
-308,37,Central Queensland,659,QLD,Other
-309,39,Gold Coast,661,QLD,Gold Coast
-310,34,Ipswich,623,QLD,Other
-311,34,Logan - Beaudesert,626,QLD,Other
-312,38,Mackay - Isaac - Whitsunday,724,QLD,Other
-313,41,Moreton Bay - North,568,QLD,Other
-314,35,Moreton Bay - South,750,QLD,Other
-315,37,Queensland - Outback,662,QLD,Other
-316,44,Sunshine Coast,608,QLD,Other
-317,37,Toowoomba,643,QLD,Other
-318,36,Townsville,654,QLD,Other
-319,47,Wide Bay,478,QLD,Other
-401,40,Adelaide - Central and Hills,698,SA,Adelaide
-402,36,Adelaide - North,560,SA,Adelaide
-403,40,Adelaide - South,631,SA,Adelaide
-404,40,Adelaide - West,592,SA,Adelaide
-405,46,Barossa - Yorke - Mid North,536,SA,Other
-406,41,South Australia - Outback,624,SA,Other
-407,45,South Australia - South East,545,SA,Other
-501,40,Bunbury,629,WA,Other
-502,43,Mandurah,539,WA,Other
-503,36,Perth - Inner,941,WA,Perth
-504,36,Perth - North East,703,WA,Perth
-505,36,Perth - North West,734,WA,Perth
-506,34,Perth - South East,681,WA,Perth
-507,36,Perth - South West,716,WA,Perth
-509,44,Western Australia - Wheat Belt,630,WA,Other
-510,37,Western Australia - Outback (North),1396,WA,Other
-511,39,Western Australia - Outback (South),754,WA,Other
-601,40,Hobart,638,TAS,Other
-602,42,Launceston and North East,538,TAS,Other
-603,47,South East,502,TAS,Other
-604,43,West and North West,527,TAS,Other
-701,35,Darwin,1041,NT,Other
-702,33,Northern Territory - Outback,576,NT,Other
-801,35,Australian Capital Territory,997,ACT,Canberra
+sa4_code16,median_age_persons,sa4_name16,median_tot_prsnl_inc_weekly,state,city,region_code
+101,44,Capital Region,676,NSW,New South Wales Other Regions,09
+102,42,Central Coast,599,NSW,New South Wales Other Regions,09
+103,41,Central West,596,NSW,New South Wales Other Regions,09
+104,46,Coffs Harbour - Grafton,520,NSW,New South Wales Other Regions,09
+105,41,Far West and Orana,594,NSW,New South Wales Other Regions,09
+106,39,Hunter Valley exc Newcastle,600,NSW,New South Wales Other Regions,09
+107,39,Illawarra,587,NSW,New South Wales Other Regions,09
+108,50,Mid North Coast,492,NSW,New South Wales Other Regions,09
+109,43,Murray,607,NSW,New South Wales Other Regions,09
+110,41,New England and North West,581,NSW,New South Wales Other Regions,09
+111,40,Newcastle and Lake Macquarie,624,NSW,New South Wales Other Regions,09
+112,46,Richmond - Tweed,547,NSW,New South Wales Other Regions,09
+113,38,Riverina,646,NSW,New South Wales Other Regions,09
+114,47,Southern Highlands and Shoalhaven,552,NSW,New South Wales Other Regions,09
+115,39,Sydney - Baulkham Hills and Hawkesbury,797,NSW,Sydney,02
+116,33,Sydney - Blacktown,670,NSW,Sydney,02
+117,33,Sydney - City and Inner South,915,NSW,Sydney,02
+118,35,Sydney - Eastern Suburbs,1011,NSW,Sydney,02
+119,35,Sydney - Inner South West,565,NSW,Sydney,02
+120,36,Sydney - Inner West,820,NSW,Sydney,02
+121,38,Sydney - North Sydney and Hornsby,1022,NSW,Sydney,02
+122,40,Sydney - Northern Beaches,910,NSW,Sydney,02
+123,34,Sydney - Outer South West,684,NSW,Sydney,02
+124,36,Sydney - Outer West and Blue Mountains,713,NSW,Sydney,02
+125,33,Sydney - Parramatta,586,NSW,Sydney,02
+126,37,Sydney - Ryde,758,NSW,Sydney,02
+127,35,Sydney - South West,500,NSW,Sydney,02
+128,40,Sydney - Sutherland,831,NSW,Sydney,02
+201,41,Ballarat,558,VIC,Victoria Other Regions,10
+202,41,Bendigo,591,VIC,Victoria Other Regions,10
+203,40,Geelong,615,VIC,Victoria Other Regions,10
+204,43,Hume,618,VIC,Victoria Other Regions,10
+205,44,Latrobe - Gippsland,543,VIC,Victoria Other Regions,10
+206,33,Melbourne - Inner,882,VIC,Melbourne,01
+207,39,Melbourne - Inner East,701,VIC,Melbourne,01
+208,39,Melbourne - Inner South,796,VIC,Melbourne,01
+209,36,Melbourne - North East,642,VIC,Melbourne,01
+210,35,Melbourne - North West,578,VIC,Melbourne,01
+211,39,Melbourne - Outer East,673,VIC,Melbourne,01
+212,35,Melbourne - South East,585,VIC,Melbourne,01
+213,34,Melbourne - West,624,VIC,Melbourne,01
+214,42,Mornington Peninsula,643,VIC,Victoria Other Regions,10
+215,43,North West,553,VIC,Victoria Other Regions,10
+216,42,Shepparton,568,VIC,Victoria Other Regions,10
+217,43,Warrnambool and South West,586,VIC,Victoria Other Regions,10
+301,40,Brisbane - East,712,QLD,Brisbane,03
+302,37,Brisbane - North,764,QLD,Brisbane,03
+303,34,Brisbane - South,694,QLD,Brisbane,03
+304,36,Brisbane - West,766,QLD,Brisbane,03
+305,33,Brisbane Inner City,924,QLD,Brisbane,03
+306,41,Cairns,642,QLD,Queensland Other Regions,11
+307,41,Darling Downs - Maranoa,598,QLD,Queensland Other Regions,11
+308,37,Central Queensland,659,QLD,Queensland Other Regions,11
+309,39,Gold Coast,661,QLD,Gold Coast,04
+310,34,Ipswich,623,QLD,Queensland Other Regions,11
+311,34,Logan - Beaudesert,626,QLD,Queensland Other Regions,11
+312,38,Mackay - Isaac - Whitsunday,724,QLD,Queensland Other Regions,11
+313,41,Moreton Bay - North,568,QLD,Queensland Other Regions,11
+314,35,Moreton Bay - South,750,QLD,Queensland Other Regions,11
+315,37,Queensland - Outback,662,QLD,Queensland Other Regions,11
+316,44,Sunshine Coast,608,QLD,Queensland Other Regions,11
+317,37,Toowoomba,643,QLD,Queensland Other Regions,11
+318,36,Townsville,654,QLD,Queensland Other Regions,11
+319,47,Wide Bay,478,QLD,Queensland Other Regions,11
+401,40,Adelaide - Central and Hills,698,SA,Adelaide,05
+402,36,Adelaide - North,560,SA,Adelaide,05
+403,40,Adelaide - South,631,SA,Adelaide,05
+404,40,Adelaide - West,592,SA,Adelaide,05
+405,46,Barossa - Yorke - Mid North,536,SA,South Australia Other Regions,12
+406,41,South Australia - Outback,624,SA,South Australia Other Regions,12
+407,45,South Australia - South East,545,SA,South Australia Other Regions,12
+501,40,Bunbury,629,WA,Western Australia Other Regions,14
+502,43,Mandurah,539,WA,Western Australia Other Regions,14
+503,36,Perth - Inner,941,WA,Perth,06
+504,36,Perth - North East,703,WA,Perth,06
+505,36,Perth - North West,734,WA,Perth,06
+506,34,Perth - South East,681,WA,Perth,06
+507,36,Perth - South West,716,WA,Perth,06
+509,44,Western Australia - Wheat Belt,630,WA,Western Australia Other Regions,14
+510,37,Western Australia - Outback (North),1396,WA,Western Australia Other Regions,14
+511,39,Western Australia - Outback (South),754,WA,Western Australia Other Regions,14
+601,40,Hobart,638,TAS,Tasmania Other Regions,13
+602,42,Launceston and North East,538,TAS,Tasmania Other Regions,13
+603,47,South East,502,TAS,Tasmania Other Regions,13
+604,43,West and North West,527,TAS,Tasmania Other Regions,13
+701,35,Darwin,1041,NT,Northern Territory Other Regions,15
+702,33,Northern Territory - Outback,576,NT,Northern Territory Other Regions,15
+801,35,Australian Capital Territory,997,ACT,Canberra,07
