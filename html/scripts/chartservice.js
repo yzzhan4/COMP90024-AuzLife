@@ -32,9 +32,9 @@ angular.module("chartservice", [])
             myChart.setOption(get_pieoption(data));
         }
 
-        var bar_initialize = function(x,y){
+        var bar_initialize = function(x,y,z){
             var myChart = echarts.init(document.getElementById('barchart'));
-            myChart.setOption(get_baroption(x,y));
+            myChart.setOption(get_baroption(x,y,z));
         }
 
         var line_initialize = function(data_list){
@@ -58,24 +58,51 @@ angular.module("chartservice", [])
             return option;
         }
 
-        var get_baroption = function(x,y){
+        var get_baroption = function(x,y,z){
             var option = {
                 title: {
-                    text: 'bar chart of population'
+                    text: 'tweets number and medium income of chosen states'
                 },
                 tooltip: {},
                 legend: {
-                    data:['population']
+                    selectedMode: false,
+                    data:['medium income','tweets number']
                 },
                 xAxis: {
                     data:x
                 },
-                yAxis: {},
+                yAxis: [{
+                    type: 'value',
+                    name: 'income',
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        formatter: '{value} dollars'
+                    }
+                },
+                    {
+                        type: 'value',
+                        name: 'tweet number',
+                        axisLabel: {
+                            formatter: '{value} '
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }],
                 series: [{
-                    name: 'population',
+                    name: 'medium income',
                     type: 'bar',
                     data:y
-                }]
+
+                },
+                    {
+                        name: 'tweet number',
+                        type: 'line',
+                        data:z
+
+                    }]
             };
             return option;
         }
@@ -125,10 +152,6 @@ angular.module("chartservice", [])
         }
 
         return chart;
-
-
-
-
 
 
 
