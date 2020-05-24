@@ -5,4 +5,5 @@ module.exports = function(app, express) {
     app.get('/api/testLoc', dataController.getTestLoc);
     app.get('/api/tweets', dataController.getTweets);
 
+    app.post('/api/mapregion', dataController.getMapRegion)
 }

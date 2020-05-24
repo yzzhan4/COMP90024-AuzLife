@@ -15,7 +15,9 @@ module.exports = {
         tweetsdb.list().then((body) => {
             res.send(body["rows"])
         });
+    },
+
+    getMapRegion: function(req, res) {
+        console.log('request received:', req.body["region"]);
     }
-
-
 }
