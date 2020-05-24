@@ -16,7 +16,9 @@
     "url": "https://github.com/yzzhan4/COMP90024-AuzLife/issues"
   },
   "homepage": "https://github.com/yzzhan4/COMP90024-AuzLife#readme",
-  "dependencies": {},
+  "dependencies": {
+    "echarts": "^4.7.0"
+  },
   "devDependencies": {
     "express": "^4.17.1",
     "nano": "^8.2.2"
