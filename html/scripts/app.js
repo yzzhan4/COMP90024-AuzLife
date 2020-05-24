@@ -1,4 +1,4 @@
-angular.module("TweetMapApp", ['ngRoute', 'ngResource','mapservice'])
+angular.module("TweetMapApp", ['ngRoute', 'ngResource','mapservice','chartservice'])
     .config(function($routeProvider) {
         $routeProvider
             .when('/', {
@@ -13,10 +13,22 @@ angular.module("TweetMapApp", ['ngRoute', 'ngResource','mapservice'])
         };
     }])
 
-    .controller('AppController', ['$scope', 'dataFactory', 'mapservice', function($scope, dataFactory,mapservice) {
-        $scope.testHeader = "If you can see this text, Angular.js is working";
-        $scope.getTestText =  dataFactory.getTestText().get({});
+    .controller('AppController', ['$scope', 'dataFactory', 'mapservice','chartservice', function($scope, dataFactory,mapservice,chartservice) {
+        $scope.testHeader = "A big Map";
+        $scope.getTestLoc =  dataFactory.getTestLocData().get();
         mapservice.refresh();
+        chartservice.refresh();
+
+        // $scope.initMap = function() {
+        //     var map;
+        //     function initMap() {
+        //         map = new google.maps.Map(document.getElementById('map'), {
+        //             center: $scope.getTestLoc(),
+        //             //center: {lat: -34.397, lng: 150.644},
+        //             zoom: 8
+        //         });
+        //     }
+        // }
     }])
 
 
