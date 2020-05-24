@@ -526,6 +526,7 @@ function Edu_viewsumByState_uni_other_tert_instit(){
 //-----------------------------------------connnect databases--------------------------------
 const dbAge = nano.use('aurin_age')
 const dbIncome = nano.use('aurin_income')
+const dbEdu = nano.use('aurin_edu')
 //------------------------------------------aurin_income-------------------------------
 //Income_viewnumOfCity()
 //Income_viewsumByCity()
