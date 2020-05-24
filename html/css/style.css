@@ -60,6 +60,7 @@ h2 {
     left: 110px;
     width: 360px;
     height: 45px;
+    padding-top: 20px;
 }
 
 .radioLabel {
@@ -75,7 +76,7 @@ h2 {
 #legend {
     display: flex;
     display: -webkit-box;
-    padding-top: 7px;
+    padding-top: 30px;
 }
 
 .color-key {
@@ -117,10 +118,17 @@ h2 {
     content: ':'
 }
 
-
-
-.diagrams {
+.charts {
     padding: 30px;
+}
+
+.charts .chart {
+    width:600px;
+    height:400px;
+}
+
+.lineheading {
+    width:100vw;
 }
 
 .footer {

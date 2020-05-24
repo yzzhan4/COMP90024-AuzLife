@@ -1,3 +1,5 @@
+const MAP_INIT_LOC = {lng:133, lat:-28};
+
 angular.module("mapservice", [])
     .factory("mapservice",function($http){
         // Initializes the map
@@ -13,12 +15,22 @@ angular.module("mapservice", [])
                 var latitude = location["lat"];
                 var longitude = location["lng"];
                 // Then initialize the map.
-                initialize(latitude, longitude);
+                //initialize(latitude, longitude);
+                initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng);
             }, function(error) {
                 // TODO: Error handling
             });
         }
 
+        // Radio input that changes map
+        var radios = document.forms["mapAreaForm"].elements["mapArea"];
+        for(var i = 0, max = radios.length; i < max; i++) {
+            radios[i].onclick = function() {
+                initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng);
+            }
+        }
+
+        // Initialize map
         var initialize = function(latitude, longitude) {
             // Uses the selected lat, long as starting point
             var myLatLng = {lat: latitude, lng: longitude};
@@ -43,7 +55,7 @@ angular.module("mapservice", [])
                 'elementType': 'geometry',
                 'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
             }];
-            // Create a new map and place in the index.html page
+            var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 5,
                 center: myLatLng,
@@ -52,11 +64,11 @@ angular.module("mapservice", [])
             map.data.setStyle(styleFeature);
             map.data.addListener('mouseover', mouseInToRegion);
             map.data.addListener('mouseout', mouseOutOfRegion);
+            map.data.addListener('click', clickOnMap);
 
             clearCensusData();
-            var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
-
             var mapArea = document.mapAreaForm.mapArea[0].value;
+            // Display cities
             if (mapArea.localeCompare("city") == 0){
                 //var polygon_list = [["count","SA4_CODE"], [0, "212"],[0, "215"],[1, "506"],[0, "405"],[0, "201"],[0, "109"],[0, "111"],[0, "311"],[0, "317"],[0, "404"],[0, "303"],[0, "213"],[0, "115"],[0, "318"],[0, "108"],[1, "116"],[0, "301"],[0, "319"],[24, "208"],[0, "501"],[0, "701"],[0, "509"],[0, "314"],[0, "401"],[0, "125"],[0, "406"],[0, "210"],[0, "901"],[0, "304"],[0, "601"],[0, "505"],[0, "602"],[0, "118"],[0, "603"],[1, "801"],[0, "120"],[0, "316"],[0, "110"],[0, "121"],[0, "128"],[0, "123"],[1, "103"],[3, "403"],[0, "105"],[0, "203"],[0, "112"],[0, "507"],[0, "503"],[0, "402"],[0, "504"],[3, "206"],[0, "702"],[0, "126"],[0, "101"],[0, "124"],[0, "106"],[0, "209"],[0, "307"],[1, "202"],[0, "211"],[0, "604"],[0, "313"],[0, "308"],[0, "122"],[0, "205"],[0, "102"],[0, "117"],[0, "502"],[4, "302"],[1, "204"],[0, "114"],[1, "113"],[0, "306"],[0, "305"],[0, "107"],[0, "104"],[0, "216"],[0, "315"],[0, "511"],[0, "207"],[0, "119"],[15, "127"],[0, "407"],[0, "217"],[0, "312"],[0, "309"],[0, "510"],[0, "214"],[0, "310"]];
                 //Added by Haoyue at 2020-05-23: change the geojson file
@@ -164,6 +176,7 @@ angular.module("mapservice", [])
                 };
             }
 
+
             /**
              * Responds to the mouse-in event on a map shape (state).
              *
@@ -197,6 +210,18 @@ angular.module("mapservice", [])
                 e.feature.setProperty('state', 'normal');
                 document.getElementById('data-label').textContent = "";
                 document.getElementById('data-value').textContent = "";
+            }
+
+            function clickOnMap(e) {
+                var region = e.feature.getProperty('CITY_NAME');
+                console.log(region);
+                $http({
+                    method: 'POST',
+                    url: '/api/mapregion',
+                    data: {"region":region}
+                }).then(function (httpResponse) {
+                    console.log('response:', httpResponse);
+                })
             }
         };
 
