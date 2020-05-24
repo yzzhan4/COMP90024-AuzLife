@@ -1,0 +1,135 @@
+angular.module("chartservice", [])
+    .factory("chartservice",function($http){
+        var chart = {};
+        chart.refresh = function(){
+            var pie_data = [{value:12716,name:'0-4'},
+                            {value:14060,name:'5-9'},
+                            {value:13895,name:'10-14'},
+                            {value:13281,name:'15-19'},
+                            {value:11152,name:'20-24'},
+                            {value:11901,name:'25-29'},
+                            {value:12178,name:'30-34'},
+                            {value:12197,name:'35-39'},
+                            {value:13734,name:'40-44'},
+                            {value:15850,name:'45-49'},
+                            {value:15988,name:'50-54'},
+                            {value:17076,name:'55-59'},
+                            {value:16025,name:'60-64'},
+                            {value:15061,name:'65-69'},
+                            {value:11910,name:'70-74'},
+                            {value:8225,name:'75-79'},
+                            {value:5228,name:'80-84'},
+                            {value:5180,name:'85-plus'}];
+            var bar_data = [["a","b","c"],[1,2,3]];
+            var line_data = 1;
+            pie_initialize(pie_data);
+            bar_initialize(bar_data[0],bar_data[1]);
+            line_initialize(line_data);
+        }
+
+        var pie_initialize = function(data){
+            var myChart = echarts.init(document.getElementById('piechart'));
+            myChart.setOption(get_pieoption(data));
+        }
+
+        var bar_initialize = function(x,y){
+            var myChart = echarts.init(document.getElementById('barchart'));
+            myChart.setOption(get_baroption(x,y));
+        }
+
+        var line_initialize = function(data_list){
+            var myChart = echarts.init(document.getElementById("linechart"));
+            myChart.setOption(get_lineoption(data_list));
+        }
+
+        var get_pieoption = function(data){
+            var option = {
+                title: {
+                    text: 'pie chart of population'
+                },
+                tooltip: {},
+                series: [{
+                    name: 'population',
+                    type: 'pie',
+                    radius:'55%',
+                    data: data
+                }]
+            };
+            return option;
+        }
+
+        var get_baroption = function(x,y){
+            var option = {
+                title: {
+                    text: 'bar chart of population'
+                },
+                tooltip: {},
+                legend: {
+                    data:['population']
+                },
+                xAxis: {
+                    data:x
+                },
+                yAxis: {},
+                series: [{
+                    name: 'population',
+                    type: 'bar',
+                    data:y
+                }]
+            };
+            return option;
+        }
+
+        var get_lineoption = function(data_list){
+            var series = [];
+            var xaixes = [];
+            var option = {
+                backgroundColor: '#FBFBFB',
+                title: {
+                    text: 'line chart of population in Australia'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['Victoria', 'NSW','Queensland']
+                },
+
+                calculable: true,
+
+
+                xAxis: [{
+                    type: 'category',
+                    // boundaryGap: false,
+                    data: ["0-4","5-9","10-14","15-19","20-24","25-29","30-34","35-39","40-44","45-49","50-54","55-59","60-64","65-69","70-74","75-79","80-84","85-plus"]
+                }],
+                yAxis: [{
+
+                    type: 'value'
+                }],
+                series: [{
+                    name: 'Victoria',
+                    type: 'line',
+                    data: [800, 300, 500, 800, 300, 600, 500, 600,800, 300, 500,400,800, 300, 600, 500, 600]
+                }, {
+                    name: 'NSW',
+                    type: 'line',
+                    data: [600, 300, 400, 200, 300, 300, 200, 400,300, 400, 200, 300, 300, 200, 400,700,200]
+                },{
+                    name: 'Queensland',
+                    type: 'line',
+                    data: [900, 200,300, 500, 200, 300, 700,  300, 200, 400,300,  600, 300, 200,700,200, 400]
+                }]
+            };
+            return option;
+        }
+
+        return chart;
+
+
+
+
+
+
+
+    });
