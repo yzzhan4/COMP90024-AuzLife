@@ -1,5 +1,5 @@
-//const nano = require('nano')('http://admin:90024@localhost:5984');
-const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
+const nano = require('nano')('http://admin:90024@localhost:5984');
+//const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
 
 //use an existing database:
 
@@ -76,8 +76,8 @@ function Income_viewnumOfCity(){
   });
 }
 
-//=================================== get views of Age========================
-//------------function for city reduce views-----------------
+//============================================= get views of Age========================================
+//------------------------function for city reduce views---------------------------
 function Age_viewnumOfCity(){
   dbAge.view('DesignCity', 'numOfCity', {
     //'keys':['Melbourne','Brisbane'],
@@ -210,7 +210,7 @@ function Age_viewsumByCity_50_54(){
   });
 }
 
-//------------function for state reduce views-----------------
+//-----------------------------function for state reduce views-------------------------------
 function Age_viewnumOfState(){
   dbAge.view('DesignState', 'numOfState', {
     //'keys':['Melbourne','Brisbane'],
@@ -343,7 +343,7 @@ function Age_viewsumByState_50_54(){
     });
   });
 }
-
+//---------------------------------------get all the doc values-----------------------------------
 function Age_getData(){
   dbAge.view('DesignData', 'getdata', {
     'include_docs': true,
@@ -354,22 +354,187 @@ function Age_getData(){
   });
 }
 
+//============================================= get views of Education========================================
+//------------------------function for getting all doc values---------------------------
+function Edu_getData(){
+  dbEdu.view('DesignDoc', 'getdata', {
+    'include_docs': true,
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc);
+    });
+  });
+}
 
+//------------------------function for city reduce views---------------------------
+function Edu_viewnumOfCity(){
+  dbEdu.view('DesignDoc', 'numOfCity', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
 
+function Edu_viewsumByCity_infants_primary(){
+  dbEdu.view('DesignDoc', 'sumByCity_infants_primary', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
 
-//==========================use view functions==================
-//-------------connnect databases-------------
+function Edu_viewsumByCity_other_type_educ_instit(){
+  dbEdu.view('DesignDoc', 'sumByCity_other_type_educ_instit', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByCity_secondary(){
+  dbEdu.view('DesignDoc', 'sumByCity_secondary', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByCity_tec_furt_educ_inst(){
+  dbEdu.view('DesignDoc', 'sumByCity_tec_furt_educ_inst', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByCity_tot_p(){
+  dbEdu.view('DesignDoc', 'sumByCity_tot_p', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByCity_uni_other_tert_instit(){
+  dbEdu.view('DesignDoc', 'sumByCity_uni_other_tert_instit', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+//------------------------function for state reduce views---------------------------
+function Edu_viewnumOfStatae(){
+  dbEdu.view('DesignDoc', 'numOfState', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByState_infants_primary(){
+  dbEdu.view('DesignDoc', 'sumByState_infants_primary', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByState_other_type_educ_instit_tot_p(){
+  dbEdu.view('DesignDoc', 'sumByState_other_type_educ_instit_tot_p', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByState_secondary(){
+  dbEdu.view('DesignDoc', 'sumByState_secondary', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByState_tec_furt_educ_inst(){
+  dbEdu.view('DesignDoc', 'sumByState_tec_furt_educ_inst', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByState_tot_p(){
+  dbEdu.view('DesignDoc', 'sumByState_tot_p', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+function Edu_viewsumByState_uni_other_tert_instit(){
+  dbEdu.view('DesignDoc', 'sumByState_uni_other_tert_instit', {
+    //'keys':['Melbourne','Brisbane'],
+    'group':'true'
+  }).then((body) => {
+    body.rows.forEach((doc) => {
+      console.log(doc.key,doc.value);
+    });
+  });
+}
+
+//=================================================use view functions===========================================
+//-----------------------------------------connnect databases--------------------------------
 const dbAge = nano.use('aurin_age')
 const dbIncome = nano.use('aurin_income')
-//-------------aurin_income-----------------
+//------------------------------------------aurin_income-------------------------------
 //Income_viewnumOfCity()
 //Income_viewsumByCity()
 //Income_getData()
 
 
-//-------------aurin_age--------------------
+//---------------------------------------aurin_age------------------------------------------
 //Age_getData()
-Age_viewnumOfCity()
+//Age_viewnumOfCity()
 //Age_viewsumByCity_0_4()
 //Age_viewsumByCity_5_9()
 //Age_viewsumByCity_10_14()
@@ -394,3 +559,22 @@ Age_viewnumOfCity()
 //Age_viewsumByState_40_44()
 //Age_viewsumByState_45_49()
 //Age_viewsumByState_50_54()
+
+
+//--------------------------------------aurin_education--------------------------------
+//Edu_getData()
+//Edu_viewnumOfCity()
+//Edu_viewsumByCity_infants_primary()
+//Edu_viewsumByCity_other_type_educ_instit()
+//Edu_viewsumByCity_secondary()
+//Edu_viewsumByCity_tec_furt_educ_inst()
+//Edu_viewsumByCity_tot_p()
+//Edu_viewsumByCity_uni_other_tert_instit()
+
+//Edu_viewnumOfStatae()
+//Edu_viewsumByState_infants_primary()
+//Edu_viewsumByState_other_type_educ_instit_tot_p()
+//Edu_viewsumByState_secondary()
+//Edu_viewsumByState_tec_furt_educ_inst()
+//Edu_viewsumByState_tot_p()
+Edu_viewsumByState_uni_other_tert_instit()
