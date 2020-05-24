@@ -1,2 +1,4 @@
 ---
 nginx_dir: nginx
+node_dir: node
+root: /home/ubuntu
