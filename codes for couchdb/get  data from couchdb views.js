@@ -546,11 +546,40 @@ function Edu_viewsumByState_uni_other_tert_instit(){
   });
 }
 
+//============================================= get views of Tweets========================================
+function Tweets_countByState(){
+  dbTest.view('DesignDoc', 'countByState', {
+  'keys':[[1,'NSW'],[1,'VIC'],[1,'QLD'],[1,'SA'],[1,'WA'],[1,'TAS'],[1,'NT'],[1,'ACT']],
+  //'keys':[[0,'NSW'],[0,'VIC'],[0,'QLD'],[0,'SA'],[0,'WA'],[0,'TAS'],[0,'NT'],[0,'ACT']],
+  'group':'true',
+  //'stale':'update_after'
+  'stale':'ok'
+}).then((body) => {
+  body.rows.forEach((doc) => {
+    console.log(doc.key,doc.value);
+  });
+});
+}
+
+function Tweets_countByCity(){
+  dbTest.view('DesignDoc', 'countByCity', {
+  'keys':[[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,9],[1,10],[1,11],[1,12],[1,13],[1,14],[1,15]], //related tweets
+  //'keys':[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[0,10],[0,11],[0,12],[0,13],[0,14],[0,15]],  //not related tweets
+  'group':'true',
+  'stale':'update_after'
+}).then((body) => {
+  body.rows.forEach((doc) => {
+    console.log(doc.key,doc.value);
+  });
+});
+}
+
 //=================================================use view functions===========================================
 //-----------------------------------------connnect databases--------------------------------
 const dbAge = nano.use('aurin_age')
 const dbIncome = nano.use('aurin_income')
 const dbEdu = nano.use('aurin_edu')
+const dbTest = nano.use('streaming-tweets-aggregate')
 //------------------------------------------aurin_income-------------------------------
 //Income_viewnumOfCity()
 //Income_viewsumByCity()
@@ -562,7 +591,7 @@ const dbEdu = nano.use('aurin_edu')
 
 //---------------------------------------aurin_age------------------------------------------
 //Age_getData()
-//Age_viewnumOfCity()
+Age_viewnumOfCity()
 //Age_viewsumByCity_0_4()
 //Age_viewsumByCity_5_9()
 //Age_viewsumByCity_10_14()
@@ -599,10 +628,14 @@ const dbEdu = nano.use('aurin_edu')
 //Edu_viewsumByCity_tot_p()
 //Edu_viewsumByCity_uni_other_tert_instit()
 
-Edu_viewnumOfStatae()
+//Edu_viewnumOfStatae()
 //Edu_viewsumByState_infants_primary()
 //Edu_viewsumByState_other_type_educ_instit_tot_p()
 //Edu_viewsumByState_secondary()
 //Edu_viewsumByState_tec_furt_educ_inst()
 //Edu_viewsumByState_tot_p()
 //Edu_viewsumByState_uni_other_tert_instit()
+
+//--------------------------------------streaming-tweets-aggregate--------------------------------
+//Tweets_countByState()
+//Tweets_countByCity()
