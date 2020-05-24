@@ -8,8 +8,8 @@ angular.module("TweetMapApp", ['ngRoute', 'ngResource','mapservice','chartservic
     })
 
     .service('dataFactory', ['$resource', function($resource) {
-        this.getTestLocData = function () {
-            return $resource("api/testloc", null, {'get': {method: 'GET'}});
+        this.getTestText = function () {
+            return $resource("api/testText", null, {'get': {method: 'GET'}});
         };
     }])
 

@@ -3,33 +3,93 @@
 
 <head>
     <title>COMP90024 Assignment2</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/45144bcd49.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/style.css">
-
-
-</head>
-
-<body ng-controller="AppController">
-    <h3>{{testHeader}}</h3>
-    <h3>{{getTestLoc}}</h3>
-
-<!--    <div id="map" ng-init="initMap()"></div>-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
-<!--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0&callback=initMap" async defer></script>-->
-    <div class="col-md-7">
-        <div id="map" style="width:100%; height:800px"></div>
-    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
+    <script src="lib/echarts.min.js"></script>
     <script src="./scripts/mapservice.js"></script>
     <script src="./scripts/chartservice.js"></script>
     <script src="./scripts/app.js"></script>
-    <script src="lib/echarts.min.js"></script>
+</head>
 
-    <div id="piechart" style="width:600px; height:400px"></div>
-    <div id="barchart" style="width:600px; height:400px"></div>
-    <div id="linechart" style="width:600px; height:400px"></div>
+<body ng-controller="AppController">
+<!------------------------------------------------ Tests ---------------------------------------------------->
+<!--        <h3>{{testHeader}}</h3>-->
+<!--        <h3>{{getTestText}}</h3>-->
 
+<!------------------------------------------------ Header ---------------------------------------------------->
+    <div class="topnav">
+        <img src="./assets/covid19.png" alt="Covid-19" class="covidimg">
+        <h2>COMP90024 Assignment 2 Covid-19 Scenario Analysis</h2>
+    </div>
+
+<!------------------------------------------------ Content ---------------------------------------------------->
+    <div class="content">
+        <div class="row">
+            <div class="col col-sm-9">
+                <div id="map"></div>
+            </div>
+            <div class="col col-sm-3">
+                <h5>Area</h5>
+                <div id="data-box" class="shadowbox">
+                    <label id="data-label" for="data-value"></label>
+                    <span id="data-value"></span>
+                </div>
+                <div id="controls"> <!--<div id="controls" class="nicebox">-->
+                    <form name="mapAreaForm">
+                        <input type="radio" name="mapArea" value="city" checked>
+                        <label class="radioLabel">Show cities</label><br>
+                        <input type="radio" name="mapArea" value="state">
+                        <label class="radioLabel">Show states</label>
+                    </form>
+                </div>
+                <div id="row legend">
+                    <div id="col col-sm-1 census-min">min</div>
+                    <div class="col col-sm-10 color-key"><span id="data-caret">◆</span></div>
+                    <div id="col col-sm-1 census-max">max</div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row diagrams">
+        <h3>Analysis</h3>
+        <div id="piechart" style="width:600px; height:400px"></div>
+        <div id="barchart" style="width:600px; height:400px"></div>
+        <div id="linechart" style="width:600px; height:400px"></div>
+    </div>
+
+<!------------------------------------------------ Footer ---------------------------------------------------->
+    <div class="footer container-fluid">
+        <div class="row">
+            <div class="col col-sm-8">
+                <h5>COMP90024 Group 46</h5>
+                <p>Zimeng Jia 978322 (zimengj@student.unimelb.au)
+                    <br>Jiayu Li 713551 (jiayul3@student.unimelb.edu.au)
+                    <br>Ruqi Li 1008342 (ruqil@student.unimelb.edu.au)
+                    <br>Haoyue Xie 1003068 (haoyuex@student.unimelb.edu.au)
+                    <br>Yi Zhang 1032768 (yzzhan4@student.unimelb.edu.au)
+                </p>
+                <p>
+                    University of Melbourne, Parkville, VIC, Australia
+                </p>
+            </div>
+            <div class="col col-sm-4">
+                <a class="icon" href="https://github.com/yzzhan4/COMP90024-AuzLife"><i class="fab fa-github"></i></a>
+                <a class="icon" href="https://youtube.com/"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>-->
 
 </body>
 
