@@ -23,6 +23,7 @@ module.exports = {
 
     getMapRegion: function(req, res) {
         console.log('request received:', req.body["region"]);
+        res.send()
     },
 
     getBarChart: function(req, res) {

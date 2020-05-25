@@ -43,18 +43,35 @@ h2 {
     vertical-align: middle;
 }
 
+/* Region label */
 .shadowbox {
     text-align: center;
-    font-size: 13px;
+    height: 38px;
+    font-size: 16px;
     z-index: 5;
     box-shadow: 0 4px 6px -4px #333;
-    padding: 5px 10px;
+    padding: 5px;
     background: rgb(255, 255, 255);
     background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(245, 245, 245, 1) 100%);
     border: rgb(229, 229, 229) 1px solid;
 }
 
-/* Control (dropdown) */
+#data-value {
+    font-size: 16px;
+    font-weight: bold
+}
+
+#data-label {
+    font-size: 16px;
+    font-weight: normal;
+    /*padding-right: 10px;*/
+}
+
+/*#data-label:after {*/
+/*    content: ':'*/
+/*}*/
+
+/* Control (radio buttons) */
 #controls {
     top: 10px;
     left: 110px;
@@ -67,16 +84,18 @@ h2 {
     padding-left: 10px;
 }
 
-#census-variable {
-    width: 300px;
-    height: 24px;
-}
+/*#census-variable {*/
+/*    width: 300px;*/
+/*    height: 24px;*/
+/*}*/
 
 /* Gradient bar */
 #legend {
+    /*position: absolute;*/
+    width: 100%;
     display: flex;
     display: -webkit-box;
-    padding-top: 30px;
+    padding-top: 46px;
 }
 
 .color-key {
@@ -103,27 +122,18 @@ h2 {
     width: 12px;
 }
 
-#data-value {
-    font-size: 16px;
-    font-weight: bold
+/* Aurin data selection */
+.aurinselection {
+    padding-top: 40px;
 }
 
-#data-label {
-    font-size: 16px;
-    font-weight: normal;
-    padding-right: 10px;
-}
-
-#data-label:after {
-    content: ':'
-}
-
+/* Charts */
 .charts {
     padding: 30px;
 }
 
 .charts .chart {
-    width:600px;
+    width:100%;
     height:400px;
 }
 
@@ -131,6 +141,7 @@ h2 {
     width:100vw;
 }
 
+/*======================== Footer ========================*/
 .footer {
     background-color: #f1f1f1;
     padding-top: 50px;

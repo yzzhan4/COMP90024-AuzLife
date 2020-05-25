@@ -4,66 +4,79 @@ angular.module("chartservice", [])
         chart.refresh = function(){
             $http({
                 method:'get',
-                url: '/api/testbarchart'
-            }).then(function(response){
-                // var data = response.data;
-                // for (i=0; i<data.length; i++) {
-                //     console.log(data[i]);
-                //     pie_data += {value:data[i].key, name:data[i].value};
-                // }
-                //console.log(response.data[0])
-                bar_initialize(response.data[1],response.data[0],response.data[0]);
-
-            }, function(error) {
-
-            });
-
-            $http({
-                method:'get',
                 url: '/api/numofcity'
             }).then(function(response){
-                // var data = response.data;
-                // for (i=0; i<data.length; i++) {
-                //     console.log(data[i]);
-                //     pie_data += {value:data[i].key, name:data[i].value};
-                // }
-                //console.log(response.data[0])
                 bar_initialize(response.data[1],response.data[0],response.data[0]);
-
             }, function(error) {
 
             });
 
-            var pie_data = [{value:12716,name:'0-4'},
-                {value:14060,name:'5-9'},
-                {value:13895,name:'10-14'},
-                {value:13281,name:'15-19'},
-                {value:11152,name:'20-24'},
-                {value:11901,name:'25-29'},
-                {value:12178,name:'30-34'},
-                {value:12197,name:'35-39'},
-                {value:13734,name:'40-44'},
-                {value:15850,name:'45-49'},
-                {value:15988,name:'50-54'}];
+            var aurinSelection = document.getElementById('aurindata');
+            aurinSelection.addEventListener('change', function() {
+                if (aurinSelection.value == "Age") {
+                    var pie_data = [{value:12716,name:'0-4'},
+                        {value:14060,name:'5-9'},
+                        {value:13895,name:'10-14'},
+                        {value:13281,name:'15-19'},
+                        {value:11152,name:'20-24'},
+                        {value:11901,name:'25-29'},
+                        {value:12178,name:'30-34'},
+                        {value:12197,name:'35-39'},
+                        {value:13734,name:'40-44'},
+                        {value:15850,name:'45-49'},
+                        {value:15988,name:'50-54'}];
+                    pie_initialize(pie_data);
+                    console.log("draw piechart");
+                } else if (aurinSelection.value == "Income") {
+                    $http({
+                        method:'get',
+                        url: '/api/testbarchart'
+                    }).then(function(response){
+                        //var bar_data = [["a","b","c"],[1,2,3]];
+                        bar_initialize(response.data[1],response.data[0],response.data[0]);
+                    }, function(error) {
 
-            var bar_data = [["a","b","c"],[1,2,3]];
-            var line_data = 1;
-            pie_initialize(pie_data);
-            // bar_initialize(bar_data[0],bar_data[1],[12,13,14]);
-            line_initialize(line_data);
+                    });
+
+                    $http({
+                        method:'get',
+                        url: '/api/numofcity'
+                    }).then(function(response){
+                        bar_initialize(response.data[1],response.data[0],response.data[0]);
+                    }, function(error) {
+
+                    });
+                    console.log("draw barchart");
+                } else if (aurinSelection.value == "Education") {
+                    var line_data = 1;
+                    line_initialize(line_data);
+                    console.log("draw linechart");
+                } else {
+                    // TODO:error handling
+                }
+            });
         }
 
         var pie_initialize = function(data){
+            document.getElementById('piechart').style.display = 'block';
+            document.getElementById('barchart').style.display = 'none';
+            document.getElementById('linechart').style.display = 'none';
             var myChart = echarts.init(document.getElementById('piechart'));
             myChart.setOption(get_pieoption(data));
         }
 
         var bar_initialize = function(x,y,z){
+            document.getElementById('piechart').style.display = 'none';
+            document.getElementById('barchart').style.display = 'block';
+            document.getElementById('linechart').style.display = 'none';
             var myChart = echarts.init(document.getElementById('barchart'));
             myChart.setOption(get_baroption(x,y,z));
         }
 
         var line_initialize = function(data_list){
+            document.getElementById('piechart').style.display = 'none';
+            document.getElementById('barchart').style.display = 'none';
+            document.getElementById('linechart').style.display = 'block';
             var myChart = echarts.init(document.getElementById("linechart"));
             myChart.setOption(get_lineoption(data_list));
         }
@@ -178,7 +191,5 @@ angular.module("chartservice", [])
         }
 
         return chart;
-
-
 
     });
