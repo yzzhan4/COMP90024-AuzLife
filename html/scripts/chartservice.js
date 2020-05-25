@@ -3,56 +3,74 @@ angular.module("chartservice", [])
         var chart = {};
 
         chart.refresh = function(){
-            $http({
-                method:'get',
-                url: '/api/testbarchart'
-            }).then(function(response){
-                bar_initialize(response.data[1],response.data[0],response.data[2]);
+            var aurinSelection = document.getElementById('aurindata');
+            aurinSelection.addEventListener('change', function() {
+                if (aurinSelection.value == "Age") {
+                    $http({
+                        method:'get',
+                        url: '/api/ageState'
+                    }).then(function(response){
+
+                        var pie_data = [{value:response.data.value[0],name:'0-4'},
+                            {value:response.data.value[1],name:'5-9'},
+                            {value:response.data.value[2],name:'10-14'},
+                            {value:response.data.value[3],name:'15-19'},
+                            {value:response.data.value[4],name:'20-24'},
+                            {value:response.data.value[5],name:'25-29'},
+                            {value:response.data.value[6],name:'30-34'},
+                            {value:response.data.value[7],name:'35-39'},
+                            {value:response.data.value[8],name:'40-44'},
+                            {value:response.data.value[9],name:'45-49'},
+                            {value:response.data.value[10],name:'50-54'}];
+
+                        pie_initialize(pie_data, response.data.key);
+                        console.log("draw piechart");
+
+                    }); //TODO error handling, pass state, rename, city
+                    
+                } else if (aurinSelection.value == "Income") {
+                    $http({
+                        method:'get',
+                        url: '/api/testbarchart'
+                    }).then(function(response){
+                        bar_initialize(response.data[1],response.data[0],response.data[2]);
+                    });
+                    console.log("draw barchart");
+                } else if (aurinSelection.value == "Education") {
+                    $http({
+                        method:'get',
+                        url: '/api/eduState'
+                    }).then(function(response){
+                        line_initialize(response.data);
+                    });
+
+                    console.log("draw linechart");
+                } else {
+                    // TODO:error handling
+                }
             });
+        }
 
-
-
-            $http({
-                method:'get',
-                url: '/api/ageState'
-            }).then(function(response){
-
-                var pie_data = [{value:response.data.value[0],name:'0-4'},
-                    {value:response.data.value[1],name:'5-9'},
-                    {value:response.data.value[2],name:'10-14'},
-                    {value:response.data.value[3],name:'15-19'},
-                    {value:response.data.value[4],name:'20-24'},
-                    {value:response.data.value[5],name:'25-29'},
-                    {value:response.data.value[6],name:'30-34'},
-                    {value:response.data.value[7],name:'35-39'},
-                    {value:response.data.value[8],name:'40-44'},
-                    {value:response.data.value[9],name:'45-49'},
-                    {value:response.data.value[10],name:'50-54'}];
-
-                pie_initialize(pie_data, response.data.key);
-
-            }); //TODO error handling, pass state, rename, city
-
-            $http({
-                method:'get',
-                url: '/api/eduState'
-            }).then(function(response){
-                line_initialize(response.data);
-            });
-
-        };
-
-        var pie_initialize = function(data, region){
+        var pie_initialize = function(data){
+            document.getElementById('piechart').style.display = 'block';
+            document.getElementById('barchart').style.display = 'none';
+            document.getElementById('linechart').style.display = 'none';
             var myChart = echarts.init(document.getElementById('piechart'));
             myChart.setOption(get_pieoption(data, region));
         };
 
         var bar_initialize = function(x,y,z){
+            document.getElementById('piechart').style.display = 'none';
+            document.getElementById('barchart').style.display = 'block';
+            document.getElementById('linechart').style.display = 'none';
             var myChart = echarts.init(document.getElementById('barchart'));
             myChart.setOption(get_baroption(x,y,z));
         };
 
         var line_initialize = function(data_list){
+            document.getElementById('piechart').style.display = 'none';
+            document.getElementById('barchart').style.display = 'none';
+            document.getElementById('linechart').style.display = 'block';
             var myChart = echarts.init(document.getElementById("linechart"));
             myChart.setOption(get_lineoption(data_list));
         }
@@ -155,7 +173,5 @@ angular.module("chartservice", [])
         }
 
         return chart;
-
-
 
     });

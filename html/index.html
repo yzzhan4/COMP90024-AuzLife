@@ -10,11 +10,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-resource.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
+
     <script src="lib/echarts.min.js"></script>
     <script src="./scripts/mapservice.js"></script>
     <script src="./scripts/chartservice.js"></script>
     <script src="./scripts/app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
 </head>
 
 <body ng-controller="AppController">
@@ -31,10 +32,10 @@
 <!------------------------------------------------ Content ---------------------------------------------------->
     <div class="content">
         <div class="row">
-            <div class="col col-sm-9">
+            <div class="col col-sm-8">
                 <div id="map"></div>
             </div>
-            <div class="col col-sm-3">
+            <div class="col col-sm-4">
                 <h5>Area</h5>
                 <div id="data-box" class="shadowbox">
                     <label id="data-label" for="data-value"></label>
@@ -48,26 +49,39 @@
                         <label class="radioLabel">Show states</label>
                     </form>
                 </div>
-                <div id="row legend">
-                    <div id="col col-sm-1 census-min">min</div>
-                    <div class="col col-sm-10 color-key"><span id="data-caret">◆</span></div>
-                    <div id="col col-sm-1 census-max">max</div>
+                <div class="row" id="legend">
+                    <div id="census-min" class="col col-sm-2">min</div>
+                    <div class="col col-sm-8 color-key"><span id="data-caret">◆</span></div>
+                    <div id="census-max" class="col col-sm-2">max</div>
+                </div>
+                <div class="aurinselection">
+                    <label for="aurindata">Choose dataset:</label>
+                    <select name="aurindata" id="aurindata">
+                        <option value="Income" selected>Income</option>
+                        <option value="Age">Age</option>
+                        <option value="Education">Education</option>
+                    </select>
+                </div>
+
+                <div class="charts">
+                    <div class="chart" id="barchart"></div>
+                    <div class="chart" id="piechart"></div>
+                    <div class="chart" id="linechart"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="charts">
-        <h3 clas="lineheading">Analysis</h3><br>
-        <div class="row">
-            <div class="col col-sm-6 chart" id="piechart"></div>
-            <div class="col col-sm-6 chart" id="barchart"></div>
-        </div>
-        <div class="row">
-            <div class="col col-sm-6 chart" id="linechart"></div>
-        </div>
-
-    </div>
+<!--    <div class="charts">-->
+<!--        <h3 clas="lineheading">Analysis</h3><br>-->
+<!--        <div class="row">-->
+<!--            <div class="col col-sm-6 chart" id="piechart"></div>-->
+<!--            <div class="col col-sm-6 chart" id="barchart"></div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col col-sm-6 chart" id="linechart"></div>-->
+<!--        </div>-->
+<!--    </div>-->
 
 
 
