@@ -1,61 +1,50 @@
 angular.module("chartservice", [])
     .factory("chartservice",function($http){
         var chart = {};
+
         chart.refresh = function(){
-            $http({
-                method:'get',
-                url: '/api/testbarchart'
-            }).then(function(response){
-                // var data = response.data;
-                // for (i=0; i<data.length; i++) {
-                //     console.log(data[i]);
-                //     pie_data += {value:data[i].key, name:data[i].value};
-                // }
-                //console.log(response.data[0])
-                bar_initialize(response.data[1],response.data[0],response.data[0]);
+            // $http({
+            //     method:'get',
+            //     url: '/api/testbarchart'
+            // }).then(function(response){
+            //     bar_initialize(response.data[1],response.data[0],response.data[0]);
+            // });
 
-            }, function(error) {
 
-            });
 
             $http({
                 method:'get',
-                url: '/api/numofcity'
+                url: '/api/ageState'
             }).then(function(response){
-                // var data = response.data;
-                // for (i=0; i<data.length; i++) {
-                //     console.log(data[i]);
-                //     pie_data += {value:data[i].key, name:data[i].value};
-                // }
-                //console.log(response.data[0])
-                bar_initialize(response.data[1],response.data[0],response.data[0]);
 
-            }, function(error) {
+                var pie_data = [{value:response.data.value[0],name:'0-4'},
+                    {value:response.data.value[1],name:'5-9'},
+                    {value:response.data.value[2],name:'10-14'},
+                    {value:response.data.value[3],name:'15-19'},
+                    {value:response.data.value[4],name:'20-24'},
+                    {value:response.data.value[5],name:'25-29'},
+                    {value:response.data.value[6],name:'30-34'},
+                    {value:response.data.value[7],name:'35-39'},
+                    {value:response.data.value[8],name:'40-44'},
+                    {value:response.data.value[9],name:'45-49'},
+                    {value:response.data.value[10],name:'50-54'}];
+
+                pie_initialize(pie_data, response.data.key);
 
             });
 
-            var pie_data = [{value:12716,name:'0-4'},
-                {value:14060,name:'5-9'},
-                {value:13895,name:'10-14'},
-                {value:13281,name:'15-19'},
-                {value:11152,name:'20-24'},
-                {value:11901,name:'25-29'},
-                {value:12178,name:'30-34'},
-                {value:12197,name:'35-39'},
-                {value:13734,name:'40-44'},
-                {value:15850,name:'45-49'},
-                {value:15988,name:'50-54'}];
 
+            console.log("outter",pie_data);
             var bar_data = [["a","b","c"],[1,2,3]];
             var line_data = 1;
-            pie_initialize(pie_data);
-            // bar_initialize(bar_data[0],bar_data[1],[12,13,14]);
+
+            bar_initialize(bar_data[0],bar_data[1],[12,13,14]);
             line_initialize(line_data);
         }
 
-        var pie_initialize = function(data){
+        var pie_initialize = function(data, region){
             var myChart = echarts.init(document.getElementById('piechart'));
-            myChart.setOption(get_pieoption(data));
+            myChart.setOption(get_pieoption(data, region));
         }
 
         var bar_initialize = function(x,y,z){
@@ -68,10 +57,10 @@ angular.module("chartservice", [])
             myChart.setOption(get_lineoption(data_list));
         }
 
-        var get_pieoption = function(data){
+        var get_pieoption = function(data, region){
             var option = {
                 title: {
-                    text: 'pie chart of population'
+                    text: 'Population of age group in ' + region
                 },
                 tooltip: {},
                 series: [{

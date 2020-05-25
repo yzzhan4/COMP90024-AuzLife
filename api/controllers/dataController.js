@@ -3,14 +3,17 @@ var couchdbConnection = require("./couchdbConnection.js");
 // const nano = require('nano')('http://admin:90024@172.26.131.147:5984')
 // const tweetsdb = nano.use('streaming-userids');
 const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
-const dbIncome = nano.use('aurin_income')
-const dbAge = nano.use('aurin_age')
+const dbAge = nano.use('aurin_age');
+const dbIncome = nano.use('aurin_income');
+const dbEdu = nano.use('aurin_edu');
+const dbTest = nano.use('gatheing-tweets');
 
 module.exports = {
     // test sending data from backend
     getTestText: function(req, res) {
         res.send({teststr:"Hello from backend"});
     },
+
     getTestLoc: function(req, res) {
         res.send({lng:133, lat:-28});
     },
@@ -43,13 +46,15 @@ module.exports = {
         })
     },
 
-    Age_viewnumOfCity: function (req, res){
-        dbAge.view('DesignCity', 'numOfCity', {
-            //'keys':['Melbourne','Brisbane'],
+    getAgeState: function (req, res){
+        var states = ["VIC"];
+
+        dbAge.view('DesignState', 'sumByState_All', {
+            'keys': states,
             'group':'true'
         }).then((body) => {
-            res.send(body)
-        })
+            res.send(body.rows[0])
+        });
         // TODO: error handling
         // });
     }
