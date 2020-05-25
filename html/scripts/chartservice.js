@@ -3,12 +3,12 @@ angular.module("chartservice", [])
         var chart = {};
 
         chart.refresh = function(){
-            // $http({
-            //     method:'get',
-            //     url: '/api/testbarchart'
-            // }).then(function(response){
-            //     bar_initialize(response.data[1],response.data[0],response.data[0]);
-            // });
+            $http({
+                method:'get',
+                url: '/api/testbarchart'
+            }).then(function(response){
+                bar_initialize(response.data[1],response.data[0],response.data[2]);
+            });
 
 
 
@@ -31,14 +31,14 @@ angular.module("chartservice", [])
 
                 pie_initialize(pie_data, response.data.key);
 
-            });
+            }); //TODO error handling, pass state, rename, city
 
 
             console.log("outter",pie_data);
             var bar_data = [["a","b","c"],[1,2,3]];
             var line_data = 1;
 
-            bar_initialize(bar_data[0],bar_data[1],[12,13,14]);
+
             line_initialize(line_data);
         }
 
@@ -112,12 +112,12 @@ angular.module("chartservice", [])
                     data:y
 
                 },
-                    {
-                        name: 'tweet number',
-                        type: 'line',
-                        data:z
+                {
+                    name: 'tweet number',
+                    type: 'line',
+                    data:z
 
-                    }]
+                }]
             };
             return option;
         }

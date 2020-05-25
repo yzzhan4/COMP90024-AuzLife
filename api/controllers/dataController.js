@@ -6,7 +6,8 @@ const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
 const dbAge = nano.use('aurin_age');
 const dbIncome = nano.use('aurin_income');
 const dbEdu = nano.use('aurin_edu');
-const dbTest = nano.use('gatheing-tweets');
+const dbTest = nano.use('gathering-tweets');
+
 
 module.exports = {
     // test sending data from backend
@@ -29,21 +30,39 @@ module.exports = {
     },
 
     getBarChart: function(req, res) {
-        dbIncome.view('DesignDoc', 'sumByCity', {
+        var num = [];
+        var name = [];
+
+        dbIncome.view('DesignDoc', 'sumByState', {
             //'keys':['Melbourne','Brisbane'],
             'group':'true',
         }).then((body) => {
-            var num = [];
-            var name = [];
             body.rows.forEach((doc) => {
                 name.push(doc.key);
                 num.push(doc.value);
             });
-            // return JSON.stringify(body.rows);
-            res.send([num, name]);
-            // }).then((bodyjson) => {
-            //     res.send(typeof (JSON.parse(bodyjson)));
+            // res.send([tweets, body.rows]);
         })
+        dbTest.view('DesignDoc', 'countByState', {
+            'keys':[[1,'NSW'],[1,'VIC'],[1,'QLD'],[1,'SA'],[1,'WA'],[1,'TAS'],[1,'NT'],[1,'ACT']],
+            'group':'true',
+            //'stale':'update_after'
+            'stale':'ok'
+        }).then((body) => {
+
+            var tweets = {};
+            var count = [];
+            body.rows.forEach((doc) => {
+                tweets[doc.key[1]] = doc.value
+            });
+
+            name.forEach((region) => {
+               count.push(tweets[region])
+            });
+
+            res.send([num, name, count]);
+        });
+
     },
 
     getAgeState: function (req, res){
