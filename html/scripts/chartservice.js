@@ -33,24 +33,24 @@ angular.module("chartservice", [])
 
             }); //TODO error handling, pass state, rename, city
 
+            $http({
+                method:'get',
+                url: '/api/eduState'
+            }).then(function(response){
+                line_initialize(response.data);
+            });
 
-            console.log("outter",pie_data);
-            var bar_data = [["a","b","c"],[1,2,3]];
-            var line_data = 1;
-
-
-            line_initialize(line_data);
-        }
+        };
 
         var pie_initialize = function(data, region){
             var myChart = echarts.init(document.getElementById('piechart'));
             myChart.setOption(get_pieoption(data, region));
-        }
+        };
 
         var bar_initialize = function(x,y,z){
             var myChart = echarts.init(document.getElementById('barchart'));
             myChart.setOption(get_baroption(x,y,z));
-        }
+        };
 
         var line_initialize = function(data_list){
             var myChart = echarts.init(document.getElementById("linechart"));
@@ -71,7 +71,7 @@ angular.module("chartservice", [])
                 }]
             };
             return option;
-        }
+        };
 
         var get_baroption = function(x,y,z){
             var option = {
@@ -120,7 +120,7 @@ angular.module("chartservice", [])
                 }]
             };
             return option;
-        }
+        };
 
         var get_lineoption = function(data_list){
             var series = [];
@@ -143,25 +143,13 @@ angular.module("chartservice", [])
                 xAxis: [{
                     type: 'category',
                     // boundaryGap: false,
-                    data: ["0-4","5-9","10-14","15-19","20-24","25-29","30-34","35-39","40-44","45-49","50-54","55-59","60-64","65-69","70-74","75-79","80-84","85-plus"]
+                    data: ["secondary", "uni_other", "furt_educ", "primary", "other"]
                 }],
                 yAxis: [{
 
                     type: 'value'
                 }],
-                series: [{
-                    name: 'Victoria',
-                    type: 'line',
-                    data: [800, 300, 500, 800, 300, 600, 500, 600,800, 300, 500,400,800, 300, 600, 500, 600]
-                }, {
-                    name: 'NSW',
-                    type: 'line',
-                    data: [600, 300, 400, 200, 300, 300, 200, 400,300, 400, 200, 300, 300, 200, 400,700,200]
-                },{
-                    name: 'Queensland',
-                    type: 'line',
-                    data: [900, 200,300, 500, 200, 300, 700,  300, 200, 400,300,  600, 300, 200,700,200, 400]
-                }]
+                series: data_list
             };
             return option;
         }

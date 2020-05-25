@@ -29,7 +29,7 @@ module.exports = {
         console.log('request received:', req.body["region"]);
     },
 
-    getBarChart: function(req, res) {
+    getIncomeAllState: function(req, res) {
         var num = [];
         var name = [];
 
@@ -65,7 +65,7 @@ module.exports = {
 
     },
 
-    getAgeState: function (req, res){
+    getAgeOneState: function (req, res){
         var states = ["VIC"];
 
         dbAge.view('DesignState', 'sumByState_All', {
@@ -73,6 +73,22 @@ module.exports = {
             'group':'true'
         }).then((body) => {
             res.send(body.rows[0])
+        });
+        // TODO: error handling
+        // });
+    },
+
+    getEduAllState: function (req, res){
+        dbEdu.view('DesignDoc', 'sumByState_All', {
+            //'keys':['VIC'],
+            'group':'true'
+        }).then((body) => {
+            var datalist = [];
+            body.rows.forEach((doc) => {
+                var region = {name: doc.key, type: 'line', data: doc.value.slice(0, 5)}
+                datalist.push(region)
+            });
+            res.send(datalist)
         });
         // TODO: error handling
         // });
