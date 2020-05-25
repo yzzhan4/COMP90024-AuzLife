@@ -2,36 +2,55 @@ angular.module("chartservice", [])
     .factory("chartservice",function($http){
         var chart = {};
         chart.refresh = function(){
-            var pie_data = [];
+
             $http({
                 method:'get',
-                url: '/api/numofcity'
+                url: '/api/testbarchart'
             }).then(function(response){
-                var data = response.data;
-                for (i=0; i<data.length; i++) {
-                    console.log(data[i]);
-                    pie_data += {value:data[i].key, name:data[i].value};
-                }
-                //console.log(pie_data);
-                pie_data = [{value:12716,name:'0-4'},
-                    {value:14060,name:'5-9'},
-                    {value:13895,name:'10-14'},
-                    {value:13281,name:'15-19'},
-                    {value:11152,name:'20-24'},
-                    {value:11901,name:'25-29'},
-                    {value:12178,name:'30-34'},
-                    {value:12197,name:'35-39'},
-                    {value:13734,name:'40-44'},
-                    {value:15850,name:'45-49'},
-                    {value:15988,name:'50-54'}];
+                // var data = response.data;
+                // for (i=0; i<data.length; i++) {
+                //     console.log(data[i]);
+                //     pie_data += {value:data[i].key, name:data[i].value};
+                // }
+                console.log(response.data[0])
+                bar_initialize(response.data[1],response.data[0],response.data[0]);
+
             }, function(error) {
 
             });
 
+            $http({
+                method:'get',
+                url: '/api/numofcity'
+            }).then(function(response){
+                // var data = response.data;
+                // for (i=0; i<data.length; i++) {
+                //     console.log(data[i]);
+                //     pie_data += {value:data[i].key, name:data[i].value};
+                // }
+                console.log(response.data[0])
+                bar_initialize(response.data[1],response.data[0],response.data[0]);
+
+            }, function(error) {
+
+            });
+
+            var pie_data = [{value:12716,name:'0-4'},
+                {value:14060,name:'5-9'},
+                {value:13895,name:'10-14'},
+                {value:13281,name:'15-19'},
+                {value:11152,name:'20-24'},
+                {value:11901,name:'25-29'},
+                {value:12178,name:'30-34'},
+                {value:12197,name:'35-39'},
+                {value:13734,name:'40-44'},
+                {value:15850,name:'45-49'},
+                {value:15988,name:'50-54'}];
+
             var bar_data = [["a","b","c"],[1,2,3]];
             var line_data = 1;
             pie_initialize(pie_data);
-            bar_initialize(bar_data[0],bar_data[1]);
+            // bar_initialize(bar_data[0],bar_data[1],[12,13,14]);
             line_initialize(line_data);
         }
 
