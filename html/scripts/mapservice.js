@@ -1,38 +1,28 @@
 const MAP_INIT_LOC = {lng:133, lat:-28};
+const CITY = 0;
+const STATE = 1;
 
 angular.module("mapservice", [])
     .factory("mapservice",function($http){
         // Initializes the map
         var googleMapService = {};
         googleMapService.refresh = function(){
-            return $http({
-                method:'get',
-                url: '/api/testloc'
-            }).then(function(response){
-                // Convert the results into Google Map Format
-                var location = response.data;
-                //console.log(location);
-                var latitude = location["lat"];
-                var longitude = location["lng"];
-                // Then initialize the map.
-                //initialize(latitude, longitude);
-                initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng);
-            }, function(error) {
-                // TODO: Error handling
-            });
+            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, CITY);
         }
 
-        // Radio input that changes map
-        var radios = document.forms["mapAreaForm"].elements["mapArea"];
-        for(var i = 0, max = radios.length; i < max; i++) {
-            radios[i].onclick = function() {
-                console.log("radio button checked");
-                initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng);
-            }
+        // Radio input that changes map (show as cities or states)
+        var radios = document.forms["mapRegionForm"].elements["mapRegion"];
+        radios[0].onclick = function () {
+            console.log("initialize map by cites");
+            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, CITY);
+        }
+        radios[1].onclick = function () {
+            console.log("initialize map by states");
+            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, STATE);
         }
 
         // Initialize map
-        var initialize = function(latitude, longitude) {
+        var initialize = function(latitude, longitude, level) {
             // Uses the selected lat, long as starting point
             var myLatLng = {lat: latitude, lng: longitude};
             var mapStyle = [{
@@ -58,44 +48,41 @@ angular.module("mapservice", [])
             }];
             var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
+                zoom: 4.5,
                 center: myLatLng,
                 styles: mapStyle
             });
             map.data.setStyle(styleFeature);
-            map.data.addListener('mouseover', mouseInToRegion);
-            map.data.addListener('mouseout', mouseOutOfRegion);
             map.data.addListener('click', clickOnMap);
 
+            // Display regions on map
             clearCensusData();
-            // Display cities
             var polygon_list = [];
             var url = null;
             var propertyName = null;
             var displayName = null;
-            if (document.mapAreaForm.mapArea[0].checked){ // cities
+            if (level == CITY){
                 console.log("city");
                 //Added by Haoyue at 2020-05-23: change the geojson file
                 polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
                 url = "../assets/City_geojson.json";
                 propertyName = "REGION_CODE";
                 displayName = "CITY_NAME";
-            } else if (document.mapAreaForm.mapArea[1].checked) { // states
+            } else if (level == STATE) {
                 console.log("state");
                 polygon_list = [["count","STATE_NAME"],[10,"New South Wales"],[20,"Victoria"],[30,"Queensland"],[10,"South Australia"],[2,"Western Australia"],[14,"Tasmania"],[25,"Northern Territory"],[5,"Australian Capital Territory"]];
                 url = "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.min.geojson"; // Added by Haoyue at 2020-05-23: change the geojson file
                 propertyName = "STATE_NAME";
                 displayName = "STATE_NAME";
             }
-
-            if (polygon_list == [] || url == null || propertyName == null) {
+            if (polygon_list == [] || url == null || propertyName == null || displayName == null) {
                 // TODO: error handling
-                console.log("polygons or url or propertyName didn't load");
+                console.log("polygons or url or propertyName or displayName didn't load");
             }
 
+            // Read region data
             var geo = $.ajax({
                 type: 'GET',
-                //url:"../assets/City_geojson.json",
                 url: url, // Added by Haoyue at 2020-05-23: change the geojson file
                 dataType: "json",
                 success: console.log("County data successfully loaded."),
@@ -104,25 +91,37 @@ angular.module("mapservice", [])
                 }
             })
 
-            //when reading finished, do following procedures
+            // When reading finished
             $.when(geo).done(function() {
-                //loadMapShapes();
-                //map.data.addGeoJson(geo.responseJSON, {idPropertyName: 'SA4_CODE'});
                 map.data.addGeoJson(geo.responseJSON, {idPropertyName: propertyName}); //Added by Haoyue at 2020-05-23: change the geojson file
                 google.maps.event.addListenerOnce(map.data, 'addfeature', function () {
                     google.maps.event.trigger(document.getElementById('census-variable'), 'change');
                 });
                 loadCensusData(polygon_list);
                 map.data.setStyle(styleFeature);
+                // Set default region to Melbourne or Victoria
+                var census = 0;
+                if (level == CITY) {
+                    census = map.data.getFeatureById("02").getProperty('census_variable');
+                    document.getElementById('data-label').textContent = "Melbourne: ";
+                    document.getElementById('data-value').textContent = census.toLocaleString();
+                } else if (level == STATE) {
+                    census = map.data.getFeatureById("Victoria").getProperty('census_variable');
+                    document.getElementById('data-label').textContent = "Victoria: ";
+                    document.getElementById('data-value').textContent = census.toLocaleString();
+                }
+                var percent = (census - censusMin) / (censusMax - censusMin) * 100;
+                document.getElementById('data-box').style.display = 'block';
+                document.getElementById('data-caret').style.display = 'block';
+                document.getElementById('data-caret').style.paddingLeft = percent + '%';
             });
 
+            // Load census data
             function loadCensusData(data){
                 data.shift();
                 data.forEach(function(row) {
                     var censusVariable = parseFloat(row[0]);
                     var stateId = row[1];
-                    //console.log(map.data)
-
                     // keep track of min and max values
                     if (censusVariable < censusMin) {
                         censusMin = censusVariable;
@@ -130,13 +129,11 @@ angular.module("mapservice", [])
                     if (censusVariable > censusMax) {
                         censusMax = censusVariable;
                     }
-
                     // update the existing row with the new data
                     map.data
                         .getFeatureById(stateId)
                         .setProperty('census_variable', censusVariable);
                 });
-
                 // update and display the legend
                 document.getElementById('census-min').textContent =
                     censusMin.toLocaleString();
@@ -144,14 +141,14 @@ angular.module("mapservice", [])
                     censusMax.toLocaleString();
             }
 
-            /** Removes census data from each shape on the map and resets the UI. */
+            // Removes census data from each shape on the map and resets the UI
             function clearCensusData() {
                 censusMin = Number.MAX_VALUE;
                 censusMax = -Number.MAX_VALUE;
                 map.data.forEach(function(row) {
                     row.setProperty('census_variable', undefined);
                 });
-                //document.getElementById('data-box').style.display = 'none';
+                document.getElementById('data-box').style.display = 'none';
                 document.getElementById('data-caret').style.display = 'none';
             }
 
@@ -193,51 +190,25 @@ angular.module("mapservice", [])
                 };
             }
 
-
-            /**
-             * Responds to the mouse-in event on a map shape (state).
-             *
-             * @param {?google.maps.MouseEvent} e
-             */
-            function mouseInToRegion(e) {
-                // set the hover state so the setStyle function can change the border
-                e.feature.setProperty('state', 'hover');
-
+            function clickOnMap(e) {
+                // Update data box
                 var percent = (e.feature.getProperty('census_variable') - censusMin) /
                     (censusMax - censusMin) * 100;
-
-                // update the label
                 document.getElementById('data-label').textContent =
-                    //e.feature.getProperty('SA4_NAME') + ": ";
                     e.feature.getProperty(displayName) + ": ";  //Added by Haoyue at 2020-05-23: change the geojson file
                 document.getElementById('data-value').textContent =
                     e.feature.getProperty('census_variable').toLocaleString();
                 document.getElementById('data-box').style.display = 'block';
                 document.getElementById('data-caret').style.display = 'block';
                 document.getElementById('data-caret').style.paddingLeft = percent + '%';
-            }
 
-            /**
-             * Responds to the mouse-out event on a map shape (state).
-             *
-             * @param {?google.maps.MouseEvent} e
-             */
-            function mouseOutOfRegion(e) {
-                // reset the hover state, returning the border to normal
-                e.feature.setProperty('state', 'normal');
-                document.getElementById('data-label').textContent = "";
-                document.getElementById('data-value').textContent = "";
-            }
-
-            function clickOnMap(e) {
-                var state = e.feature.getProperty('STATE_CODE');
-                console.log(state);
+                // Update pie chart
                 $http({
                     method: 'POST',
                     url: '/api/mapstate',
                     data: {"region":state}
                 }).then(function (response) {
-                    //console.log('response:', httpResponse);
+                    console.log('response:', response);
                     var pie_data = [{value:response.data.value[0],name:'0-4'},
                         {value:response.data.value[1],name:'5-9'},
                         {value:response.data.value[2],name:'10-14'},
@@ -249,33 +220,13 @@ angular.module("mapservice", [])
                         {value:response.data.value[8],name:'40-44'},
                         {value:response.data.value[9],name:'45-49'},
                         {value:response.data.value[10],name:'50-54'}];
-
                     pie_initialize(pie_data, response.data.key);
                 })
-            }
-        };
 
-        var pie_initialize = function(data, region){
-            document.getElementById('piechart').style.display = 'block';
-            document.getElementById('barchart').style.display = 'none';
-            document.getElementById('linechart').style.display = 'none';
-            var myChart = echarts.init(document.getElementById('piechart'));
-            myChart.setOption(get_pieoption(data, region));
-        };
-        var get_pieoption = function(data, region){
-            var option = {
-                title: {
-                    text: 'Population of age group in ' + region
-                },
-                tooltip: {},
-                series: [{
-                    name: 'population',
-                    type: 'pie',
-                    radius:'55%',
-                    data: data
-                }]
-            };
-            return option;
+                // Update bar chart
+
+                // Update line chart
+            }
         };
 
         return googleMapService;

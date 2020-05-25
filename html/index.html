@@ -32,56 +32,43 @@
 <!------------------------------------------------ Content ---------------------------------------------------->
     <div class="content">
         <div class="row">
-            <div class="col col-sm-6">
+            <div class="col col-sm-7">
                 <div id="map"></div>
             </div>
-            <div class="col col-sm-6">
-                <h5>Area</h5>
-                <div id="data-box" class="shadowbox">
-                    <label id="data-label" for="data-value"></label>
-                    <span id="data-value"></span>
-                </div>
-                <div id="controls"> <!--<div id="controls" class="nicebox">-->
-                    <form name="mapAreaForm">
-                        <input type="radio" name="mapArea" value="city" checked>
-                        <label class="radioLabel">Show cities</label><br>
-                        <input type="radio" name="mapArea" value="state">
-                        <label class="radioLabel">Show states</label>
-                    </form>
-                </div>
-                <div class="row" id="legend">
-                    <div id="census-min" class="col col-sm-2">min</div>
-                    <div class="col col-sm-8 color-key"><span id="data-caret">◆</span></div>
-                    <div id="census-max" class="col col-sm-2">max</div>
-                </div>
-                <div class="aurinselection">
-                    <label for="aurindata">Choose dataset:</label>
-                    <select name="aurindata" id="aurindata">
-                        <option value="Income" selected>Income</option>
-                        <option value="Age">Age</option>
-                        <option value="Education">Education</option>
-                    </select>
-                </div>
-
-                <div class="charts">
-                    <div class="chart" id="barchart"></div>
-                    <div class="chart" id="piechart"></div>
-                    <div class="chart" id="linechart"></div>
+            <div class="col col-sm-5">
+                <div class="rightsidebar">
+                    <h5>Region: </h5>
+                    <div id="data-box" class="shadowbox">
+                        <label id="data-label" for="data-value"></label>
+                        <span id="data-value"></span>
+                    </div>
+                    <div class="row" id="legend">
+                        <div id="census-min" class="col col-sm-2">min</div>
+                        <div class="col col-sm-8 color-key"><span id="data-caret">◆</span></div>
+                        <div id="census-max" class="col col-sm-2">max</div>
+                    </div>
+                    <div id="controls"> <!--<div id="controls" class="nicebox">-->
+                        <form id="regionradio" name="mapRegionForm">
+                            <input type="radio" id="city" name="mapRegion" value="city" checked>
+                            <label class="radioLabel">Show cities</label><br>
+                            <input type="radio" id="state" name="mapRegion" value="state">
+                            <label class="radioLabel">Show states</label>
+                        </form>
+                    </div>
+                    <div class="col thinchart" id="piechart"></div>
                 </div>
             </div>
         </div>
     </div>
 
-<!--    <div class="charts">-->
-<!--        <h3 clas="lineheading">Analysis</h3><br>-->
-<!--        <div class="row">-->
-<!--            <div class="col col-sm-6 chart" id="piechart"></div>-->
-<!--            <div class="col col-sm-6 chart" id="barchart"></div>-->
-<!--        </div>-->
-<!--        <div class="row">-->
-<!--            <div class="col col-sm-6 chart" id="linechart"></div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="charts">
+        <div class="row">
+            <div class="fatchart" id="barchart"></div>
+        </div>
+        <div class="row">
+            <div class="fatchart" id="linechart"></div>
+        </div>
+    </div>
 
 
 

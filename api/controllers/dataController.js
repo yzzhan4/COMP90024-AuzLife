@@ -83,15 +83,15 @@ module.exports = {
     },
 
     getAgeOneState: function (req, res){
-        var code = req.body["region"];
-        //var states = ["VIC"];
-        var states = [stateCodes[code]];
-        console.log(states);
+        var states = ["VIC"];
+        //var code = req.body["region"];
+        //var states = [stateCodes[code]];
         dbAge.view('DesignState', 'sumByState_All', {
             'keys': states,
             'group':'true'
         }).then((body) => {
-            res.send(body.rows[0])
+            console.log(body.rows[0]);
+            res.send(body.rows[0]);
         });
         // TODO: error handling
         // });

@@ -10,7 +10,7 @@ module.exports = function(app, express) {
     app.get('/api/eduState', dataController.getEduAllState);
     app.post('/api/mapcity', dataController.getMapCity);
     app.post('/api/mapstate', dataController.getAgeOneState);
-    app.post('/api/ageState', dataController.getAgeOneState);
+    //app.post('/api/')
 
 
 }
