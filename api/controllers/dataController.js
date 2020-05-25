@@ -8,6 +8,16 @@ const dbIncome = nano.use('aurin_income');
 const dbEdu = nano.use('aurin_edu');
 const dbTest = nano.use('gathering-tweets');
 
+var stateCodes = {
+    "1":"NSW",
+    "2":"VIC",
+    "3":"QLD",
+    "4":"SA",
+    "5":"WA",
+    "6":"TAS",
+    "7":"NT",
+    "8":"ACT"
+}
 
 module.exports = {
     // test sending data from backend
@@ -25,10 +35,16 @@ module.exports = {
         });
     },
 
-    getMapRegion: function(req, res) {
+    getMapCity: function(req, res) {
         console.log('request received:', req.body["region"]);
         res.send()
     },
+
+    // getMapState: function(req, res) {
+    //     console.log('request received:', req.body["STATE_CODE"]);
+    //
+    //     res.send()
+    // },
 
     getIncomeAllState: function(req, res) {
         var num = [];
@@ -67,8 +83,10 @@ module.exports = {
     },
 
     getAgeOneState: function (req, res){
-        var states = ["VIC"];
-
+        var code = req.body["region"];
+        //var states = ["VIC"];
+        var states = [stateCodes[code]];
+        console.log(states);
         dbAge.view('DesignState', 'sumByState_All', {
             'keys': states,
             'group':'true'

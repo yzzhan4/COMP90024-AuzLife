@@ -8,7 +8,7 @@ angular.module("chartservice", [])
                 if (aurinSelection.value == "Age") {
                     $http({
                         method:'get',
-                        url: '/api/ageState'
+                        url: '/api/mapstate'
                     }).then(function(response){
 
                         var pie_data = [{value:response.data.value[0],name:'0-4'},
@@ -51,7 +51,7 @@ angular.module("chartservice", [])
             });
         }
 
-        var pie_initialize = function(data){
+        var pie_initialize = function(data, region){
             document.getElementById('piechart').style.display = 'block';
             document.getElementById('barchart').style.display = 'none';
             document.getElementById('linechart').style.display = 'none';

@@ -230,16 +230,52 @@ angular.module("mapservice", [])
             }
 
             function clickOnMap(e) {
-                var region = e.feature.getProperty('CITY_NAME');
-                console.log(region);
+                var state = e.feature.getProperty('STATE_CODE');
+                console.log(state);
                 $http({
                     method: 'POST',
-                    url: '/api/mapregion',
-                    data: {"region":region}
-                }).then(function (httpResponse) {
-                    console.log('response:', httpResponse);
+                    url: '/api/mapstate',
+                    data: {"region":state}
+                }).then(function (response) {
+                    //console.log('response:', httpResponse);
+                    var pie_data = [{value:response.data.value[0],name:'0-4'},
+                        {value:response.data.value[1],name:'5-9'},
+                        {value:response.data.value[2],name:'10-14'},
+                        {value:response.data.value[3],name:'15-19'},
+                        {value:response.data.value[4],name:'20-24'},
+                        {value:response.data.value[5],name:'25-29'},
+                        {value:response.data.value[6],name:'30-34'},
+                        {value:response.data.value[7],name:'35-39'},
+                        {value:response.data.value[8],name:'40-44'},
+                        {value:response.data.value[9],name:'45-49'},
+                        {value:response.data.value[10],name:'50-54'}];
+
+                    pie_initialize(pie_data, response.data.key);
                 })
             }
+        };
+
+        var pie_initialize = function(data, region){
+            document.getElementById('piechart').style.display = 'block';
+            document.getElementById('barchart').style.display = 'none';
+            document.getElementById('linechart').style.display = 'none';
+            var myChart = echarts.init(document.getElementById('piechart'));
+            myChart.setOption(get_pieoption(data, region));
+        };
+        var get_pieoption = function(data, region){
+            var option = {
+                title: {
+                    text: 'Population of age group in ' + region
+                },
+                tooltip: {},
+                series: [{
+                    name: 'population',
+                    type: 'pie',
+                    radius:'55%',
+                    data: data
+                }]
+            };
+            return option;
         };
 
         return googleMapService;
