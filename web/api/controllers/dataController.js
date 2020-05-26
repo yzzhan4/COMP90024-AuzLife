@@ -192,7 +192,7 @@ module.exports = {
     // pie (age)
     getAgeOneState: function (req, res){
         //var states = ["VIC"];
-        var code = [4]//req.body["region"];
+        var code = req.body["region"];
         var states = [stateCodes[code]];
         dbAge.view('DesignState', 'sumByState_All', {
             'keys': states,
