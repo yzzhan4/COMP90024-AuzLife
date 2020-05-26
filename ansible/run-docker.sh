@@ -7,4 +7,4 @@
 # Yi Zhang 1032768 @Melbourne
 # Zimeng Jia 978322 @Hebei, China
 
-. ./openrc.sh; ansible-playbook -i hosts -u ubuntu --key-file=~/.ssh/winkey.pem docker.yaml
+. ./openrc.sh; ansible-playbook -i hosts -u ubuntu --key-file=./winkey.pem docker.yaml

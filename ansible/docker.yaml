@@ -60,3 +60,8 @@
   roles:
   - role: instance1-couchdbmaster
 
+- hosts: web
+  gather_facts: true
+
+  roles:
+    - webserver
