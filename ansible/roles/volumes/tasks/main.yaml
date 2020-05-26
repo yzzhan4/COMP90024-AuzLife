@@ -1,0 +1,58 @@
+---
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+- name: Install dependencies
+  tags: 'volumes'
+  become: yes
+  apt:
+    name: ['xfsprogs']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Make file system
+  tags: 'volumes'
+  become: yes
+  filesystem:
+    fstype: xfs
+    dev: "{{ item.device }}"
+  when: item.device is defined
+  with_items:
+    - "{{ volumes }}"
+
+- name: Checking folders
+  tags: 'volumes'
+  become: yes
+  stat:
+    path: "{{ item.mountpoint }}"
+  register: directory_stats
+  with_items:
+    - "{{ volumes }}"
+
+- name: Create directory
+  tags: 'volumes'
+  become: yes
+  file:
+    path: "{{ item.item.mountpoint }}"
+    recurse: yes
+    state: directory
+  when: item.stat.exists == false
+  with_items:
+    - "{{ directory_stats.results }}"
+
+- name: Mount device
+  tags: 'volumes'
+  become: yes
+  mount:
+    path: "{{ item.mountpoint }}"
+    src: "{{ item.device }}"
+    fstype: xfs
+    state: mounted
+  when: item.device is defined
+  with_items:
+    - "{{ volumes }}"

@@ -1,0 +1,62 @@
+---
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+- name: adding docker users (for use without sudo)
+  user:
+    name: "ubuntu"
+    append: yes
+    groups: docker
+  become: true
+  with_items: "['ubuntu']"
+
+- name: Create CouchDb directory
+  tags: 'couch_slave1'
+  become: yes
+  file:
+    path: "couch_slave1"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+
+- name: Configure compose
+  tags: 'couch_slave1'
+  become: yes
+  template:
+    src: slave1-docker-compose.yaml.j2
+    dest: "couch_slave1/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+
+
+- name: Run docker compose
+  tags: 'couch_slave1'
+  become: yes
+  docker_compose:
+    project_src: "couch_slave1"
+    pull: yes
+    state: present
+    remove_orphans: yes
+    recreate: always
+
+
+- name: upload the subnode script
+  become: yes
+  copy:
+    src: ./setupcouch.sh
+    dest: /home/ubuntu/
+    mode: 0777
+
+- name: execute the subnode script
+  become: yes
+  shell: /home/ubuntu/setupcouch.sh
+
+
+

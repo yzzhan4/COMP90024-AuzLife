@@ -1,0 +1,32 @@
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+[COMP90024]
+
+
+[all]
+172.26.130.67 ansible_python_interpreter=/usr/bin/python3
+172.26.134.71 ansible_python_interpreter=/usr/bin/python3
+172.26.131.147 ansible_python_interpreter=/usr/bin/python3
+172.26.132.39 ansible_python_interpreter=/usr/bin/python3
+
+[web]
+172.26.132.39 ansible_python_interpreter=/usr/bin/python3
+
+[backend]
+172.26.130.67 ansible_python_interpreter=/usr/bin/python3
+172.26.134.71 ansible_python_interpreter=/usr/bin/python3
+172.26.131.147 ansible_python_interpreter=/usr/bin/python3
+
+[slave2]
+172.26.130.67 ansible_python_interpreter=/usr/bin/python3
+
+[slave1]
+172.26.134.71 ansible_python_interpreter=/usr/bin/python3
+
+[master]
+172.26.131.147 ansible_python_interpreter=/usr/bin/python3

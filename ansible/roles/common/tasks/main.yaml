@@ -1,0 +1,27 @@
+---
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+- name: Gather facts of remote host
+  setup:
+    gather_subset: all
+
+- name: Install dependencies
+  tags: always
+  become: yes
+  apt:
+    name: ['apt-transport-https', 'build-essential', 'ca-certificates', 'curl', 'git', 'python3-dev', 'python3-pip', 'python3-setuptools', 'software-properties-common', 'unzip', 'vim']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Update pip
+  tags: always
+  become: yes
+  pip:
+    name: ['pip']
+    state: latest

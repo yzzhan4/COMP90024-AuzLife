@@ -1,0 +1,66 @@
+---
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+- name: Create Nginx directory
+  tags: 'Nginx'
+  become: yes
+  file:
+    path: "{{ nginx_dir }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+- name: Create Node directory
+  tags: 'Node'
+  become: yes
+  file:
+    path: "{{ node_dir }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+
+- name: Configure compose
+  tags: 'Nginx'
+  become: yes
+  template:
+    src: nginx-docker-compose.yaml.j2
+    dest: "{{ root }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+
+- name: Upload Node Dockerfile
+  become: yes
+  copy:
+    src: Dockerfile
+    dest: "{{ node_dir }}"
+    mode: 0777
+
+- name: Prune everything
+  docker_prune:
+    containers: yes
+    images: yes
+    networks: yes
+    volumes: yes
+    builder_cache: yes
+
+
+- name: Run docker compose
+  tags: 'Nginx'
+  become: yes
+  docker_compose:
+    project_src: "{{ root }}"
+    pull: yes
+    state: present
+    remove_orphans: yes
+    recreate: always
+
+
