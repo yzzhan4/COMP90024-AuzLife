@@ -2,7 +2,7 @@
 // Test with local couchdb
 // const nano = require('nano')('http://admin:90024@172.26.131.147:5984')
 // const tweetsdb = nano.use('streaming-userids');
-const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
+const nano = require('nano')('http://admin:90024@172.26.134.71:5984');
 //const nano = require('nano')('http://admin:90024@172.26.134.71:5984');
 const dbAge = nano.use('aurin_age');
 const dbIncome = nano.use('aurin_income');
@@ -18,6 +18,23 @@ var stateCodes = {
     "6":"TAS",
     "7":"NT",
     "8":"ACT"
+};
+var cityName = {
+    "1": "Melbourne",
+    "2": "Sydney",
+    "3": "Brisbane",
+    "4": "Gold Coast",
+    "5": "Adelaide",
+    "6": "Perth",
+    "7": "Canberra",
+    "9": "New South Wales Other Regions",
+    "10": "Victoria Other Regions",
+    "11": "Queensland Other Regions",
+    "12": "South Australia Other Regions",
+    "13": "Tasmania Other Regions",
+    "14": "Western Australia Other Regions",
+    "15": "Northern Territory Other Regions",
+    "99": "und"
 };
 
 var cityCode = {
@@ -107,7 +124,30 @@ module.exports = {
 
     // pie (language)
     getLangOneCity: function(req, res) {
+        var code = req.body["region"];
+        //var states = [stateCodes[code]];
+        dbTest.view('DesignDoc', 'countLangCity', {
+            'group':'true',
+            'stale':'update_after'
+        }).then((body) => {
+            //res.send(body.rows)
+            var langInCity = [];
+            langInCity = [{value: 0, name: "Others"}];
 
+            body.rows.forEach((doc) => {
+                //console.log(cityCode[doc.key[0]]);
+                if (doc.key[0] == code){ //doc.key[0] == req.state改成你的req
+                    if(doc.value > 10 && doc.key[1] !== "und") {
+                        langInCity.push({value: doc.value, name:doc.key[1]});
+                        // console.log(langInState[doc.key[0]]);
+                    } else{
+                        langInCity[0].value += doc.value;
+                        // console.log(langInState[doc.key[0]]);
+                    }
+                }
+            });
+            res.send({key: cityName[code], value: langInCity});
+        });
     },
 
     // bar
@@ -169,7 +209,7 @@ module.exports = {
     // pie (age)
     getAgeOneState: function (req, res){
         //var states = ["VIC"];
-        var code = req.body["region"];
+        var code = [4]//req.body["region"];
         var states = [stateCodes[code]];
         dbAge.view('DesignState', 'sumByState_All', {
             'keys': states,
@@ -184,6 +224,7 @@ module.exports = {
 
     // pie (language)
     getLangOneState: function(req, res) {
+
         var code = req.body["region"];
         var states = [stateCodes[code]];
         dbTest.view('DesignDoc', 'countLangState', {
@@ -191,28 +232,30 @@ module.exports = {
             'stale':'update_after'
         }).then((body) => {
             //res.send(body.rows)
-            var langInState = {};
-            langInState = {NSW: [{value: 0, name: "Others"}],
-                VIC:[{value: 0, name: "Others"}],
-                QLD:[{value: 0, name: "Others"}],
-                SA:[{value: 0, name: "Others"}],
-                WA:[{value: 0, name: "Others"}],
-                TAS:[{value: 0, name: "Others"}],
-                NT:[{value: 0, name: "Others"}],
-                ACT:[{value: 0, name: "Others"}],};
+            var langInState = [];
+            langInState = [{value: 0, name: "Others"}];
+            // langInState = {NSW: [{value: 0, name: "Others"}],
+            //     VIC:[{value: 0, name: "Others"}],
+            //     QLD:[{value: 0, name: "Others"}],
+            //     SA:[{value: 0, name: "Others"}],
+            //     WA:[{value: 0, name: "Others"}],
+            //     TAS:[{value: 0, name: "Others"}],
+            //     NT:[{value: 0, name: "Others"}],
+            //     ACT:[{value: 0, name: "Others"}],};
+
             body.rows.forEach((doc) => {
-                console.log(doc.key[0]);
-                if (doc.key[0] === states){ //doc.key[0] == req.state改成你的req
-                    if(doc.value > 50 && doc.key[1] !== "und") {
-                        langInState[doc.key[0]].push({value: doc.value, name:doc.key[1]});
-                        console.log(langInState[doc.key[0]]);
+                //console.log(stateCodes[code] == doc.key[0]);
+                if (doc.key[0] == stateCodes[code]){ //doc.key[0] == req.state改成你的req
+                    if(doc.value > 10 && doc.key[1] !== "und") {
+                        langInState.push({value: doc.value, name:doc.key[1]});
+                        // console.log(langInState[doc.key[0]]);
                     } else{
-                        langInState[doc.key[0]][0].value += doc.value;
-                        console.log(langInState[doc.key[0]]);
+                        langInState[0].value += doc.value;
+                        // console.log(langInState[doc.key[0]]);
                     }
                 }
             });
-            res.send([states, langInState]);
+            res.send({key: states[0], value: langInState});
         });
     },
 
