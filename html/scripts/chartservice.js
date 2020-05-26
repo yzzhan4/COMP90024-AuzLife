@@ -72,7 +72,7 @@ angular.module("chartservice", [])
         var get_pieoption = function(data){
             var option = {
                 title: {
-                    text: 'pie chart of population'
+                    text: 'Age distribution of population '
                 },
                 tooltip: {},
                 series: [{
@@ -88,46 +88,56 @@ angular.module("chartservice", [])
         var get_baroption = function(x,y,z){
             var option = {
                 title: {
-                    text: 'tweets number and medium income of chosen states'
+                    text: 'Tweets number and medium income of chosen states'
                 },
                 tooltip: {},
                 legend: {
                     selectedMode: false,
                     data:['medium income','tweets number']
                 },
-                xAxis: {
-                    data:x
+                grid:{
+                    left:100
                 },
-                yAxis: [{
-                    type: 'value',
-                    name: 'income',
-                    splitLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        formatter: '{value} dollars'
+                xAxis: [
+                    {
+                        type:'category',
+                        data:['VIC','NSW','NA','TAS','QLD']
                     }
-                },
+                ],
+                yAxis: [
                     {
                         type: 'value',
-                        name: 'tweet number',
+                        name: 'Medium income',
+                        splitLine: {
+                            show: false
+                        },
                         axisLabel: {
-                            formatter: '{value} '
+                            formatter: '{value} dollars'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: 'Tweet number',
+                        axisLabel: {
+                            formatter: '{value} instances'
                         },
                         splitLine: {
                             show: false
                         }
-                    }],
-                series: [{
-                    name: 'medium income',
-                    type: 'bar',
-                    data:y
-
-                },
+                    }
+                ],
+                series: [
                     {
-                        name: 'tweet number',
+                        name: 'Medium income',
+                        type: 'bar',
+                        data:[3000,4000,1000,500,2500]
+
+                    },
+                    {
+                        name: 'Tweet number',
                         type: 'line',
-                        data:z
+                        yAxisIndex:1,
+                        data:[10000,15000,7000,36000,13000]
 
                     }]
             };
@@ -140,7 +150,7 @@ angular.module("chartservice", [])
             var option = {
                 backgroundColor: '#FBFBFB',
                 title: {
-                    text: 'line chart of population in Australia'
+                    text: 'Distribution of people educational level'
                 },
                 tooltip: {
                     trigger: 'axis'
