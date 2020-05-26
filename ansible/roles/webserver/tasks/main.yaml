@@ -1,4 +1,10 @@
 ---
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
 
 - name: Create Nginx directory
   tags: 'Nginx'
@@ -30,27 +36,6 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
-
-#- name: Upload node script
-#  become: yes
-#  copy:
-#    src: npm.sh
-#    dest: "{{ node_dir }}"
-#    mode: 0777
-
-#- name: Upload Default Configure
-#  become: yes
-#  copy:
-#    src: default.conf
-#    dest: "{{ nginx_dir }}"
-#    mode: 0777
-#
-#- name: Upload nginx Configure
-#  become: yes
-#  copy:
-#    src: nginx.conf
-#    dest: "{{ nginx_dir }}"
-#    mode: 0777
 
 - name: Upload Node Dockerfile
   become: yes

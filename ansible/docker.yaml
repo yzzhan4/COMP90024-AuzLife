@@ -8,6 +8,12 @@
     - role: volumes
     - role: docker
 
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
 
 - hosts: all
 
@@ -19,6 +25,13 @@
         state: present
 
   tasks:
+      - name: Install NPM
+        become: yes
+        apt:
+          name: npm
+          state: present
+
+  tasks:
   - name: adding docker users (for use without sudo)
     user:
       name: "ubuntu"
@@ -26,4 +39,24 @@
       groups: docker
     become: true
     with_items: "['ubuntu']"
+
+
+- hosts: slave1
+  gather_facts: True
+
+  roles:
+  - role: instance2-couchdbslave1
+
+
+- hosts: slave2
+  gather_facts: True
+
+  roles:
+  - role: instance3-couchdbslave2
+
+- hosts: master
+  gather_facts: True
+
+  roles:
+  - role: instance1-couchdbmaster
 

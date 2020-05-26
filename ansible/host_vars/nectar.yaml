@@ -1,3 +1,11 @@
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+
 # Common vars
 availability_zone: melbourne-qh2-uom
 
@@ -27,6 +35,7 @@ security_groups:
     port_range_min: 80
     port_range_max: 80
     remote_ip_prefix: 0.0.0.0/0
+
 
 # Instance
 instances:

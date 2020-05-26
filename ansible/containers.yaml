@@ -1,26 +1,9 @@
-
-
-
-
-
-- hosts: slave1
-  gather_facts: True
-
-  roles:
-  - role: instance2-couchdbslave1
-
-
-- hosts: slave2
-  gather_facts: True
-
-  roles:
-  - role: instance3-couchdbslave2
-
-- hosts: master
-  gather_facts: True
-
-  roles:
-  - role: instance1-couchdbmaster
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
 
 
 - hosts: web
@@ -28,3 +11,4 @@
 
   roles:
     - webserver
+

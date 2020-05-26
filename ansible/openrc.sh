@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+
 # To use an OpenStack cloud you need to authenticate against the Identity
 # service named keystone, which returns a **Token** and **Service Catalog**.
 # The catalog contains the endpoints for all services the user/tenant has
