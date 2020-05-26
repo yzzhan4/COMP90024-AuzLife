@@ -358,7 +358,7 @@ angular.module("mapservice", [])
                 document.getElementById('linechart').style.display = 'block';
                 var myChart = echarts.init(document.getElementById("linechart"));
                 myChart.setOption(get_lineoption(data_list));
-            }
+            };
 
             var get_pieoption = function(data, region){
                 var option = {
@@ -378,6 +378,7 @@ angular.module("mapservice", [])
 
             var get_baroption = function(x,y,z){
                 var option = {
+
                     title: {
                         text: 'tweets number and medium income of chosen states'
                     },
@@ -386,12 +387,20 @@ angular.module("mapservice", [])
                         selectedMode: false,
                         data:['medium income','tweets number']
                     },
-                    xAxis: {
-                        data:x
-                    },
+                    xAxis: [{
+                            type: 'category',
+                            data:x,
+                            axisLabel: {
+                                interval: 0,
+                                rotate: 10 //If the label names are too long you can manage this by rotating the label.
+                            }
+                    }],
                     yAxis: [{
+                        axisTick: {
+                            alignWithLabel: true
+                        },
                         type: 'value',
-                        name: 'income',
+                        name: 'Income',
                         splitLine: {
                             show: false
                         },
