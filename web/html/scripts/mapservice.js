@@ -44,7 +44,7 @@ angular.module("mapservice", [])
                 'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
             }, {//Add by Haoyue at 2020-05-23: change the geojson file
                 'featureType': 'administrative ',
-                'elementType': 'geometry',
+                'elementType': 'labels',
                 'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
             }];
             map = new google.maps.Map(document.getElementById('map'), {
