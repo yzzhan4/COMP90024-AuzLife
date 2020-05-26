@@ -14,9 +14,7 @@ module.exports = function(app, express) {
     app.get('/api/incomeCity', dataController.getIncomeAllCities);
     app.get('/api/eduCity', dataController.getEduAllCities);
 
-    //app.post('/api/mapcity', dataController.getMapCity);
-    //app.post('/api/getAgeOneState', dataController.getAgeOneState);
-    //app.post('/api/')
-
+    app.get('/api/tweetsCity', dataController.getTweetsCountCity);
+    app.get('/api/tweetsState', dataController.getTweetsCountState);
 
 }

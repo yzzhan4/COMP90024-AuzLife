@@ -3,6 +3,17 @@ const CITY = 0;
 const STATE = 1;
 var mapRegionLevel = CITY;
 
+const STATE_CODE_TO_NAME = {
+    "NSW":"New South Wales",
+    "VIC":"Victoria",
+    "QLD":"Queensland",
+    "SA":"South Australia",
+    "WA":"Western Australia",
+    "TAS":"Tasmania",
+    "NT":"Northern Territory",
+    "ACT":"Australian Capital Territory"
+};
+
 angular.module("mapservice", [])
     .factory("mapservice",function($http){
         // Initializes the map
@@ -61,25 +72,51 @@ angular.module("mapservice", [])
             map.data.addListener('click', clickOnMap);
 
             // Display regions on map
-            clearCensusData();
             var polygon_list = [];
             var url = null;
             var propertyName = null;
             var displayName = null;
             var requestName = null;
             if (level === CITY){
-                polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
+                polygon_list = [["count","REGION_CODE"]]
+                $http({
+                    method: 'get',
+                    url: 'api/tweetsCity'
+                }).then(function (response) {
+                    for (var key in response.data){
+                        if (key<10) {
+                            polygon_list.push([response.data[key], "0"+key.toString()]);
+                        } else {
+                            polygon_list.push([response.data[key], key.toString()]);
+                        }
+                    }
+                });
+                console.log("city polygon: ");
+                console.log(polygon_list);
+                //polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
                 url = "../assets/City_geojson.json";
-                propertyName = "REGION_CODE";
-                displayName = "CITY_NAME";
-                requestName = "CITY_NAME";
+                propertyName = "REGION_CODE"; // 02
+                displayName = "CITY_NAME"; // Melbourne
+                requestName = "CITY_NAME"; // Melbourne
             } else if (level === STATE) {
-                polygon_list = [["count","STATE_NAME"],[10,"New South Wales"],[20,"Victoria"],[30,"Queensland"],[10,"South Australia"],[2,"Western Australia"],[14,"Tasmania"],[25,"Northern Territory"],[5,"Australian Capital Territory"]];
+                polygon_list = [["count","STATE_NAME"]]
+                $http({
+                    method: 'get',
+                    url: 'api/tweetsState'
+                }).then(function (response) {
+                    //console.log(response.data);
+                    for (var key in response.data){
+                        polygon_list.push([response.data[key], STATE_CODE_TO_NAME[key]]);
+                    }
+                    console.log("state polygon: ");
+                    console.log(polygon_list);
+                });
+                //polygon_list = [["count","STATE_NAME"],[10,"New South Wales"],[20,"Victoria"],[30,"Queensland"],[10,"South Australia"],[2,"Western Australia"],[14,"Tasmania"],[25,"Northern Territory"],[5,"Australian Capital Territory"]];
                 //url = "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.min.geojson";
                 url = "../assets/australian-states.min.geojson"
-                propertyName = "STATE_NAME";
+                propertyName = "STATE_NAME"; // Victoria
                 displayName = "STATE_NAME";
-                requestName = "STATE_CODE"
+                requestName = "STATE_CODE" // 2
             }
             if (polygon_list === [] || url == null || propertyName == null || displayName == null || requestName == null) {
                 // TODO: error handling
@@ -109,10 +146,22 @@ angular.module("mapservice", [])
                 var census = 0;
                 if (level === CITY) {
                     census = map.data.getFeatureById("02").getProperty('census_variable');
+                    if (census == null) {
+                        console.log("can't get census_variable");
+                    } else {
+                        console.log("melbourne");
+                        console.log(map.data.getFeatureById("02"));
+                    }
                     document.getElementById('data-label').textContent = "Melbourne: ";
                     document.getElementById('data-value').textContent = census.toLocaleString();
                 } else if (level === STATE) {
                     census = map.data.getFeatureById("Victoria").getProperty('census_variable');
+                    if (census == null) {
+                        console.log("can't get census_variable");
+                    } else {
+                        console.log("victoria");
+                        console.log(map.data.getFeatureById("Victoria"));
+                    }
                     document.getElementById('data-label').textContent = "Victoria: ";
                     document.getElementById('data-value').textContent = census.toLocaleString();
                 }
@@ -134,6 +183,9 @@ angular.module("mapservice", [])
 
             // Load census data
             function loadCensusData(data){
+                console.log("load data");
+                // console.log(data);
+                clearCensusData();
                 data.shift();
                 data.forEach(function(row) {
                     var censusVariable = parseFloat(row[0]);
@@ -146,10 +198,12 @@ angular.module("mapservice", [])
                         censusMax = censusVariable;
                     }
                     // update the existing row with the new data
+
                     map.data
                         .getFeatureById(stateId)
                         .setProperty('census_variable', censusVariable);
                 });
+                //console.log(map.data);
                 // update and display the legend
                 document.getElementById('census-min').textContent =
                     censusMin.toLocaleString();
