@@ -38,6 +38,10 @@ var cityCode = {
     "und": "99"
 };
 
+var sRegion = {'ACT': 1, 'NSW': 28, 'NT': 2, 'QLD': 19, 'SA': 7, 'TAS': 4, 'VIC': 17, 'WA': 10};
+
+var cRegion = {'Adelaide': 4, 'Brisbane': 5, 'Canberra': 1, 'Gold Coast': 1, 'Melbourne': 8, 'New South Wales Other Regions': 14, 'Northern Territory Other Regions': 2, 'Perth': 5, 'Queensland Other Regions': 13, 'South Australia Other Regions': 3, 'Sydney': 14, 'Tasmania Other Regions': 4, 'Victoria Other Regions': 9, 'Western Australia Other Regions': 5};
+
 module.exports = {
     // test sending data from backend
     getTestText: function(req, res) {
@@ -117,7 +121,7 @@ module.exports = {
             body.rows.forEach((doc) => {
                 if (cityCode[doc.key] <10){
                     name.push(doc.key);
-                    num.push(doc.value);
+                    num.push(doc.value/cRegion[doc.key]);
                 }
             });
             // res.send([num, name]);
@@ -222,7 +226,7 @@ module.exports = {
         }).then((body) => {
             body.rows.forEach((doc) => {
                 name.push(doc.key);
-                num.push(doc.value);
+                num.push(doc.value/sRegion[doc.key]);
             });
             // console.log("1");
             // console.log(name);
