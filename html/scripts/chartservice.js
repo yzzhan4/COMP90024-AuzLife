@@ -7,6 +7,7 @@ angular.module("chartservice", [])
                 method:'get',
                 url: '/api/ageState'
             }).then(function(response){
+                console.log("draw piechart");
                 var pie_data = [{value:response.data.value[0],name:'0-4'},
                     {value:response.data.value[1],name:'5-9'},
                     {value:response.data.value[2],name:'10-14'},
@@ -19,23 +20,24 @@ angular.module("chartservice", [])
                     {value:response.data.value[9],name:'45-49'},
                     {value:response.data.value[10],name:'50-54'}];
                 pie_initialize(pie_data, response.data.key);
-                console.log("draw piechart");
             }); //TODO error handling, pass state, rename, city
-                    
+
+            console.log("bar chart");
             // bar chart
             $http({
                 method:'get',
                 url: '/api/testbarchart'
             }).then(function(response){
+                console.log("draw barchart");
                 bar_initialize(response.data[1],response.data[0],response.data[2]);
             });
-            console.log("draw barchart");
 
             // Line chart
             $http({
                 method:'get',
                 url: '/api/eduState'
             }).then(function(response){
+                console.log("draw line chart");
                 line_initialize(response.data);
             });
         }

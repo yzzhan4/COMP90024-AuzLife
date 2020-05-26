@@ -13,7 +13,7 @@
 
     <script src="lib/echarts.min.js"></script>
     <script src="./scripts/mapservice.js"></script>
-    <script src="./scripts/chartservice.js"></script>
+<!--    <script src="./scripts/chartservice.js"></script>-->
     <script src="./scripts/app.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDETklqQZEPI69de2z1Y-LsSXgXQf_c6Q0"></script>
 </head>
@@ -48,11 +48,9 @@
                         <div id="census-max" class="col col-sm-2">max</div>
                     </div>
                     <div id="controls"> <!--<div id="controls" class="nicebox">-->
-                        <form id="regionradio" name="mapRegionForm">
-                            <input type="radio" id="city" name="mapRegion" value="city" checked>
-                            <label class="radioLabel">Show cities</label><br>
-                            <input type="radio" id="state" name="mapRegion" value="state">
-                            <label class="radioLabel">Show states</label>
+                        <form name="mapRegionForm">
+                            <input type="radio" name="mapRegion" value="city" checked>Show cities
+                            <input type="radio" name="mapRegion" value="state">Show states
                         </form>
                     </div>
                     <div class="col thinchart" id="piechart"></div>

@@ -1,12 +1,13 @@
-var couchdbConnection = require("./couchdbConnection.js");
+// var couchdbConnection = require("./couchdbConnection.js");
 // Test with local couchdb
 // const nano = require('nano')('http://admin:90024@172.26.131.147:5984')
 // const tweetsdb = nano.use('streaming-userids');
 const nano = require('nano')('http://admin:90024@172.26.131.147:5984');
+//const nano = require('nano')('http://admin:90024@172.26.134.71:5984');
 const dbAge = nano.use('aurin_age');
 const dbIncome = nano.use('aurin_income');
 const dbEdu = nano.use('aurin_edu');
-const dbTest = nano.use('gathering-tweets');
+const dbTest = nano.use('geo-tweets');
 
 var stateCodes = {
     "1":"NSW",
@@ -35,21 +36,27 @@ module.exports = {
         });
     },
 
-    getMapCity: function(req, res) {
-        console.log('request received:', req.body["region"]);
-        res.send()
+    // State
+    // pie
+    getAgeOneState: function (req, res){
+        //var states = ["VIC"];
+        var code = req.body["region"];
+        var states = [stateCodes[code]];
+        dbAge.view('DesignState', 'sumByState_All', {
+            'keys': states,
+            'group':'true'
+        }).then((body) => {
+            //console.log(body.rows[0]);
+            res.send(body.rows[0]);
+        });
+        // TODO: error handling
+        // });
     },
 
-    // getMapState: function(req, res) {
-    //     console.log('request received:', req.body["STATE_CODE"]);
-    //
-    //     res.send()
-    // },
-
+    // bar
     getIncomeAllState: function(req, res) {
         var num = [];
         var name = [];
-
         dbIncome.view('DesignDoc', 'sumByState', {
             //'keys':['Melbourne','Brisbane'],
             'group':'true',
@@ -58,46 +65,38 @@ module.exports = {
                 name.push(doc.key);
                 num.push(doc.value);
             });
-            // res.send([tweets, body.rows]);
+            // console.log("1");
+            // console.log(name);
+            // console.log(num);
         })
+        // console.log("2");
+        // console.log(name);
+        // console.log(num);
         dbTest.view('DesignDoc', 'countByState', {
             'keys':[[1,'NSW'],[1,'VIC'],[1,'QLD'],[1,'SA'],[1,'WA'],[1,'TAS'],[1,'NT'],[1,'ACT']],
             'group':'true',
-            //'stale':'update_after'
-            'stale':'ok'
+            'stale':'update_after'
+            //'stale':'ok'
         }).then((body) => {
-
+            // console.log("3");
+            // console.log(name);
+            // console.log(num);
             var tweets = {};
             var count = [];
             body.rows.forEach((doc) => {
                 tweets[doc.key[1]] = doc.value
             });
-
             name.forEach((region) => {
-               count.push(tweets[region])
+                count.push(tweets[region])
             });
-
             res.send([num, name, count]);
         });
 
+
     },
 
-    getAgeOneState: function (req, res){
-        var states = ["VIC"];
-        //var code = req.body["region"];
-        //var states = [stateCodes[code]];
-        dbAge.view('DesignState', 'sumByState_All', {
-            'keys': states,
-            'group':'true'
-        }).then((body) => {
-            console.log(body.rows[0]);
-            res.send(body.rows[0]);
-        });
-        // TODO: error handling
-        // });
-    },
-
-    getEduAllState: function (req, res){
+    // line
+    getEduAllState: function(req, res){
         dbEdu.view('DesignDoc', 'sumByState_All', {
             //'keys':['VIC'],
             'group':'true'
@@ -111,5 +110,22 @@ module.exports = {
         });
         // TODO: error handling
         // });
+    },
+
+    // Cities
+    // pie
+    getAgeOneCity: function(req, res) {
+
+    },
+
+    // bar
+    getIncomeAllCities: function(req, res) {
+
+    },
+
+    // line
+    getEduAllCities: function(req, res) {
+        
     }
+
 }
