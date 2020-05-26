@@ -18,7 +18,7 @@ var stateCodes = {
     "6":"TAS",
     "7":"NT",
     "8":"ACT"
-}
+};
 
 var cityCode = {
     "Melbourne": "1",
@@ -212,7 +212,7 @@ module.exports = {
             name.forEach((region) => {
                 count.push(tweets[region])
             });
-            res.send([num, name, count]);
+            res.send([name,num,count]);
         });
     },
 

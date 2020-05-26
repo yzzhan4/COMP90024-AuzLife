@@ -316,7 +316,7 @@ angular.module("mapservice", [])
                     method:'get',
                     url: url
                 }).then(function(response){
-                    bar_initialize(response.data[1],response.data[0],response.data[2]);
+                    bar_initialize(response.data[0],response.data[1],response.data[2]);
                 });
             }
 
