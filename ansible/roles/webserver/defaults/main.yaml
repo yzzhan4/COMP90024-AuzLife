@@ -6,6 +6,6 @@
 # Yi Zhang 1032768 @Melbourne
 # Zimeng Jia 978322 @Hebei, China
 
-nginx_dir: nginx
-node_dir: node
+
+node_dir: nodejs
 root: /home/ubuntu

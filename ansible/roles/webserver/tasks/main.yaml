@@ -6,15 +6,15 @@
 # Yi Zhang 1032768 @Melbourne
 # Zimeng Jia 978322 @Hebei, China
 
-- name: Create Nginx directory
-  tags: 'Nginx'
-  become: yes
-  file:
-    path: "{{ nginx_dir }}"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-    recurse: yes
-    state: directory
+#- name: Create Nginx directory
+#  tags: 'Nginx'
+#  become: yes
+#  file:
+#    path: "{{ nginx_dir }}"
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+#    recurse: yes
+#    state: directory
 
 - name: Create Node directory
   tags: 'Node'
@@ -28,21 +28,33 @@
 
 
 - name: Configure compose
-  tags: 'Nginx'
+  tags: 'Node'
   become: yes
   template:
-    src: nginx-docker-compose.yaml.j2
+    src: node-docker-compose.yaml.j2
     dest: "{{ root }}/docker-compose.yaml"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
+
+- name: Upload Web Code
+  become: yes
+  copy:
+    src: ../../../../web
+    dest: "{{ node_dir }}"
 
 
 - name: Upload Node Dockerfile
   become: yes
   copy:
     src: Dockerfile
-    dest: "{{ node_dir }}"
+    dest: "{{ node_dir }}/web"
     mode: 0777
+
+- name: npm install
+  become: yes
+  npm:
+    path: "{{ node_dir}}/web"
+
 
 - name: Prune everything
   docker_prune:
