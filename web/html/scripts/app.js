@@ -30,12 +30,12 @@ angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice'])
         var radios = document.forms["mapRegionForm"].elements["mapRegion"];
         radios[CITY].onclick = function () {
             //console.log("initialize map by cites");
-            //mapRegionLevel = CITY;
+            curr_level = CITY;
             mapservice.refresh(CITY);
         }
         radios[STATE].onclick = function () {
             //console.log("initialize map by states");
-            //mapRegionLevel = STATE;
+            curr_level = STATE;
             mapservice.refresh(STATE);
         }
 
