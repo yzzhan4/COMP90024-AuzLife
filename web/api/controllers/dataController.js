@@ -19,23 +19,6 @@ var stateCodes = {
     "7":"NT",
     "8":"ACT"
 };
-var cityName = {
-    "1": "Melbourne",
-    "2": "Sydney",
-    "3": "Brisbane",
-    "4": "Gold Coast",
-    "5": "Adelaide",
-    "6": "Perth",
-    "7": "Canberra",
-    "9": "New South Wales Other Regions",
-    "10": "Victoria Other Regions",
-    "11": "Queensland Other Regions",
-    "12": "South Australia Other Regions",
-    "13": "Tasmania Other Regions",
-    "14": "Western Australia Other Regions",
-    "15": "Northern Territory Other Regions",
-    "99": "und"
-};
 
 var cityCode = {
     "Melbourne": "1",
@@ -136,7 +119,7 @@ module.exports = {
 
             body.rows.forEach((doc) => {
                 //console.log(cityCode[doc.key[0]]);
-                if (doc.key[0] == code){ //doc.key[0] == req.state改成你的req
+                if (doc.key[0] == cityCode[code]){ //doc.key[0] == req.state改成你的req
                     if(doc.value > 10 && doc.key[1] !== "und") {
                         langInCity.push({value: doc.value, name:doc.key[1]});
                         // console.log(langInState[doc.key[0]]);
@@ -146,7 +129,7 @@ module.exports = {
                     }
                 }
             });
-            res.send({key: cityName[code], value: langInCity});
+            res.send({key: code, value: langInCity});
         });
     },
 
@@ -224,7 +207,6 @@ module.exports = {
 
     // pie (language)
     getLangOneState: function(req, res) {
-
         var code = req.body["region"];
         var states = [stateCodes[code]];
         dbTest.view('DesignDoc', 'countLangState', {
