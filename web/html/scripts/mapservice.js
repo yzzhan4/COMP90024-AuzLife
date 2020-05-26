@@ -1,3 +1,11 @@
+/* Team 46
+* Haoyue Xie 1003068 @Melbourne
+* Jiayu Li 713551 @Melbourne
+* Ruqi Li 1008342 @Melbourne
+* Yi Zhang 1032768 @Melbourne
+* Zimeng Jia 978322 @Hebei, China
+* */
+
 const MAP_INIT_LOC = {lng:133, lat:-28};
 const CITY = 0;
 const STATE = 1;
@@ -42,6 +50,7 @@ angular.module("mapservice", [])
             //census_variables_cities = [["count", "REGION_CODE"], [1809, "14"], [10207, "06"], [8326, "05"], [10325, "03"], [4893, "07"], [3629, "04"], [34220, "01"], [12789, "09"], [34201, "02"], [967, "15"], [5749, "11"], [3715, "13"], [3333, "12"], [1809, "14"], [5015, "10"]];
             // console.log("city polygon: ");
             // console.log(census_variables_cities);
+
             // Get census data for state map
             $http({
                 method: 'get',
@@ -105,13 +114,12 @@ angular.module("mapservice", [])
             pieSelection.addEventListener('change', function() {
                 //console.log(pieSelection.value);
                 if (displayLevel === CITY) {
-                    console.log(displayLevel);
+                    // console.log(displayLevel);
                     update_pie(curr_city, displayLevel);
                 } else if (displayLevel === STATE) {
-                    console.log(displayLevel);
-                    console.log(curr_state);
+                    // console.log(displayLevel);
+                    // console.log(curr_state);
                     update_pie(curr_state, displayLevel);
-
                 }
             });
 
@@ -136,7 +144,6 @@ angular.module("mapservice", [])
             }
 
             if (census_variables == null || url == null || propertyName == null || displayName == null || requestName == null) {
-                // TODO: error handling
                 console.log("polygons or url or propertyName or displayName didn't load");
             }
 
@@ -302,10 +309,10 @@ angular.module("mapservice", [])
 
                 if (displayLevel === CITY) {
                     curr_city = e.feature.getProperty(requestName);
-                    console.log(curr_city);
+                    // console.log(curr_city);
                 } else if (displayLevel === STATE) {
                     curr_state = e.feature.getProperty(requestName);
-                    console.log(curr_state);
+                    // console.log(curr_state);
                 }
                 // Update pie chart
                 //console.log(e.feature.getProperty(requestName));
@@ -416,7 +423,7 @@ angular.module("mapservice", [])
             var get_pieoption = function(data, region){
                 var option = {
                     title: {
-                        text: 'Age distribution: ' + region ,
+                        text: region ,
                         textStyle: {
                             fontSize: 16
                         }
@@ -480,20 +487,17 @@ angular.module("mapservice", [])
                                 show: false
                             }
                         }
-
                     ],
                     series: [{
                         name: 'medium income',
                         type: 'bar',
                         data:y
-
                     },
                         {
                             name: 'tweet number',
                             type: 'line',
                             yAxisIndex: 1,
                             data:z
-
                         }]
                 };
                 return option;
@@ -513,10 +517,7 @@ angular.module("mapservice", [])
                     legend: {
                         data: ['Victoria', 'NSW','Queensland']
                     },
-
                     calculable: true,
-
-
                     xAxis: [{
                         type: 'category',
                         // boundaryGap: false,
@@ -527,14 +528,12 @@ angular.module("mapservice", [])
                         }
                     }],
                     yAxis: [{
-
                         type: 'value'
                     }],
                     series: data_list
                 };
                 return option;
             }
-
         };
 
         return googleMapService;

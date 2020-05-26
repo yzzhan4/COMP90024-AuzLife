@@ -1,6 +1,11 @@
-//var mapRegionLevel = CITY;
+/* Team 46
+* Haoyue Xie 1003068 @Melbourne
+* Jiayu Li 713551 @Melbourne
+* Ruqi Li 1008342 @Melbourne
+* Yi Zhang 1032768 @Melbourne
+* Zimeng Jia 978322 @Hebei, China
+* */
 
-//angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice','chartservice'])
 angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice'])
     .config(function($routeProvider) {
         $routeProvider
@@ -15,13 +20,6 @@ angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice'])
             return $resource("api/testText", null, {'get': {method: 'GET'}});
         };
     }])
-
-    // .controller('AppController', ['$scope','dataFactory','mapservice','chartservice', function($scope, dataFactory, mapservice, chartservice) {
-    //     $scope.testHeader = "A big Map";
-    //     //$scope.getTestLoc =  dataFactory.getTestLocData().get();
-    //     mapservice.refresh();
-    //     chartservice.refresh();
-    // }])
 
     .controller('AppController', ['$scope','dataFactory','mapservice', function($scope, dataFactory, mapservice) {
         $scope.testHeader = "A big Map";

@@ -1,5 +1,12 @@
-var dataController = require("./controllers/dataController.js");
+/* Team 46
+* Haoyue Xie 1003068 @Melbourne
+* Jiayu Li 713551 @Melbourne
+* Ruqi Li 1008342 @Melbourne
+* Yi Zhang 1032768 @Melbourne
+* Zimeng Jia 978322 @Hebei, China
+* */
 
+var dataController = require("./controllers/dataController.js");
 
 module.exports = function(app, express) {
     app.get('/api/testText', dataController.getTestText);

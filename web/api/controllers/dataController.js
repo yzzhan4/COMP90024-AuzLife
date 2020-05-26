@@ -1,9 +1,14 @@
-// var couchdbConnection = require("./couchdbConnection.js");
-// Test with local couchdb
+/* Team 46
+* Haoyue Xie 1003068 @Melbourne
+* Jiayu Li 713551 @Melbourne
+* Ruqi Li 1008342 @Melbourne
+* Yi Zhang 1032768 @Melbourne
+* Zimeng Jia 978322 @Hebei, China
+* */
+
 // const nano = require('nano')('http://admin:90024@172.26.131.147:5984')
 // const tweetsdb = nano.use('streaming-userids');
 const nano = require('nano')('http://admin:90024@172.26.134.71:5984');
-//const nano = require('nano')('http://admin:90024@172.26.134.71:5984');
 const dbAge = nano.use('aurin_age');
 const dbIncome = nano.use('aurin_income');
 const dbEdu = nano.use('aurin_edu');
@@ -93,7 +98,6 @@ module.exports = {
     // Cities
     // pie (age)
     getAgeOneCity: function(req, res) {
-        // TODO
         var code = req.body["region"];
         //console.log(code);
         dbAge.view('DesignCity', 'sumByCity_All', {
@@ -182,10 +186,7 @@ module.exports = {
                 datalist.push({name: doc.key, type: 'line', data: doc.value.slice(0, 5)});
             });
             res.send(datalist)
-
         });
-        // TODO: error handling
-        // });
     },
 
     // State
@@ -201,8 +202,6 @@ module.exports = {
             //console.log(body.rows[0]);
             res.send(body.rows[0]);
         });
-        // TODO: error handling
-        // });
     },
 
     // pie (language)
@@ -224,7 +223,6 @@ module.exports = {
             //     TAS:[{value: 0, name: "Others"}],
             //     NT:[{value: 0, name: "Others"}],
             //     ACT:[{value: 0, name: "Others"}],};
-
             body.rows.forEach((doc) => {
                 //console.log(stateCodes[code] == doc.key[0]);
                 if (doc.key[0] == stateCodes[code]){ //doc.key[0] == req.state改成你的req
@@ -253,22 +251,13 @@ module.exports = {
                 name.push(doc.key);
                 num.push(doc.value/sRegion[doc.key]);
             });
-            // console.log("1");
-            // console.log(name);
-            // console.log(num);
         })
-        // console.log("2");
-        // console.log(name);
-        // console.log(num);
         dbTest.view('DesignDoc', 'countByState', {
             'keys':[[1,'NSW'],[1,'VIC'],[1,'QLD'],[1,'SA'],[1,'WA'],[1,'TAS'],[1,'NT'],[1,'ACT']],
             'group':'true',
             'stale':'update_after'
             //'stale':'ok'
         }).then((body) => {
-            // console.log("3");
-            // console.log(name);
-            // console.log(num);
             var tweets = {};
             var count = [];
             body.rows.forEach((doc) => {
@@ -294,8 +283,5 @@ module.exports = {
             });
             res.send(datalist)
         });
-        // TODO: error handling
-        // });
     }
-
 }
