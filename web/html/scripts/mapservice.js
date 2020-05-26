@@ -336,7 +336,8 @@ angular.module("mapservice", [])
                         url: url,
                         data: {"region":code}
                     }).then(function (response) {
-                        pie_initialize(response.data[1], response.data[0]);
+                        console.log(response);
+                        pie_initialize(response.data.value, response.data.key);
                     })
                 }
             }
@@ -416,12 +417,12 @@ angular.module("mapservice", [])
                 var option = {
 
                     title: {
-                        text: 'tweets number and medium income of chosen states'
+                        text: 'Tweets number and medium income'
                     },
                     tooltip: {},
                     legend: {
                         selectedMode: false,
-                        data:['medium income','tweets number']
+                        data:['medium income','Num of tweets']
                     },
                     xAxis: [{
                             type: 'category',
@@ -476,7 +477,7 @@ angular.module("mapservice", [])
                 var option = {
                     backgroundColor: '#FBFBFB',
                     title: {
-                        text: 'line chart of population in Australia'
+                        text: 'Line chart of population in Australia'
                     },
                     tooltip: {
                         trigger: 'axis'
