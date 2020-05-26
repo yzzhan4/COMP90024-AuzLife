@@ -66,7 +66,7 @@ angular.module("mapservice", [])
             var displayName = null;
             var requestName = null;
             if (level === CITY){
-                //polygon_list = new Array(["count","REGION_CODE"]);
+                // polygon_list = new Array(["count","REGION_CODE"]);
                 // $http({
                 //     method: 'get',
                 //     url: 'api/tweetsCity'
@@ -79,7 +79,7 @@ angular.module("mapservice", [])
                 //         }
                 //     }
                 // });
-                polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
+                polygon_list = [["count","REGION_CODE"],[1809,"14"],[10207,"06"],[8326,"05"],[10325,"03"],[4893,"07"],[3629,"04"],[34220,"01"],[12789,"09"],[34201,"02"],[967,"15"],[5749,"11"],[3715,"13"],[3333,"12"],[1809,"14"],[5015,"10"]];
                 // console.log("city polygon: ");
                 // console.log(polygon_list);
                 url = "../assets/City_geojson.json";
@@ -99,7 +99,7 @@ angular.module("mapservice", [])
                 //         polygon_list.push([response.data[key], STATE_CODE_TO_NAME[key]]);
                 //     }
                 // });
-                polygon_list = [["count","STATE_NAME"],[10,"New South Wales"],[20,"Victoria"],[30,"Queensland"],[10,"South Australia"],[2,"Western Australia"],[14,"Tasmania"],[25,"Northern Territory"],[5,"Australian Capital Territory"]];
+                polygon_list = [["count","STATE_NAME"],[46990,"New South Wales"],[39235,"Victoria"],[19703,"Queensland"],[11659,"South Australia"],[12016,"Western Australia"],[3715,"Tasmania"],[967,"Northern Territory"],[4893,"Australian Capital Territory"]];
                 console.log("state polygon: ");
                 console.log(polygon_list);
                 //url = "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.min.geojson";
