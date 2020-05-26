@@ -400,7 +400,10 @@ angular.module("mapservice", [])
             var get_pieoption = function(data, region){
                 var option = {
                     title: {
-                        text: 'Population of age group in ' + region
+                        text: 'Age distribution: ' + region ,
+                        textStyle: {
+                            fontSize: 16
+                          }
                     },
                     tooltip: {},
                     series: [{
@@ -501,7 +504,11 @@ angular.module("mapservice", [])
                     xAxis: [{
                         type: 'category',
                         // boundaryGap: false,
-                        data: ["secondary", "uni_other", "furt_educ", "primary", "other"]
+                        data: ["Secondary School", "University", "Technical or Further Educational institution", "Infants Primary", "Others"],
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 10 //If the label names are too long you can manage this by rotating the label.
+                        }
                     }],
                     yAxis: [{
 
