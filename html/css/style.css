@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen&display=swap');
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Oxygen', sans-serif;
+}
+
+/*======================== header ========================*/
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    height: 76px;
+}
+
+.covidimg {
+    width: 116px;
+    height: 60px;
+    float:left;
+    margin-top: 7px;
+    margin-left: 14px;
+}
+
+h2 {
+    color: #f1f1f1;
+    float:left;
+    margin-top: 22px;
+    margin-left: 10px;
+    font-size: 24px;
+}
+
+/*======================== Body ========================*/
+.content {
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* Map */
+#map {
+    width:100%;
+    height:700px;
+    display: block;
+    vertical-align: middle;
+}
+
+.rightsidebar {
+    height: 800px;
+}
+
+.rightsidebar h5 {
+    height: 24px;
+    padding-bottom: 20px;
+}
+
+/* Region label */
+.shadowbox {
+    text-align: center;
+    height: 38px;
+    font-size: 16px;
+    z-index: 5;
+    box-shadow: 0 4px 6px -4px #333;
+    padding: 5px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(245, 245, 245, 1) 100%);
+    border: rgb(229, 229, 229) 1px solid;
+}
+
+#data-value {
+    font-size: 16px;
+    font-weight: bold
+}
+
+#data-label {
+    font-size: 16px;
+    font-weight: normal;
+    /*padding-right: 10px;*/
+}
+
+/* Gradient bar */
+#legend {
+    /*position: absolute;*/
+    width: 100%;
+    display: flex;
+    display: -webkit-box;
+    padding-top: 24px;
+    text-align: center;
+}
+
+.color-key {
+    background: linear-gradient(to left,
+    hsl(2, 74%, 51%) 0%,
+    hsl(3, 74%, 58%) 17%,
+    hsl(4, 75%, 64%) 33%,
+    hsl(5, 77%, 71%) 50%,
+    hsl(8, 79%, 78%) 67%,
+    hsl(12, 83%, 84%) 83%,
+    hsl(19, 96%, 91%) 100%);
+    flex: 1;
+    -webkit-box-flex: 1;
+    margin: 0 5px;
+    text-align: left;
+    font-size: 1.0em;
+    line-height: 1.0em;
+}
+
+#data-caret {
+    margin-left: -5px;
+    display: none;
+    font-size: 26px;
+    width: 12px;
+}
+
+/* Control (radio buttons) */
+#controls {
+    top: 10px;
+    left: 110px;
+    width: 360px;
+    height: 45px;
+    padding-top: 20px;
+}
+
+.radioLabel {
+    padding-left: 10px;
+}
+
+/*#census-variable {*/
+/*    width: 300px;*/
+/*    height: 24px;*/
+/*}*/
+
+/* Aurin data selection */
+.aurinselection {
+    padding-top: 40px;
+}
+
+/* Charts */
+.thinchart {
+    width:100%;
+    height:500px;
+    padding-top: 100px;
+}
+
+.charts {
+    width:100%;
+    padding-bottom: 20px;
+}
+
+.charts .fatchart {
+    width: 100%;
+    height: 500px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+}
+
+.lineheading {
+    width:100vw;
+}
+
+/*======================== Footer ========================*/
+.footer {
+    background-color: #f1f1f1;
+    padding-top: 50px;
+    padding-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    margin: 0px;
+    color: #525252;
+    line-height: 2.0;
+}
+
+.footer h5 {
+    font-size: 16px;
+}
+
+.footer p {
+    font-size: smaller;
+}
+
+.footer .icon {
+    font-size:30px;
+    padding-right: 20px;
+    color: #525252;
+}

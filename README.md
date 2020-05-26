@@ -13,3 +13,15 @@ Twitter streaming
 - keywords.py
 - api_accounts.py
 - streaming_region.py
+
+To run the server:
+for the first time:
+```
+npm install
+npm start
+```
+
+To run the server:
+```
+npm start
+```
