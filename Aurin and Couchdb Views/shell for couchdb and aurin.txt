@@ -1,0 +1,3 @@
+pip install CouchDB
+python couchdbConnection.py
+python aurin data to couchdb.py
