@@ -1,0 +1,77 @@
+---
+# Team 46
+# Haoyue Xie 1003068 @Melbourne
+# Jiayu Li 713551 @Melbourne
+# Ruqi Li 1008342 @Melbourne
+# Yi Zhang 1032768 @Melbourne
+# Zimeng Jia 978322 @Hebei, China
+
+
+
+- name: Create DB directory
+  tags: 'DB'
+  become: yes
+  file:
+    path: "{{ db_dir }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+- name: Create streaming directory
+  tags: 'DB'
+  become: yes
+  file:
+    path: "{{ st_dir }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+- name: Upload DB Code
+  become: yes
+  copy:
+    src: ../../../../AurinCouchdbViews
+    dest: "{{ db_dir }}"
+
+- pip:
+    name: couchdb
+    executable: pip3
+
+- pip:
+    name: tweepy
+    executable: pip3
+
+- pip:
+    name: shapely
+    executable: pip3
+
+- name: Install Pandas
+  tags: 'pandas'
+  become: yes
+  apt:
+    name: "python3-pandas"
+    state: present
+
+- name: Upload DB Code
+  become: yes
+  copy:
+    src: ../../../../TwitterStreaming
+    dest: "{{ st_dir }}"
+
+- name: Upload DB Code
+  become: yes
+  copy:
+    src: ../../../../AurinCouchdbViews
+    dest: "{{ st_dir }}"
+
+- name: execute the subnode script
+  become: yes
+  shell: /home/ubuntu/stream/streaming.sh
+
+
+- name: execute the subnode script
+  become: yes
+  shell: /home/ubuntu/db/AurinCouchdbViews/dbview.sh
+
+

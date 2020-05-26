@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Team 46
 # Haoyue Xie 1003068 @Melbourne
 # Jiayu Li 713551 @Melbourne
@@ -6,10 +8,5 @@
 # Zimeng Jia 978322 @Hebei, China
 
 
-- hosts: master
-  gather_facts: True
-
-  roles:
-  - role: instance1-couchdbmaster
-  - role: uploadDB
-
+python couchdbConnection.py
+python aurintCouchdb.py
