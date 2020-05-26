@@ -20,6 +20,24 @@ var stateCodes = {
     "8":"ACT"
 }
 
+var cityCode = {
+    "Melbourne": "1",
+    "Sydney": "2",
+    "Brisbane": "3" ,
+    "Gold Coast": "4",
+    "Adelaide": "5",
+    "Perth": "6",
+    "Canberra": "7",
+    "New South Wales Other Regions": "9",
+    "Victoria Other Regions": "10",
+    "Queensland Other Regions": "11",
+    "South Australia Other Regions": "12",
+    "Tasmania Other Regions": "13",
+    "Western Australia Other Regions": "14",
+    "Northern Territory Other Regions": "15",
+    "und": "99"
+};
+
 module.exports = {
     // test sending data from backend
     getTestText: function(req, res) {
@@ -67,6 +85,80 @@ module.exports = {
             res.send(tweets);
         });
     },
+
+    // Cities
+    // pie
+    getAgeOneCity: function(req, res) {
+        // TODO
+        var code = req.body["region"];
+        //console.log(code);
+        dbAge.view('DesignCity', 'sumByCity_All', {
+            'keys': [code],
+            'group':'true'
+        }).then((body) => {
+            //console.log(body.rows[0]);
+            res.send(body.rows[0]);
+        });
+    },
+
+    // bar
+    getIncomeAllCities: function(req, res) {
+        var num = [];
+        var name = [];
+        dbIncome.view('DesignDoc', 'sumByCity', {
+            //'keys':['Melbourne','Brisbane'],
+            'group':'true',
+        }).then((body) => {
+            body.rows.forEach((doc) => {
+                if (cityCode[doc.key] <10){
+                    name.push(doc.key);
+                    num.push(doc.value);
+                }
+            });
+            // res.send([num, name]);
+        });
+
+        dbTest.view('DesignDoc', 'countByCity', {
+            'keys':[[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,9]],
+            'group':'true',
+            'stale':'update_after'
+            //'stale':'ok'
+        }).then((body) => {
+            var tweets = {};
+            var count = [];
+            body.rows.forEach((doc) => {
+                // console.log(cityName[doc.key[1]]);
+                tweets[doc.key[1]] = doc.value;
+            });
+
+            name.forEach((region) => {
+                // console.log(tweets[cityCode[region]]);
+                count.push(tweets[cityCode[region]])
+            });
+            res.send([name, num, count]);
+        });
+
+
+
+    },
+
+    // line
+    getEduAllCities: function(req, res) {
+        dbEdu.view('DesignDoc', 'sumByCity_All', {
+            'keys':[ "Melbourne", "Sydney", "Brisbane", "Gold Coast", "Adelaide", "Perth", "Canberra", "New South Wales Other Regions"],
+            'group':'true'
+        }).then((body) => {
+            var datalist = [];
+            body.rows.forEach((doc) => {
+                datalist.push({name: doc.key, type: 'line', data: doc.value.slice(0, 5)});
+            });
+            res.send(datalist)
+
+        });
+        // TODO: error handling
+        // });
+    },
+
     // State
     // pie
     getAgeOneState: function (req, res){
@@ -127,77 +219,6 @@ module.exports = {
     // line
     getEduAllState: function(req, res){
         dbEdu.view('DesignDoc', 'sumByState_All', {
-            //'keys':['VIC'],
-            'group':'true'
-        }).then((body) => {
-            var datalist = [];
-            body.rows.forEach((doc) => {
-                var region = {name: doc.key, type: 'line', data: doc.value.slice(0, 5)}
-                datalist.push(region)
-            });
-            res.send(datalist)
-        });
-        // TODO: error handling
-        // });
-    },
-
-    // Cities
-    // pie
-    getAgeOneCity: function(req, res) {
-        // TODO
-        // var code = req.body["region"];
-        // dbAge.view('DesignState', 'sumByCity_All', {
-        //     'keys': [code],
-        //     'group':'true'
-        // }).then((body) => {
-        //     //console.log(body.rows[0]);
-        //     res.send(body.rows[0]);
-        // });
-    },
-
-    // bar
-    getIncomeAllCities: function(req, res) {
-        var num = [];
-        var name = [];
-        dbIncome.view('DesignDoc', 'sumByCity', {
-            //'keys':['Melbourne','Brisbane'],
-            'group':'true',
-        }).then((body) => {
-            body.rows.forEach((doc) => {
-                name.push(doc.key);
-                num.push(doc.value);
-            });
-            // console.log("1");
-            // console.log(name);
-            // console.log(num);
-        })
-        // console.log("2");
-        // console.log(name);
-        // console.log(num);
-        dbTest.view('DesignDoc', 'countByCity', {
-            'keys':[[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,9],[1,10],[1,11],[1,12],[1,13],[1,14],[1,15]],
-            'group':'true',
-            'stale':'update_after'
-            //'stale':'ok'
-        }).then((body) => {
-            // console.log("3");
-            // console.log(name);
-            // console.log(num);
-            var tweets = {};
-            var count = [];
-            body.rows.forEach((doc) => {
-                tweets[doc.key[1]] = doc.value
-            });
-            name.forEach((region) => {
-                count.push(tweets[region])
-            });
-            res.send([num, name, count]);
-        });
-    },
-
-    // line
-    getEduAllCities: function(req, res) {
-        dbEdu.view('DesignDoc', 'sumByCity_All', {
             //'keys':['VIC'],
             'group':'true'
         }).then((body) => {

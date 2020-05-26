@@ -1,7 +1,6 @@
 const MAP_INIT_LOC = {lng:133, lat:-28};
 const CITY = 0;
 const STATE = 1;
-var mapRegionLevel = CITY;
 
 const STATE_CODE_TO_NAME = {
     "NSW":"New South Wales",
@@ -18,27 +17,13 @@ angular.module("mapservice", [])
     .factory("mapservice",function($http){
         // Initializes the map
         var googleMapService = {};
-        googleMapService.refresh = function(){
+        googleMapService.refresh = function(level){
             // Initialise map at city level as default
-            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, CITY);
-        }
-
-        // Radio input that changes map (show as cities or states)
-        var radios = document.forms["mapRegionForm"].elements["mapRegion"];
-        radios[CITY].onclick = function () {
-            //console.log("initialize map by cites");
-            mapRegionLevel = CITY;
-            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, CITY);
-        }
-        radios[STATE].onclick = function () {
-            //console.log("initialize map by states");
-            mapRegionLevel = STATE;
-            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, STATE);
+            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, level);
         }
 
         // Initialize map
         var initialize = function(latitude, longitude, level) {
-            //console.log(mapRegionLevel);
             // Uses the selected lat, long as starting point
             var myLatLng = {lat: latitude, lng: longitude};
             var mapStyle = [{
@@ -62,63 +47,69 @@ angular.module("mapservice", [])
                 'elementType': 'geometry',
                 'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
             }];
-            var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 4.5,
                 center: myLatLng,
                 styles: mapStyle
             });
             map.data.setStyle(styleFeature);
+            map.data.addListener('mouseover', mouseInToRegion);
+            map.data.addListener('mouseout', mouseOutOfRegion);
             map.data.addListener('click', clickOnMap);
 
+            var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
+            clearCensusData();
             // Display regions on map
-            var polygon_list = [];
+            var polygon_list = null;
             var url = null;
             var propertyName = null;
             var displayName = null;
             var requestName = null;
             if (level === CITY){
-                polygon_list = [["count","REGION_CODE"]]
-                $http({
-                    method: 'get',
-                    url: 'api/tweetsCity'
-                }).then(function (response) {
-                    for (var key in response.data){
-                        if (key<10) {
-                            polygon_list.push([response.data[key], "0"+key.toString()]);
-                        } else {
-                            polygon_list.push([response.data[key], key.toString()]);
-                        }
-                    }
-                });
-                console.log("city polygon: ");
-                console.log(polygon_list);
-                //polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
+                //polygon_list = new Array(["count","REGION_CODE"]);
+                // $http({
+                //     method: 'get',
+                //     url: 'api/tweetsCity'
+                // }).then(function (response) {
+                //     for (var key in response.data){
+                //         if (key<10) {
+                //             polygon_list.push([response.data[key], "0"+key.toString()]);
+                //         } else {
+                //             polygon_list.push([response.data[key], key.toString()]);
+                //         }
+                //     }
+                // });
+                polygon_list = [["count","REGION_CODE"],[10,"14"],[20,"06"],[30,"05"],[10,"03"],[2,"07"],[14,"04"],[25,"01"],[5,"09"],[34,"02"],[6,"15"],[80,"11"],[4,"13"],[56,"12"],[199,"14"],[3,"10"]];
+                // console.log("city polygon: ");
+                // console.log(polygon_list);
                 url = "../assets/City_geojson.json";
                 propertyName = "REGION_CODE"; // 02
                 displayName = "CITY_NAME"; // Melbourne
                 requestName = "CITY_NAME"; // Melbourne
             } else if (level === STATE) {
-                polygon_list = [["count","STATE_NAME"]]
-                $http({
-                    method: 'get',
-                    url: 'api/tweetsState'
-                }).then(function (response) {
-                    //console.log(response.data);
-                    for (var key in response.data){
-                        polygon_list.push([response.data[key], STATE_CODE_TO_NAME[key]]);
-                    }
-                    console.log("state polygon: ");
-                    console.log(polygon_list);
-                });
-                //polygon_list = [["count","STATE_NAME"],[10,"New South Wales"],[20,"Victoria"],[30,"Queensland"],[10,"South Australia"],[2,"Western Australia"],[14,"Tasmania"],[25,"Northern Territory"],[5,"Australian Capital Territory"]];
+                // polygon_list = new Array(["count","STATE_NAME"]);
+                // $http({
+                //     method: 'get',
+                //     url: 'api/tweetsState'
+                // }).then(function (response) {
+                //     //console.log(response.data);
+                //     for (var key in response.data){
+                //         // console.log(response.data[key]);
+                //         // console.log(STATE_CODE_TO_NAME[key]);
+                //         polygon_list.push([response.data[key], STATE_CODE_TO_NAME[key]]);
+                //     }
+                // });
+                polygon_list = [["count","STATE_NAME"],[10,"New South Wales"],[20,"Victoria"],[30,"Queensland"],[10,"South Australia"],[2,"Western Australia"],[14,"Tasmania"],[25,"Northern Territory"],[5,"Australian Capital Territory"]];
+                console.log("state polygon: ");
+                console.log(polygon_list);
                 //url = "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.min.geojson";
                 url = "../assets/australian-states.min.geojson"
                 propertyName = "STATE_NAME"; // Victoria
                 displayName = "STATE_NAME";
                 requestName = "STATE_CODE" // 2
             }
-            if (polygon_list === [] || url == null || propertyName == null || displayName == null || requestName == null) {
+
+            if (polygon_list == null || url == null || propertyName == null || displayName == null || requestName == null) {
                 // TODO: error handling
                 console.log("polygons or url or propertyName or displayName didn't load");
             }
@@ -140,6 +131,7 @@ angular.module("mapservice", [])
                 google.maps.event.addListenerOnce(map.data, 'addfeature', function () {
                     google.maps.event.trigger(document.getElementById('census-variable'), 'change');
                 });
+                console.log(polygon_list);
                 loadCensusData(polygon_list);
                 map.data.setStyle(styleFeature);
                 // Set default region to Melbourne or Victoria
@@ -184,12 +176,12 @@ angular.module("mapservice", [])
             // Load census data
             function loadCensusData(data){
                 console.log("load data");
-                // console.log(data);
-                clearCensusData();
+                console.log(data);
                 data.shift();
                 data.forEach(function(row) {
                     var censusVariable = parseFloat(row[0]);
                     var stateId = row[1];
+                    console.log(row);
                     // keep track of min and max values
                     if (censusVariable < censusMin) {
                         censusMin = censusVariable;
@@ -258,6 +250,14 @@ angular.module("mapservice", [])
                     fillOpacity: 0.75,
                     visible: showRow
                 };
+            }
+
+            function mouseInToRegion(e) {
+                e.feature.setProperty('state', 'hover');
+            }
+
+            function mouseOutOfRegion(e) {
+                e.feature.setProperty('state', 'normal');
             }
 
             function clickOnMap(e) {
