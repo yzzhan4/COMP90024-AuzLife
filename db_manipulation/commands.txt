@@ -5,14 +5,13 @@ curl -XPUT "http://admin:90024@172.26.131.147:5984/streaming-tweets?partitioned=
 # On local machine:
 # upload local couchdb data to remote
 python3 local_to_couch.py 
+
 # copy scripts to remote
-scp -i ~/.ssh/winkey.pem api_accounts.py ubuntu@172.26.131.147:/home/ubuntu/TwitterStreaming
-scp -i ~/.ssh/winkey.pem keywords.py ubuntu@172.26.131.147:/home/ubuntu/TwitterStreaming
-scp -i ~/.ssh/winkey.pem streaming.py ubuntu@172.26.131.147:/home/ubuntu/TwitterStreaming
-scp -i ~/.ssh/winkey.pem ThreadPoolManager.py ubuntu@172.26.131.147:/home/ubuntu/TwitterStreaming
+scp -i ~/.ssh/winkey.pem * ubuntu@172.26.131.147:/home/ubuntu/TwitterStreaming
 
 # install python packages
 pip3 install tweepy
 pip3 install couchdb
+pip3 install shapely
 # run harvester
-python3 streaming.py
+nohup python3 -u streaming.py &
