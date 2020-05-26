@@ -32,7 +32,7 @@ def createDocs(csv_data):
 
 def main():
 
-    path = "E:/Unimelb/2020semester1/COPM90024 Cluster and Cloud Computing/assignment2/data/"
+    path = "./AurinData/"
     filenameIncome = path + "Median income and age.csv"
     filenameAge = path + "age.csv"
     filenameEdu = path + "education.csv"
