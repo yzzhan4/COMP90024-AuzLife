@@ -10,9 +10,9 @@ version: '3.7'
 services:
 
     nodejs:
-        build: ./node
+        build: ./nodejs/web
         volumes:
-            - ./node:/usr/src/server
+            - ./nodejs/web:/usr/src/server
         ports:
             - "3000:3000"
         restart: always
