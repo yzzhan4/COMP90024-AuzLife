@@ -40,6 +40,7 @@ angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice'])
             mapRegionLevel = STATE;
             mapservice.refresh(STATE);
         }
+
     }])
 
 

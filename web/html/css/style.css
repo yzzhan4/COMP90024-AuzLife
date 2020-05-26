@@ -127,15 +127,19 @@ h2 {
 /*}*/
 
 /* Aurin data selection */
-.aurinselection {
-    padding-top: 40px;
+.piechartselection {
+    padding-top: 20px;
 }
 
 /* Charts */
 .thinchart {
     width:100%;
     height:500px;
-    padding-top: 100px;
+    padding-top: 20px;
+}
+
+#lanpiechart {
+    display:none;
 }
 
 .charts {

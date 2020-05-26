@@ -87,7 +87,7 @@ module.exports = {
     },
 
     // Cities
-    // pie
+    // pie (age)
     getAgeOneCity: function(req, res) {
         // TODO
         var code = req.body["region"];
@@ -99,6 +99,11 @@ module.exports = {
             //console.log(body.rows[0]);
             res.send(body.rows[0]);
         });
+    },
+
+    // pie (language)
+    getLangOneCity: function(req, res) {
+
     },
 
     // bar
@@ -137,9 +142,6 @@ module.exports = {
             });
             res.send([name, num, count]);
         });
-
-
-
     },
 
     // line
@@ -160,7 +162,7 @@ module.exports = {
     },
 
     // State
-    // pie
+    // pie (age)
     getAgeOneState: function (req, res){
         //var states = ["VIC"];
         var code = req.body["region"];
@@ -174,6 +176,40 @@ module.exports = {
         });
         // TODO: error handling
         // });
+    },
+
+    // pie (language)
+    getLangOneState: function(req, res) {
+        var code = req.body["region"];
+        var states = [stateCodes[code]];
+        dbTest.view('DesignDoc', 'countLangState', {
+            'group':'true',
+            'stale':'update_after'
+        }).then((body) => {
+            //res.send(body.rows)
+            var langInState = {};
+            langInState = {NSW: [{value: 0, name: "Others"}],
+                VIC:[{value: 0, name: "Others"}],
+                QLD:[{value: 0, name: "Others"}],
+                SA:[{value: 0, name: "Others"}],
+                WA:[{value: 0, name: "Others"}],
+                TAS:[{value: 0, name: "Others"}],
+                NT:[{value: 0, name: "Others"}],
+                ACT:[{value: 0, name: "Others"}],};
+            body.rows.forEach((doc) => {
+                console.log(doc.key[0]);
+                if (doc.key[0] === states){ //doc.key[0] == req.state改成你的req
+                    if(doc.value > 50 && doc.key[1] !== "und") {
+                        langInState[doc.key[0]].push({value: doc.value, name:doc.key[1]});
+                        console.log(langInState[doc.key[0]]);
+                    } else{
+                        langInState[doc.key[0]][0].value += doc.value;
+                        console.log(langInState[doc.key[0]]);
+                    }
+                }
+            });
+            res.send([states, langInState]);
+        });
     },
 
     // bar

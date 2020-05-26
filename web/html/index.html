@@ -52,7 +52,13 @@
                             <input type="radio" name="mapRegion" value="state">Show states
                         </form>
                     </div>
-
+                    <div class="piechartselection">
+                        <label for="pieselect">Choose dataset:</label>
+                        <select name="pieselect" id="pieselect">
+                            <option value="Age" selected>Population of age group in Melbourne</option>
+                            <option value="Language">Languages of Tweets</option>
+                        </select>
+                    </div>
                     <div class="col thinchart" id="piechart"></div>
                 </div>
             </div>

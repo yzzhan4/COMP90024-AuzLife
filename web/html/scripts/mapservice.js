@@ -13,6 +13,9 @@ const STATE_CODE_TO_NAME = {
     "ACT":"Australian Capital Territory"
 };
 
+var curr_city = "Melbourne";
+var curr_state = 2;
+
 angular.module("mapservice", [])
     .factory("mapservice",function($http){
         // Initializes the map
@@ -56,6 +59,17 @@ angular.module("mapservice", [])
             map.data.addListener('mouseover', mouseInToRegion);
             map.data.addListener('mouseout', mouseOutOfRegion);
             map.data.addListener('click', clickOnMap);
+
+            var pieSelection = document.getElementById('pieselect');
+            pieSelection.addEventListener('change', function() {
+                console.log(pieSelection.value);
+                if (level === CITY) {
+                    update_pie(curr_city, level);
+                } else if (level === STATE) {
+                    update_pie(curr_state, level);
+                    console.log(curr_state);
+                }
+            });
 
             var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
             clearCensusData();
@@ -272,37 +286,59 @@ angular.module("mapservice", [])
                 document.getElementById('data-caret').style.display = 'block';
                 document.getElementById('data-caret').style.paddingLeft = percent + '%';
 
+                if (level === CITY) {
+                    curr_city = e.feature.getProperty(requestName);
+                } else if (level === STATE) {
+                    curr_state = e.feature.getProperty(requestName);
+                }
                 // Update pie chart
                 //console.log(e.feature.getProperty(requestName));
                 update_pie(e.feature.getProperty(requestName), level);
             }
 
             var update_pie = function(code, level) {
+                var pieSelection = document.getElementById('pieselect');
+                console.log(code);
                 var url = null;
-                if (level === CITY) {
-                    url = 'api/ageCity';
-                } else if (level === STATE) {
-                    url = 'api/ageState';
+                if (pieSelection.value === "Age") {
+                    if (level === CITY) {
+                        url = 'api/ageCity';
+                    } else if (level === STATE) {
+                        url = 'api/ageState';
+                    }
+                    $http({
+                        method: 'POST',
+                        url: url,
+                        data: {"region":code}
+                    }).then(function (response) {
+                        console.log('response:', response);
+                        var pie_data = [{value:response.data.value[0],name:'0-4'},
+                            {value:response.data.value[1],name:'5-9'},
+                            {value:response.data.value[2],name:'10-14'},
+                            {value:response.data.value[3],name:'15-19'},
+                            {value:response.data.value[4],name:'20-24'},
+                            {value:response.data.value[5],name:'25-29'},
+                            {value:response.data.value[6],name:'30-34'},
+                            {value:response.data.value[7],name:'35-39'},
+                            {value:response.data.value[8],name:'40-44'},
+                            {value:response.data.value[9],name:'45-49'},
+                            {value:response.data.value[10],name:'50-54'}];
+                        pie_initialize(pie_data, response.data.key);
+                    })
+                } else if (pieSelection.value === "Language") {
+                    if (level === CITY) {
+                        url = 'api/langCity';
+                    } else if (level === STATE) {
+                        url = 'api/langState';
+                    }
+                    $http({
+                        method: 'POST',
+                        url: url,
+                        data: {"region":code}
+                    }).then(function (response) {
+                        pie_initialize(response.data[1], response.data[0]);
+                    })
                 }
-                $http({
-                    method: 'POST',
-                    url: url,
-                    data: {"region":code}
-                }).then(function (response) {
-                    //console.log('response:', response);
-                    var pie_data = [{value:response.data.value[0],name:'0-4'},
-                        {value:response.data.value[1],name:'5-9'},
-                        {value:response.data.value[2],name:'10-14'},
-                        {value:response.data.value[3],name:'15-19'},
-                        {value:response.data.value[4],name:'20-24'},
-                        {value:response.data.value[5],name:'25-29'},
-                        {value:response.data.value[6],name:'30-34'},
-                        {value:response.data.value[7],name:'35-39'},
-                        {value:response.data.value[8],name:'40-44'},
-                        {value:response.data.value[9],name:'45-49'},
-                        {value:response.data.value[10],name:'50-54'}];
-                    pie_initialize(pie_data, response.data.key);
-                })
             }
 
             var update_bar = function(level) {

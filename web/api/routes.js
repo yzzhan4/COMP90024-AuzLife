@@ -7,10 +7,12 @@ module.exports = function(app, express) {
     app.get('/api/tweets', dataController.getTweets);
 
     app.post('/api/ageState', dataController.getAgeOneState);
+    app.post('/api/langState', dataController.getLangOneState);
     app.get('/api/incomeState', dataController.getIncomeAllState);
     app.get('/api/eduState', dataController.getEduAllState);
 
     app.post('/api/ageCity', dataController.getAgeOneCity);
+    app.post('/api/langCity', dataController.getLangOneCity);
     app.get('/api/incomeCity', dataController.getIncomeAllCities);
     app.get('/api/eduCity', dataController.getEduAllCities);
 
