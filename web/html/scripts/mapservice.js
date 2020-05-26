@@ -13,6 +13,7 @@ const STATE_CODE_TO_NAME = {
     "ACT":"Australian Capital Territory"
 };
 
+// default
 var curr_city = "Melbourne";
 var curr_state = 2;
 
@@ -20,13 +21,52 @@ angular.module("mapservice", [])
     .factory("mapservice",function($http){
         // Initializes the map
         var googleMapService = {};
-        googleMapService.refresh = function(level){
-            // Initialise map at city level as default
-            initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, level);
+        var census_variables_cities = new Array(["count","REGION_CODE"]);
+        var census_variables_states = new Array(["count","STATE_NAME"]);
+        googleMapService.refresh = function(displayLevel){
+            curr_city = "Melbourne";
+            curr_state = 2;
+            // Get census data for city map
+            $http({
+                method: 'get',
+                url: 'api/tweetsCity'
+            }).then(function (response) {
+                for (var key in response.data){
+                    if (key<10) {
+                        census_variables_cities.push([response.data[key], "0"+key.toString()]);
+                    } else {
+                        census_variables_cities.push([response.data[key], key.toString()]);
+                    }
+                }
+            });
+            //census_variables_cities = [["count", "REGION_CODE"], [1809, "14"], [10207, "06"], [8326, "05"], [10325, "03"], [4893, "07"], [3629, "04"], [34220, "01"], [12789, "09"], [34201, "02"], [967, "15"], [5749, "11"], [3715, "13"], [3333, "12"], [1809, "14"], [5015, "10"]];
+            // console.log("city polygon: ");
+            // console.log(census_variables_cities);
+            // Get census data for state map
+            $http({
+                method: 'get',
+                url: 'api/tweetsState'
+            }).then(function (response) {
+                //console.log(response.data);
+                for (var key in response.data){
+                    // console.log(response.data[key]);
+                    // console.log(STATE_CODE_TO_NAME[key]);
+                    census_variables_states.push([response.data[key], STATE_CODE_TO_NAME[key]]);
+                }
+            });
+            //census_variables = [["count", "STATE_NAME"], [46990, "New South Wales"], [39235, "Victoria"], [19703, "Queensland"], [11659, "South Australia"], [12016, "Western Australia"], [3715, "Tasmania"], [967, "Northern Territory"], [4893, "Australian Capital Territory"]];
+            // console.log("state polygon: ");
+            // console.log(census_variables_states);
+
+            if (displayLevel === CITY) {
+                initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, displayLevel, census_variables_cities);
+            } else if (displayLevel === STATE) {
+                initialize(MAP_INIT_LOC.lat, MAP_INIT_LOC.lng, displayLevel, census_variables_states);
+            }
         }
 
         // Initialize map
-        var initialize = function(latitude, longitude, level) {
+        var initialize = function(latitude, longitude, displayLevel, census_variables) {
             // Uses the selected lat, long as starting point
             var myLatLng = {lat: latitude, lng: longitude};
             var mapStyle = [{
@@ -60,62 +100,34 @@ angular.module("mapservice", [])
             map.data.addListener('mouseout', mouseOutOfRegion);
             map.data.addListener('click', clickOnMap);
 
+            // dropdown menu listener
             var pieSelection = document.getElementById('pieselect');
             pieSelection.addEventListener('change', function() {
-                console.log(pieSelection.value);
-                if (level === CITY) {
-                    update_pie(curr_city, level);
-                } else if (level === STATE) {
-                    update_pie(curr_state, level);
+                //console.log(pieSelection.value);
+                if (displayLevel === CITY) {
+                    console.log(displayLevel);
+                    update_pie(curr_city, displayLevel);
+                } else if (displayLevel === STATE) {
+                    console.log(displayLevel);
                     console.log(curr_state);
+                    update_pie(curr_state, displayLevel);
+
                 }
             });
 
             var censusMin = Number.MAX_VALUE, censusMax = -Number.MAX_VALUE;
             clearCensusData();
             // Display regions on map
-            var polygon_list = null;
             var url = null;
             var propertyName = null;
             var displayName = null;
             var requestName = null;
-            if (level === CITY){
-                // polygon_list = new Array(["count","REGION_CODE"]);
-                // $http({
-                //     method: 'get',
-                //     url: 'api/tweetsCity'
-                // }).then(function (response) {
-                //     for (var key in response.data){
-                //         if (key<10) {
-                //             polygon_list.push([response.data[key], "0"+key.toString()]);
-                //         } else {
-                //             polygon_list.push([response.data[key], key.toString()]);
-                //         }
-                //     }
-                // });
-                polygon_list = [["count","REGION_CODE"],[1809,"14"],[10207,"06"],[8326,"05"],[10325,"03"],[4893,"07"],[3629,"04"],[34220,"01"],[12789,"09"],[34201,"02"],[967,"15"],[5749,"11"],[3715,"13"],[3333,"12"],[1809,"14"],[5015,"10"]];
-                // console.log("city polygon: ");
-                // console.log(polygon_list);
+            if (displayLevel === CITY){
                 url = "../assets/City_geojson.json";
                 propertyName = "REGION_CODE"; // 02
                 displayName = "CITY_NAME"; // Melbourne
                 requestName = "CITY_NAME"; // Melbourne
-            } else if (level === STATE) {
-                // polygon_list = new Array(["count","STATE_NAME"]);
-                // $http({
-                //     method: 'get',
-                //     url: 'api/tweetsState'
-                // }).then(function (response) {
-                //     //console.log(response.data);
-                //     for (var key in response.data){
-                //         // console.log(response.data[key]);
-                //         // console.log(STATE_CODE_TO_NAME[key]);
-                //         polygon_list.push([response.data[key], STATE_CODE_TO_NAME[key]]);
-                //     }
-                // });
-                polygon_list = [["count","STATE_NAME"],[46990,"New South Wales"],[39235,"Victoria"],[19703,"Queensland"],[11659,"South Australia"],[12016,"Western Australia"],[3715,"Tasmania"],[967,"Northern Territory"],[4893,"Australian Capital Territory"]];
-                console.log("state polygon: ");
-                console.log(polygon_list);
+            } else if (displayLevel === STATE) {
                 //url = "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.min.geojson";
                 url = "../assets/australian-states.min.geojson"
                 propertyName = "STATE_NAME"; // Victoria
@@ -123,7 +135,7 @@ angular.module("mapservice", [])
                 requestName = "STATE_CODE" // 2
             }
 
-            if (polygon_list == null || url == null || propertyName == null || displayName == null || requestName == null) {
+            if (census_variables == null || url == null || propertyName == null || displayName == null || requestName == null) {
                 // TODO: error handling
                 console.log("polygons or url or propertyName or displayName didn't load");
             }
@@ -145,12 +157,12 @@ angular.module("mapservice", [])
                 google.maps.event.addListenerOnce(map.data, 'addfeature', function () {
                     google.maps.event.trigger(document.getElementById('census-variable'), 'change');
                 });
-                console.log(polygon_list);
-                loadCensusData(polygon_list);
+                //console.log(census_variables);
+                loadCensusData(census_variables);
                 map.data.setStyle(styleFeature);
                 // Set default region to Melbourne or Victoria
                 var census = 0;
-                if (level === CITY) {
+                if (displayLevel === CITY) {
                     census = map.data.getFeatureById("02").getProperty('census_variable');
                     if (census == null) {
                         console.log("can't get census_variable");
@@ -160,7 +172,7 @@ angular.module("mapservice", [])
                     }
                     document.getElementById('data-label').textContent = "Melbourne: ";
                     document.getElementById('data-value').textContent = census.toLocaleString();
-                } else if (level === STATE) {
+                } else if (displayLevel === STATE) {
                     census = map.data.getFeatureById("Victoria").getProperty('census_variable');
                     if (census == null) {
                         console.log("can't get census_variable");
@@ -177,25 +189,27 @@ angular.module("mapservice", [])
                 document.getElementById('data-caret').style.paddingLeft = percent + '%';
 
                 // Initialise charts
-                if (level === CITY) {
-                    update_pie("Melbourne", level);
-                } else if (level === STATE) {
-                    update_pie(2, level);
+                if (displayLevel === CITY) {
+                    update_pie("Melbourne", displayLevel);
+                } else if (displayLevel === STATE) {
+                    update_pie(2, displayLevel);
                 }
-                update_bar(level);
-                update_line(level);
+                update_bar(displayLevel);
+                update_line(displayLevel);
 
             });
 
             // Load census data
             function loadCensusData(data){
-                console.log("load data");
-                console.log(data);
+                // console.log("load data");
+                // console.log(data.length);
+                // console.log(data);
                 data.shift();
+                //console.log(data.length);
                 data.forEach(function(row) {
+                    //console.log(row);
                     var censusVariable = parseFloat(row[0]);
                     var stateId = row[1];
-                    console.log(row);
                     // keep track of min and max values
                     if (censusVariable < censusMin) {
                         censusMin = censusVariable;
@@ -286,19 +300,21 @@ angular.module("mapservice", [])
                 document.getElementById('data-caret').style.display = 'block';
                 document.getElementById('data-caret').style.paddingLeft = percent + '%';
 
-                if (level === CITY) {
+                if (displayLevel === CITY) {
                     curr_city = e.feature.getProperty(requestName);
-                } else if (level === STATE) {
+                    console.log(curr_city);
+                } else if (displayLevel === STATE) {
                     curr_state = e.feature.getProperty(requestName);
+                    console.log(curr_state);
                 }
                 // Update pie chart
                 //console.log(e.feature.getProperty(requestName));
-                update_pie(e.feature.getProperty(requestName), level);
+                update_pie(e.feature.getProperty(requestName), displayLevel);
             }
 
             var update_pie = function(code, level) {
                 var pieSelection = document.getElementById('pieselect');
-                console.log(code);
+                //console.log(code);
                 var url = null;
                 if (pieSelection.value === "Age") {
                     if (level === CITY) {
@@ -311,7 +327,7 @@ angular.module("mapservice", [])
                         url: url,
                         data: {"region":code}
                     }).then(function (response) {
-                        console.log('response:', response);
+                        //console.log('response:', response);
                         var pie_data = [{value:response.data.value[0],name:'0-4'},
                             {value:response.data.value[1],name:'5-9'},
                             {value:response.data.value[2],name:'10-14'},
@@ -336,7 +352,7 @@ angular.module("mapservice", [])
                         url: url,
                         data: {"region":code}
                     }).then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         pie_initialize(response.data.value, response.data.key);
                     })
                 }
@@ -403,7 +419,7 @@ angular.module("mapservice", [])
                         text: 'Age distribution: ' + region ,
                         textStyle: {
                             fontSize: 16
-                          }
+                        }
                     },
                     tooltip: {},
                     series: [{
@@ -436,12 +452,12 @@ angular.module("mapservice", [])
                         data:['medium income','Num of tweets']
                     },
                     xAxis: [{
-                            type: 'category',
-                            data:x,
-                            axisLabel: {
-                                interval: 0,
-                                rotate: 10 //If the label names are too long you can manage this by rotating the label.
-                            }
+                        type: 'category',
+                        data:x,
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 10 //If the label names are too long you can manage this by rotating the label.
+                        }
                     }],
                     yAxis: [
                         {
@@ -523,4 +539,4 @@ angular.module("mapservice", [])
 
         return googleMapService;
 
-});
+    });

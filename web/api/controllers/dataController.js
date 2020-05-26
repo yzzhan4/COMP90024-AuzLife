@@ -120,7 +120,7 @@ module.exports = {
             body.rows.forEach((doc) => {
                 //console.log(cityCode[doc.key[0]]);
                 if (doc.key[0] == cityCode[code]){ //doc.key[0] == req.state改成你的req
-                    if(doc.value > 10 && doc.key[1] !== "und") {
+                    if(doc.value > 15 && doc.key[1] !== "und") {
                         langInCity.push({value: doc.value, name:doc.key[1]});
                         // console.log(langInState[doc.key[0]]);
                     } else{
@@ -228,7 +228,7 @@ module.exports = {
             body.rows.forEach((doc) => {
                 //console.log(stateCodes[code] == doc.key[0]);
                 if (doc.key[0] == stateCodes[code]){ //doc.key[0] == req.state改成你的req
-                    if(doc.value > 10 && doc.key[1] !== "und") {
+                    if(doc.value > 15 && doc.key[1] !== "und") {
                         langInState.push({value: doc.value, name:doc.key[1]});
                         // console.log(langInState[doc.key[0]]);
                     } else{

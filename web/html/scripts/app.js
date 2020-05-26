@@ -1,4 +1,4 @@
-var mapRegionLevel = CITY;
+//var mapRegionLevel = CITY;
 
 //angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice','chartservice'])
 angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice'])
@@ -32,12 +32,12 @@ angular.module("TweetMapApp", ['ngRoute','ngResource','mapservice'])
         var radios = document.forms["mapRegionForm"].elements["mapRegion"];
         radios[CITY].onclick = function () {
             //console.log("initialize map by cites");
-            mapRegionLevel = CITY;
+            //mapRegionLevel = CITY;
             mapservice.refresh(CITY);
         }
         radios[STATE].onclick = function () {
             //console.log("initialize map by states");
-            mapRegionLevel = STATE;
+            //mapRegionLevel = STATE;
             mapservice.refresh(STATE);
         }
 
