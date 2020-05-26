@@ -415,7 +415,15 @@ angular.module("mapservice", [])
 
             var get_baroption = function(x,y,z){
                 var option = {
-
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            crossStyle: {
+                                color: '#999'
+                            }
+                        }
+                    },
                     title: {
                         text: 'Tweets number and medium income'
                     },
@@ -432,29 +440,29 @@ angular.module("mapservice", [])
                                 rotate: 10 //If the label names are too long you can manage this by rotating the label.
                             }
                     }],
-                    yAxis: [{
-                        axisTick: {
-                            alignWithLabel: true
-                        },
-                        type: 'value',
-                        name: 'Income',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLabel: {
-                            formatter: '{value} dollars'
-                        }
-                    },
+                    yAxis: [
                         {
                             type: 'value',
-                            name: 'tweet number',
+                            name: 'Income',
+                            splitLine: {
+                                show: false
+                            },
+                            axisLabel: {
+                                formatter: '{value} dollars'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: 'Tweet number',
                             axisLabel: {
                                 formatter: '{value} '
                             },
                             splitLine: {
                                 show: false
                             }
-                        }],
+                        }
+
+                    ],
                     series: [{
                         name: 'medium income',
                         type: 'bar',
@@ -464,6 +472,7 @@ angular.module("mapservice", [])
                         {
                             name: 'tweet number',
                             type: 'line',
+                            yAxisIndex: 1,
                             data:z
 
                         }]
