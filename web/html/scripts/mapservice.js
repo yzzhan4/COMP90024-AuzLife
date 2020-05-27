@@ -526,7 +526,7 @@ angular.module("mapservice", [])
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['Victoria', 'NSW','Queensland']
+                        data: []
                     },
                     calculable: true,
                     xAxis: [{
