@@ -520,7 +520,7 @@ angular.module("mapservice", [])
                 var option = {
                     backgroundColor: '#FBFBFB',
                     title: {
-                        text: 'Line chart of population in Australia'
+                        text: 'Number of people at different education levels'
                     },
                     tooltip: {
                         trigger: 'axis'
