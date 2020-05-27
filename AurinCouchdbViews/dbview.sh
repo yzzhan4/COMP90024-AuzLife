@@ -8,5 +8,5 @@
 # Zimeng Jia 978322 @Hebei, China
 
 
-python couchdbConnection.py
-python aurintCouchdb.py
+# python couchdbConnection.py
+python3 test.py

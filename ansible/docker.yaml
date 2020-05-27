@@ -63,3 +63,9 @@
 
   roles:
     - webserver
+
+- hosts: master
+  gather_facts: True
+
+  roles:
+  - role: uploadDB

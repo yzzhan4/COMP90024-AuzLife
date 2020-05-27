@@ -17,6 +17,7 @@
     group: "{{ ansible_user }}"
     recurse: yes
     state: directory
+    mode: "0777"
 
 - name: Create streaming directory
   tags: 'DB'
@@ -27,6 +28,8 @@
     group: "{{ ansible_user }}"
     recurse: yes
     state: directory
+    mode: "0777"
+
 
 
 - pip:
@@ -69,21 +72,24 @@
 
 - name: execute the subnode script
   become: yes
-  shell: /home/ubuntu/stream/streaming.sh
+  shell: /home/ubuntu/stream/TwitterStreaming/streaming.sh
+
+
+#- name: upload the subnode script
+#  become: yes
+#  file:
+#    src: ./db/AurinCouchdbViews/dbview.sh
+#    dest: /home/ubuntu/
+#    mode: 0777
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+
+
+#- name: execute the subnode script
+#  become: yes
+#  shell: /home/ubuntu/setupcouchmaster.sh
 
 
 - name: execute the subnode script
   become: yes
   shell: /home/ubuntu/db/AurinCouchdbViews/dbview.sh
-
-
-
-#- name: create user db
-#  command: python3 ./stream/TwitterStreaming/test1.py
-#
-
-
-#- name: Run a script using an executable in a system path
-#  script: ../../../../AurinCouchdbViews/couchdbConnection.py
-#  args:
-#    executable: python3
