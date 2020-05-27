@@ -28,11 +28,6 @@
     recurse: yes
     state: directory
 
-- name: Upload DB Code
-  become: yes
-  copy:
-    src: ../../../../AurinCouchdbViews
-    dest: "{{ db_dir }}"
 
 - pip:
     name: couchdb
@@ -53,7 +48,7 @@
     name: "python3-pandas"
     state: present
 
-- name: Upload DB Code
+- name: Upload streaming Code
   become: yes
   copy:
     src: ../../../../TwitterStreaming
@@ -63,7 +58,14 @@
   become: yes
   copy:
     src: ../../../../AurinCouchdbViews
-    dest: "{{ st_dir }}"
+    dest: "{{ db_dir }}"
+
+- name: create user db
+  command: curl -XPUT "http://admin:90024@172.26.131.147:5984/streaming-userids?partitioned=true"
+
+- name: create user db
+  command: curl -XPUT "http://admin:90024@172.26.131.147:5984/gathering-tweets?partitioned=true"
+
 
 - name: execute the subnode script
   become: yes
@@ -75,3 +77,13 @@
   shell: /home/ubuntu/db/AurinCouchdbViews/dbview.sh
 
 
+
+#- name: create user db
+#  command: python3 ./stream/TwitterStreaming/test1.py
+#
+
+
+#- name: Run a script using an executable in a system path
+#  script: ../../../../AurinCouchdbViews/couchdbConnection.py
+#  args:
+#    executable: python3

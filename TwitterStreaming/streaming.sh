@@ -7,13 +7,10 @@
 # Yi Zhang 1032768 @Melbourne
 # Zimeng Jia 978322 @Hebei, China
 
-# Create databases
-curl -XPUT "http://admin:90024@172.26.131.147:5984/streaming-userids?partitioned=true"
-curl -XPUT "http://admin:90024@172.26.131.147:5984/streaming-tweets?partitioned=true"
 
 # On local machine:
 # upload local couchdb data to remote
-python3 local_to_couch.py
+# python3 local_to_couch.py
 
 
 # install python packages
